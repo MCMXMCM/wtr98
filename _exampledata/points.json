@@ -1,0 +1,94 @@
+{
+    "@context": [
+        "https://geojson.org/geojson-ld/geojson-context.jsonld",
+        {
+            "@version": "1.1",
+            "wx": "https://api.weather.gov/ontology#",
+            "s": "https://schema.org/",
+            "geo": "http://www.opengis.net/ont/geosparql#",
+            "unit": "http://codes.wmo.int/common/unit/",
+            "@vocab": "https://api.weather.gov/ontology#",
+            "geometry": {
+                "@id": "s:GeoCoordinates",
+                "@type": "geo:wktLiteral"
+            },
+            "city": "s:addressLocality",
+            "state": "s:addressRegion",
+            "distance": {
+                "@id": "s:Distance",
+                "@type": "s:QuantitativeValue"
+            },
+            "bearing": {
+                "@type": "s:QuantitativeValue"
+            },
+            "value": {
+                "@id": "s:value"
+            },
+            "unitCode": {
+                "@id": "s:unitCode",
+                "@type": "@id"
+            },
+            "forecastOffice": {
+                "@type": "@id"
+            },
+            "forecastGridData": {
+                "@type": "@id"
+            },
+            "publicZone": {
+                "@type": "@id"
+            },
+            "county": {
+                "@type": "@id"
+            }
+        }
+    ],
+    "id": "https://api.weather.gov/points/38.6357,-90.2446",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -90.244600000000005,
+            38.6357
+        ]
+    },
+    "properties": {
+        "@id": "https://api.weather.gov/points/38.6357,-90.2446",
+        "@type": "wx:Point",
+        "cwa": "LSX",
+        "forecastOffice": "https://api.weather.gov/offices/LSX",
+        "gridId": "LSX",
+        "gridX": 94,
+        "gridY": 75,
+        "forecast": "https://api.weather.gov/gridpoints/LSX/94,75/forecast",
+        "forecastHourly": "https://api.weather.gov/gridpoints/LSX/94,75/forecast/hourly",
+        "forecastGridData": "https://api.weather.gov/gridpoints/LSX/94,75",
+        "observationStations": "https://api.weather.gov/gridpoints/LSX/94,75/stations",
+        "relativeLocation": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.244581999999994,
+                    38.635699000000002
+                ]
+            },
+            "properties": {
+                "city": "St. Louis",
+                "state": "MO",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1.5673930967303999
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 274
+                }
+            }
+        },
+        "forecastZone": "https://api.weather.gov/zones/forecast/MOZ064",
+        "county": "https://api.weather.gov/zones/county/MOC510",
+        "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ064",
+        "timeZone": "America/Chicago",
+        "radarStation": "KLSX"
+    }
+}

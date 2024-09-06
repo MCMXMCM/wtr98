@@ -1,0 +1,1279 @@
+{
+    "@context": [
+        "https://geojson.org/geojson-ld/geojson-context.jsonld",
+        {
+            "@version": "1.1",
+            "wx": "https://api.weather.gov/ontology#",
+            "s": "https://schema.org/",
+            "geo": "http://www.opengis.net/ont/geosparql#",
+            "unit": "http://codes.wmo.int/common/unit/",
+            "@vocab": "https://api.weather.gov/ontology#",
+            "geometry": {
+                "@id": "s:GeoCoordinates",
+                "@type": "geo:wktLiteral"
+            },
+            "city": "s:addressLocality",
+            "state": "s:addressRegion",
+            "distance": {
+                "@id": "s:Distance",
+                "@type": "s:QuantitativeValue"
+            },
+            "bearing": {
+                "@type": "s:QuantitativeValue"
+            },
+            "value": {
+                "@id": "s:value"
+            },
+            "unitCode": {
+                "@id": "s:unitCode",
+                "@type": "@id"
+            },
+            "forecastOffice": {
+                "@type": "@id"
+            },
+            "forecastGridData": {
+                "@type": "@id"
+            },
+            "publicZone": {
+                "@type": "@id"
+            },
+            "county": {
+                "@type": "@id"
+            },
+            "observationStations": {
+                "@container": "@list",
+                "@type": "@id"
+            }
+        }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": "https://api.weather.gov/stations/KCPS",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.148709999999994,
+                    38.564030000000002
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KCPS",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 124.968
+                },
+                "stationIdentifier": "KCPS",
+                "name": "St. Louis Downtown Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ101",
+                "county": "https://api.weather.gov/zones/county/ILC163",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ101"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KSTL",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.373609999999999,
+                    38.752499999999998
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KSTL",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 184.0992
+                },
+                "stationIdentifier": "KSTL",
+                "name": "St. Louis Lambert International Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ063",
+                "county": "https://api.weather.gov/zones/county/MOC189",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ063"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KALN",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.031630000000007,
+                    38.889679999999998
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KALN",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 157.88640000000001
+                },
+                "stationIdentifier": "KALN",
+                "name": "St. Louis Regional Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ100",
+                "county": "https://api.weather.gov/zones/county/ILC119",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ100"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KSET",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.432500000000005,
+                    38.93056
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KSET",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 132.89279999999999
+                },
+                "stationIdentifier": "KSET",
+                "name": "St. Charles, St. Charles County Smartt Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ061",
+                "county": "https://api.weather.gov/zones/county/MOC183",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ061"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KSUS",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.655829999999995,
+                    38.657220000000002
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KSUS",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 141.1224
+                },
+                "stationIdentifier": "KSUS",
+                "name": "St. Louis, Spirit Of St. Louis Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ063",
+                "county": "https://api.weather.gov/zones/county/MOC189",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ063"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KFYG",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.993799899999999,
+                    38.587600000000002
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KFYG",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 149.0472
+                },
+                "stationIdentifier": "KFYG",
+                "name": "Washington Regional Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ060",
+                "county": "https://api.weather.gov/zones/county/MOC219",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ060"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KSAR",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -89.702430000000007,
+                    38.146239999999999
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KSAR",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 160.93440000000001
+                },
+                "stationIdentifier": "KSAR",
+                "name": "Sparta Community-Hunter Field Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ079",
+                "county": "https://api.weather.gov/zones/county/ILC157",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ079"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KPCD",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -89.862139999999997,
+                    37.868670000000002
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KPCD",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 113.3856
+                },
+                "stationIdentifier": "KPCD",
+                "name": "Perryville Regional Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ076",
+                "county": "https://api.weather.gov/zones/county/MOC157",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ076"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KUUV",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -91.164330000000007,
+                    38.233499999999999
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KUUV",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 284.3784
+                },
+                "stationIdentifier": "KUUV",
+                "name": "SULLIVAN",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ062",
+                "county": "https://api.weather.gov/zones/county/MOC071",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ062"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KFAM",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.433329999999998,
+                    37.766669999999998
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KFAM",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 288.036
+                },
+                "stationIdentifier": "KFAM",
+                "name": "Farmington Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ074",
+                "county": "https://api.weather.gov/zones/county/MOC187",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ074"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KENL",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -89.089960000000005,
+                    38.509509999999999
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KENL",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 160.02000000000001
+                },
+                "stationIdentifier": "KENL",
+                "name": "Centralia Municipal Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ070",
+                "county": "https://api.weather.gov/zones/county/ILC121",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ070"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KSLO",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.964169999999996,
+                    38.642780000000002
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KSLO",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 174.95519999999999
+                },
+                "stationIdentifier": "KSLO",
+                "name": "Salem, Salem-Leckrone Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ070",
+                "county": "https://api.weather.gov/zones/county/ILC121",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ070"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KPPQ",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.778329999999997,
+                    39.638890000000004
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KPPQ",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 216.10319999999999
+                },
+                "stationIdentifier": "KPPQ",
+                "name": "Pittsfield, Pittsfield Penstone Municipal Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ097",
+                "county": "https://api.weather.gov/zones/county/ILC149",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ097"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KMVN",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.852919999999997,
+                    38.328420000000001
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KMVN",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 142.0368
+                },
+                "stationIdentifier": "KMVN",
+                "name": "Mount Vernon Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ075",
+                "county": "https://api.weather.gov/zones/county/ILC081",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ075"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KIJX",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.241870000000006,
+                    39.774009900000003
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KIJX",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 187.1472
+                },
+                "stationIdentifier": "KIJX",
+                "name": "Jacksonville Municipal Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ050",
+                "county": "https://api.weather.gov/zones/county/ILC137",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ050"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KTAZ",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -89.327780000000004,
+                    39.534170000000003
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KTAZ",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 189.8904
+                },
+                "stationIdentifier": "KTAZ",
+                "name": "Taylorville, Taylorville Municipal Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ052",
+                "county": "https://api.weather.gov/zones/county/ILC021",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ052"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KMDH",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -89.245320000000007,
+                    37.783279999999998
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KMDH",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 121.92
+                },
+                "stationIdentifier": "KMDH",
+                "name": "Southern Illinois Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ084",
+                "county": "https://api.weather.gov/zones/county/ILC077",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ084"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KSPI",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -89.684049999999999,
+                    39.845269999999999
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KSPI",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 178.91759999999999
+                },
+                "stationIdentifier": "KSPI",
+                "name": "Springfield - Abraham Lincoln Capital Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ051",
+                "county": "https://api.weather.gov/zones/county/ILC167",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ051"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KMWA",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -89.009929999999997,
+                    37.766710000000003
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KMWA",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 148.1328
+                },
+                "stationIdentifier": "KMWA",
+                "name": "Marion - Williamson County Regional Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ085",
+                "county": "https://api.weather.gov/zones/county/ILC199",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ085"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KVIH",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -91.765280000000004,
+                    38.13194
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KVIH",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 349.91039999999998
+                },
+                "stationIdentifier": "KVIH",
+                "name": "Rolla / Vichy, Rolla National Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ058",
+                "county": "https://api.weather.gov/zones/county/MOC125",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ058"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KFOA",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.452699899999999,
+                    38.667259999999999
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KFOA",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 139.9032
+                },
+                "stationIdentifier": "KFOA",
+                "name": "Flora Municipal Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ071",
+                "county": "https://api.weather.gov/zones/county/ILC025",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ071"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/K1H2",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.533330000000007,
+                    39.07056
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/K1H2",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 178.91759999999999
+                },
+                "stationIdentifier": "K1H2",
+                "name": "Effingham, Effingham County Memorial Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ066",
+                "county": "https://api.weather.gov/zones/county/ILC049",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ066"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KHAE",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -91.443899999999999,
+                    39.725200000000001
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KHAE",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 234.696
+                },
+                "stationIdentifier": "KHAE",
+                "name": "Hannibal Regional Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ027",
+                "county": "https://api.weather.gov/zones/county/MOC127",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ027"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KFWC",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.412779999999998,
+                    38.378610000000002
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KFWC",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 132.89279999999999
+                },
+                "stationIdentifier": "KFWC",
+                "name": "Fairfield, Fairfield Municipal Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ076",
+                "county": "https://api.weather.gov/zones/county/ILC191",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ076"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KUIN",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -91.19659,
+                    39.937100000000001
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KUIN",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 231.3432
+                },
+                "stationIdentifier": "KUIN",
+                "name": "Quincy Regional Airport-Baldwin Field",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ095",
+                "county": "https://api.weather.gov/zones/county/ILC001",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ095"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KJEF",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -92.155829999999995,
+                    38.594439999999999
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KJEF",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 167.03039999999999
+                },
+                "stationIdentifier": "KJEF",
+                "name": "Jefferson City, Jefferson City Memorial Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ050",
+                "county": "https://api.weather.gov/zones/county/MOC027",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ050"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KCGI",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -89.5783299,
+                    37.225560000000002
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KCGI",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 103.93680000000001
+                },
+                "stationIdentifier": "KCGI",
+                "name": "Cape Girardeau, Cape Girardeau Regional Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ111",
+                "county": "https://api.weather.gov/zones/county/MOC201",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ111"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KCOU",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -92.218329999999995,
+                    38.816940000000002
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KCOU",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 270.96719999999999
+                },
+                "stationIdentifier": "KCOU",
+                "name": "Columbia, Columbia Regional Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ041",
+                "county": "https://api.weather.gov/zones/county/MOC019",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ041"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KHSB",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.54486,
+                    37.812809999999999
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KHSB",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 117.9576
+                },
+                "stationIdentifier": "KHSB",
+                "name": "Harrisburg-Raleigh Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ086",
+                "county": "https://api.weather.gov/zones/county/ILC165",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ086"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KDEC",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.871920000000003,
+                    39.830800000000004
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KDEC",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 204.21600000000001
+                },
+                "stationIdentifier": "KDEC",
+                "name": "Decatur Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ053",
+                "county": "https://api.weather.gov/zones/county/ILC115",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ053"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KOLY",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.179900000000004,
+                    38.721330000000002
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KOLY",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 145.9992
+                },
+                "stationIdentifier": "KOLY",
+                "name": "Olney-Noble Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ072",
+                "county": "https://api.weather.gov/zones/county/ILC159",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ072"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KAAA",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -89.338909999999998,
+                    40.158850000000001
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KAAA",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 180.13679999999999
+                },
+                "stationIdentifier": "KAAA",
+                "name": "Logan County Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ042",
+                "county": "https://api.weather.gov/zones/county/ILC107",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ042"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KMTO",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.279169899999999,
+                    39.478059999999999
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KMTO",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 220.06559999999999
+                },
+                "stationIdentifier": "KMTO",
+                "name": "Mattoon / Charleston, Coles County Memorial Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ056",
+                "county": "https://api.weather.gov/zones/county/ILC029",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ056"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KCUL",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.121250000000003,
+                    38.088749999999997
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KCUL",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 117.9576
+                },
+                "stationIdentifier": "KCUL",
+                "name": "Carmi Municipal Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ083",
+                "county": "https://api.weather.gov/zones/county/ILC193",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ083"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KPOF",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.322220000000002,
+                    36.770560000000003
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KPOF",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 99.974400000000003
+                },
+                "stationIdentifier": "KPOF",
+                "name": "Poplar Bluff, Poplar Bluff Municipal Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ109",
+                "county": "https://api.weather.gov/zones/county/MOC023",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ109"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KAIZ",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -92.549999999999997,
+                    38.100000000000001
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KAIZ",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 264.87119999999999
+                },
+                "stationIdentifier": "KAIZ",
+                "name": "Kaiser Lake Ozark, Lee C Fine Memorial Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ057",
+                "county": "https://api.weather.gov/zones/county/MOC131",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ057"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KMQB",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -90.648070000000004,
+                    40.517629900000003
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KMQB",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 206.95920000000001
+                },
+                "stationIdentifier": "KMQB",
+                "name": "Macomb Municipal Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ035",
+                "county": "https://api.weather.gov/zones/county/ILC109",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ035"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KPAH",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.773889999999994,
+                    37.05639
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KPAH",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 124.968
+                },
+                "stationIdentifier": "KPAH",
+                "name": "Paducah, Barkley Regional Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/KYZ005",
+                "county": "https://api.weather.gov/zones/county/KYC145",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/KYZ005"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KEOK",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -91.427390000000003,
+                    40.461489999999998
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KEOK",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 206.04480000000001
+                },
+                "stationIdentifier": "KEOK",
+                "name": "Keokuk Municipal Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/IAZ099",
+                "county": "https://api.weather.gov/zones/county/IAC111",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/IAZ099"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KCMI",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.275469999999999,
+                    40.032449999999997
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KCMI",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 225.85679999999999
+                },
+                "stationIdentifier": "KCMI",
+                "name": "University of Illinois - Willard",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ045",
+                "county": "https://api.weather.gov/zones/county/ILC019",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ045"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KBMI",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.91583,
+                    40.476939999999999
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KBMI",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 266.09039999999999
+                },
+                "stationIdentifier": "KBMI",
+                "name": "Bloomington/Normal, Central Illinois Regional Airport at Bloomington-Normal",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ038",
+                "county": "https://api.weather.gov/zones/county/ILC113",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ038"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KUNO",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -91.905000000000001,
+                    36.879170000000002
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KUNO",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 373.9896
+                },
+                "stationIdentifier": "KUNO",
+                "name": "West Plains, West Plains Municipal Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ097",
+                "county": "https://api.weather.gov/zones/county/MOC091",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ097"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KDMO",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -93.174440000000004,
+                    38.712220000000002
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KDMO",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 277.06319999999999
+                },
+                "stationIdentifier": "KDMO",
+                "name": "Sedalia, Sedalia Memorial Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ045",
+                "county": "https://api.weather.gov/zones/county/MOC159",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ045"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KTIP",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -88.147300000000001,
+                    40.289520000000003
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KTIP",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 223.11359999999999
+                },
+                "stationIdentifier": "KTIP",
+                "name": "Rantoul National Aviation Center Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/ILZ045",
+                "county": "https://api.weather.gov/zones/county/ILC019",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ045"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KIRK",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -92.543329999999997,
+                    40.09722
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KIRK",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 294.13200000000001
+                },
+                "stationIdentifier": "KIRK",
+                "name": "Kirksville, Kirksville Regional Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ017",
+                "county": "https://api.weather.gov/zones/county/MOC001",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ017"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KCDJ",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -93.583330000000004,
+                    39.816670000000002
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KCDJ",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 234.0864
+                },
+                "stationIdentifier": "KCDJ",
+                "name": "Chillicothe, Chillicothe Agri-Science Center",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ023",
+                "county": "https://api.weather.gov/zones/county/MOC117",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ023"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KSGF",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -93.389719999999997,
+                    37.239719999999998
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KSGF",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 385.8768
+                },
+                "stationIdentifier": "KSGF",
+                "name": "Springfield-Branson National Airport",
+                "timeZone": "America/Chicago",
+                "forecast": "https://api.weather.gov/zones/forecast/MOZ090",
+                "county": "https://api.weather.gov/zones/county/MOC077",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/MOZ090"
+            }
+        }
+    ],
+    "observationStations": [
+        "https://api.weather.gov/stations/KCPS",
+        "https://api.weather.gov/stations/KSTL",
+        "https://api.weather.gov/stations/KALN",
+        "https://api.weather.gov/stations/KSET",
+        "https://api.weather.gov/stations/KSUS",
+        "https://api.weather.gov/stations/KFYG",
+        "https://api.weather.gov/stations/KSAR",
+        "https://api.weather.gov/stations/KPCD",
+        "https://api.weather.gov/stations/KUUV",
+        "https://api.weather.gov/stations/KFAM",
+        "https://api.weather.gov/stations/KENL",
+        "https://api.weather.gov/stations/KSLO",
+        "https://api.weather.gov/stations/KPPQ",
+        "https://api.weather.gov/stations/KMVN",
+        "https://api.weather.gov/stations/KIJX",
+        "https://api.weather.gov/stations/KTAZ",
+        "https://api.weather.gov/stations/KMDH",
+        "https://api.weather.gov/stations/KSPI",
+        "https://api.weather.gov/stations/KMWA",
+        "https://api.weather.gov/stations/KVIH",
+        "https://api.weather.gov/stations/KFOA",
+        "https://api.weather.gov/stations/K1H2",
+        "https://api.weather.gov/stations/KHAE",
+        "https://api.weather.gov/stations/KFWC",
+        "https://api.weather.gov/stations/KUIN",
+        "https://api.weather.gov/stations/KJEF",
+        "https://api.weather.gov/stations/KCGI",
+        "https://api.weather.gov/stations/KCOU",
+        "https://api.weather.gov/stations/KHSB",
+        "https://api.weather.gov/stations/KDEC",
+        "https://api.weather.gov/stations/KOLY",
+        "https://api.weather.gov/stations/KAAA",
+        "https://api.weather.gov/stations/KMTO",
+        "https://api.weather.gov/stations/KCUL",
+        "https://api.weather.gov/stations/KPOF",
+        "https://api.weather.gov/stations/KAIZ",
+        "https://api.weather.gov/stations/KMQB",
+        "https://api.weather.gov/stations/KPAH",
+        "https://api.weather.gov/stations/KEOK",
+        "https://api.weather.gov/stations/KCMI",
+        "https://api.weather.gov/stations/KBMI",
+        "https://api.weather.gov/stations/KUNO",
+        "https://api.weather.gov/stations/KDMO",
+        "https://api.weather.gov/stations/KTIP",
+        "https://api.weather.gov/stations/KIRK",
+        "https://api.weather.gov/stations/KCDJ",
+        "https://api.weather.gov/stations/KSGF"
+    ],
+    "pagination": {
+        "next": "https://api.weather.gov/stations?id%5B0%5D=K1H2&id%5B1%5D=KAAA&id%5B2%5D=KAIZ&id%5B3%5D=KALN&id%5B4%5D=KBMI&id%5B5%5D=KCDJ&id%5B6%5D=KCGI&id%5B7%5D=KCMI&id%5B8%5D=KCOU&id%5B9%5D=KCPS&id%5B10%5D=KCUL&id%5B11%5D=KDEC&id%5B12%5D=KDMO&id%5B13%5D=KENL&id%5B14%5D=KEOK&id%5B15%5D=KFAM&id%5B16%5D=KFOA&id%5B17%5D=KFWC&id%5B18%5D=KFYG&id%5B19%5D=KHAE&id%5B20%5D=KHSB&id%5B21%5D=KIJX&id%5B22%5D=KIRK&id%5B23%5D=KJEF&id%5B24%5D=KMDH&id%5B25%5D=KMQB&id%5B26%5D=KMTO&id%5B27%5D=KMVN&id%5B28%5D=KMWA&id%5B29%5D=KOLY&id%5B30%5D=KPAH&id%5B31%5D=KPCD&id%5B32%5D=KPOF&id%5B33%5D=KPPQ&id%5B34%5D=KSAR&id%5B35%5D=KSET&id%5B36%5D=KSGF&id%5B37%5D=KSLO&id%5B38%5D=KSPI&id%5B39%5D=KSTL&id%5B40%5D=KSUS&id%5B41%5D=KTAZ&id%5B42%5D=KTIP&id%5B43%5D=KUIN&id%5B44%5D=KUNO&id%5B45%5D=KUUV&id%5B46%5D=KVIH&cursor=eyJzIjo1MDB9"
+    }
+}
