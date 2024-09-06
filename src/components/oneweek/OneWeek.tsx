@@ -31,14 +31,7 @@ export default function OneWeekForecast({
   if (forecastError) return "An error has occurred: " + forecastError.message;
 
   return (
-    <div
-      style={{
-        width: "100%",
-        overflowX: "auto",
-        height: "73%",
-      }}
-      className="window"
-    >
+    <div className="window one-week-window">
       <div className="title-bar">
         <div className="title-bar-text">One-Week Forecast</div>
       </div>

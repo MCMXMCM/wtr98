@@ -1,8 +1,69 @@
 .main-container {
+  @media (max-width: 767px) {
+    margin: 8px;
+    height: 95vh;
+    width: 95vw;
+  }
   display: flex;
   justify-content: center;
   align-items: center;
   height: 95vh;
   width: 95vw;
   flex-direction: column;
+}
+
+.sub-container {
+  @media (max-width: 767px) {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.hourly-forecast {
+  @media (max-width: 767px) {
+    width: 100%;
+    max-width: 100vw;
+  }
+  width: 100%;
+  max-width: 900px;
+  max-height: 250px;
+}
+
+.boxes-container {
+  @media (max-width: 767px) {
+    width: 100%;
+    height: 60%;
+    display: block;
+  }
+
+  width: 100%;
+  max-width: 900px;
+  height: 60%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.one-week-forecast {
+  @media (max-width: 767px) {
+    width: 100vw;
+    height: 100%;
+  }
+
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+  height: 100%;
+  margin: 8px;
+}
+
+.one-week-window {
+  @media (max-width: 767px) {
+    width: 92vw;
+  }
+  width: 100%;
+  overflow-x: auto;
+  height: 100%;
 }

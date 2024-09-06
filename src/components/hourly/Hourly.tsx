@@ -9,14 +9,7 @@ export default function HourlyForecast({
   currentDetailed: string;
 }) {
   return (
-    <div
-      style={{
-        width: "100%",
-        maxWidth: "900px",
-        maxHeight: "250px",
-      }}
-      className="window"
-    >
+    <div className="window hourly-forecast">
       <div className="title-bar">
         <div className="title-bar-text">{currentDetailed}</div>
       </div>

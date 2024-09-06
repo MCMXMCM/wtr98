@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { ProgressBar } from "react95";
+import original from "react95/dist/themes/original";
+import { ThemeProvider } from "styled-components";
 
 export function Tile() {
   const [percent, setPercent] = useState(0);
@@ -19,5 +21,9 @@ export function Tile() {
     };
   }, []);
 
-  return <ProgressBar variant="tile" value={Math.floor(percent)} />;
+  return (
+    <ThemeProvider theme={original}>
+      <ProgressBar variant="tile" value={Math.floor(percent)} />
+    </ThemeProvider>
+  );
 }
