@@ -7,6 +7,7 @@ import "react-h5-audio-player/lib/styles.css";
 const playlist = [
   { src: "/Christopher Mason - Something Beautiful.mp3" },
   { src: "/Bob Thompson - I Just Want You To Be Happy.mp3" },
+  { src: "/George Benson And Earl Klugh - Mimosa.mp3" },
   { src: "/Dan Siegel - Celestial Body.mp3" },
   { src: "/George Howard - Broad Street.mp3" },
   { src: "/Birds Of A Feather - Down For The Count.mp3" },
@@ -40,6 +41,7 @@ export default function Player() {
     >
       <p> Now playing: {playlist[currentTrack].src.split("").splice(1)}</p>
       <AudioPlayer
+        autoPlay
         customVolumeControls={[]}
         showJumpControls={false}
         src={playlist[currentTrack].src}
