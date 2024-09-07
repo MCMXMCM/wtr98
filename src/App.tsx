@@ -187,11 +187,18 @@ function App() {
         alignItems: "center",
         height: "100vh",
         width: "100vw",
+
         margin: "18px",
         flexDirection: "column",
       }}
     >
-      <div className="window" style={{ width: "100%" }}>
+      <div
+        className="window"
+        style={{
+          width: "100%",
+          maxWidth: "1200px",
+        }}
+      >
         <div
           className="field-column"
           style={{

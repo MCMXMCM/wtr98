@@ -4,6 +4,7 @@
     margin: 18px;
   }
   height: 100%;
+  max-width: 1200px;
   width: 100%;
   overflow-x: hidden;
   margin: 18px;
@@ -19,6 +20,7 @@
 .hourly-forecast {
   margin-top: 8px;
   width: 100%;
+  max-width: 1200px;
   max-height: 250px;
 }
 
@@ -63,6 +65,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
   margin-top: 8px;
+  margin-bottom: 18px;
 }
 
 /* Media Query for Single Column Grid */
