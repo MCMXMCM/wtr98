@@ -83,22 +83,6 @@ function App() {
     queryFn: () => fetch(points.forecastUrl).then((res) => res.json()),
   });
 
-  const getCurrentPosition = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords;
-          setPosition({ latitude, longitude });
-        },
-        (err) => {
-          setPositionError(err.message);
-        }
-      );
-    } else {
-      setPositionError("Geolocation is not supported by this browser.");
-    }
-  };
-
   useEffect(() => {
     const getCurrentPosition = () => {
       if (navigator.geolocation) {
@@ -131,11 +115,40 @@ function App() {
           flexDirection: "column",
         }}
       >
-        <Tile />
-        <button style={{ margin: "4px" }} onClick={() => onRefresh()}>
-          Refresh
-        </button>
-        <div className="window">{positionError ? positionError : ""}</div>
+        <div className="window">
+          <div className="title-bar" style={{ marginBottom: "18px" }}>
+            <div className="title-bar-text">
+              <h4 style={{ letterSpacing: 1.4 }}>WEATHER 98 - Version 1</h4>
+            </div>
+          </div>
+          <Tile />
+          {positionError ? (
+            <div className="field-row" style={{ marginTop: "18px" }}>
+              <p
+                style={{
+                  fontSize: "18px",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                {`${positionError} -- if you're on mobile, make sure your current browser
+             has permission to use location services while in use.`}
+              </p>
+            </div>
+          ) : (
+            <div className="field-row" style={{ marginTop: "18px" }}>
+              <p
+                style={{
+                  fontSize: "22px",
+                  textAlign: "center",
+                  padding: "18px",
+                }}
+              >
+                loading weather for your current location...
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     );
 
@@ -143,10 +156,26 @@ function App() {
 
   if (pointsError) return "An error has occurred: " + pointsError.message;
 
-  function onRefresh() {
+  function updatePosition() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          setPosition({ latitude, longitude });
+        },
+        (err) => {
+          setPositionError(err.message);
+        }
+      );
+    } else {
+      setPositionError("Geolocation is not supported by this browser.");
+    }
+  }
+
+  function refresh() {
     hourlyRefetch();
     dailyRefetch();
-    getCurrentPosition();
+    updatePosition();
   }
 
   return (
@@ -183,7 +212,7 @@ function App() {
                     textAlign: "center",
                   }}
                 >
-                  <button style={{ margin: "4px" }} onClick={() => onRefresh()}>
+                  <button style={{ margin: "4px" }} onClick={refresh}>
                     Refresh
                   </button>
 
