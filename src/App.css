@@ -1,10 +1,12 @@
 .main-container {
   @media (max-width: 767px) {
     width: 100dvw;
+    margin: 18px;
   }
   height: 100dvh;
   width: 100dvw;
   overflow-x: hidden;
+  margin: 18px;
 }
 
 .sub-container {
