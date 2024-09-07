@@ -32,12 +32,11 @@ export default function Player() {
         textAlign: "center",
         fontWeight: "bold",
         fontSize: "12px",
-        width: "100vw",
-        // maxWidth: "1200px",
       }}
     >
       <p> Now playing: {playlist[currentTrack].src.split("").splice(1)}</p>
       <AudioPlayer
+        customVolumeControls={[]}
         showJumpControls={false}
         src={playlist[currentTrack].src}
         showSkipControls
