@@ -1,15 +1,9 @@
 .main-container {
   @media (max-width: 767px) {
-    margin: 8px;
-    height: 95vh;
-    width: 95vw;
+    width: 98vw;
   }
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 95vh;
-  width: 95vw;
-  flex-direction: column;
+  height: 98vh;
+  width: 98vw;
 }
 
 .sub-container {
@@ -21,12 +15,10 @@
 
 .hourly-forecast {
   @media (max-width: 767px) {
-    width: 100%;
-    max-width: 100vw;
+    width: 100vw;
   }
   margin-top: 8px;
   width: 100%;
-  max-width: 1000px;
   max-height: 250px;
 }
 
