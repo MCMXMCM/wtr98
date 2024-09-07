@@ -27,8 +27,8 @@ export default function Player() {
   };
 
   return (
-    <div className="container">
-      <p>{playlist[currentTrack].src.split("").splice(1)}</p>
+    <div style={{ textAlign: "center", fontWeight: "bold", fontSize: "12px" }}>
+      <p> Now playing: {playlist[currentTrack].src.split("").splice(1)}</p>
       <AudioPlayer
         src={playlist[currentTrack].src}
         showSkipControls

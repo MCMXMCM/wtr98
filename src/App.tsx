@@ -10,7 +10,6 @@ import { Tile } from "./components/ProgressBar";
 import MapChart from "./components/map/Map";
 import { getIcon } from "./helpers/global";
 import Player from "./components/AudioPlayer";
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 
 interface Points {
   forecastUrl: string;
@@ -182,10 +181,7 @@ function App() {
 
   return (
     <div className="main-container">
-      <div className="window">
-        <Player />
-      </div>
-      <div>
+      <div style={{ marginBottom: "18px" }}>
         <div className="window">
           <div
             className="field-column"
@@ -324,7 +320,10 @@ function App() {
                   height: "40%",
                 }}
               >
-                <div className="window" style={{ width: "45%" }}>
+                <div
+                  className="window"
+                  style={{ width: "45%", height: "100%" }}
+                >
                   <div className="title-bar">
                     <div className="title-bar-text">Chance of Rain</div>
                   </div>
@@ -345,7 +344,10 @@ function App() {
                     </h1>
                   </div>
                 </div>
-                <div className="window" style={{ width: "45%" }}>
+                <div
+                  className="window"
+                  style={{ width: "45%", height: "100%" }}
+                >
                   <div className="title-bar">
                     <div className="title-bar-text">Relative Humidity</div>
                   </div>
@@ -445,6 +447,12 @@ function App() {
             </div>
           </div>
         </div>
+      </div>
+      <div
+        className="window"
+        style={{ position: "sticky", bottom: 0, left: 0 }}
+      >
+        <Player />
       </div>
     </div>
   );
