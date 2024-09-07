@@ -83,6 +83,22 @@ function App() {
     queryFn: () => fetch(points.forecastUrl).then((res) => res.json()),
   });
 
+  const getCurrentPosition = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const { latitude, longitude } = pos.coords;
+          setPosition({ latitude, longitude });
+        },
+        (err) => {
+          setPositionError(err.message);
+        }
+      );
+    } else {
+      setPositionError("Geolocation is not supported by this browser.");
+    }
+  };
+
   useEffect(() => {
     const getCurrentPosition = () => {
       if (navigator.geolocation) {
@@ -116,6 +132,10 @@ function App() {
         }}
       >
         <Tile />
+        <button style={{ margin: "4px" }} onClick={() => onRefresh()}>
+          Refresh
+        </button>
+        <div className="window">{positionError ? positionError : ""}</div>
       </div>
     );
 
@@ -126,6 +146,7 @@ function App() {
   function onRefresh() {
     hourlyRefetch();
     dailyRefetch();
+    getCurrentPosition();
   }
 
   return (
