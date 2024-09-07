@@ -181,22 +181,23 @@ function App() {
 
   return (
     <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        width: "100vw",
-
-        margin: "18px",
-        flexDirection: "column",
-      }}
+      style={
+        {
+          // display: "flex",
+          // justifyContent: "center",
+          // alignItems: "center",
+          // height: "100vh",
+          // width: "100%",
+          // margin: "18px",
+          // flexDirection: "column",
+        }
+      }
     >
       <div
         className="window"
         style={{
           width: "100%",
-          maxWidth: "1200px",
+          // maxWidth: "1200px",
         }}
       >
         <div

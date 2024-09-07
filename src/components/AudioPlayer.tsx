@@ -33,7 +33,7 @@ export default function Player() {
         fontWeight: "bold",
         fontSize: "12px",
         width: "100vw",
-        maxWidth: "1200px",
+        // maxWidth: "1200px",
       }}
     >
       <p> Now playing: {playlist[currentTrack].src.split("").splice(1)}</p>
