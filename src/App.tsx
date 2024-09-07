@@ -180,47 +180,56 @@ function App() {
   }
 
   return (
-    <div className="main-container">
-      <div style={{ marginBottom: "18px" }}>
-        <div className="window">
-          <div
-            className="field-column"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <h4 style={{ marginBottom: 0 }}>{points.city}</h4>
-            <h4 style={{ marginTop: 0, marginBottom: 0 }}>
-              {hourlyForecastData?.properties?.periods[0]?.temperature}°
-            </h4>
-            <h4 style={{ marginTop: 0, marginBottom: 0 }}>
-              {hourlyForecastData?.properties?.periods[0]?.shortForecast}
-            </h4>
-            {/* <h4 style={{ marginTop: 0, marginBottom: 0 }}>H:94° L:74°</h4> */}
-            <div className="window-body">
-              <div
-                className="field-column"
-                style={{
-                  width: "250px",
-                  display: "flex",
-                  alignContent: "space-between",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  textAlign: "center",
-                }}
-              >
-                <button style={{ margin: "4px" }} onClick={refresh}>
-                  Refresh
-                </button>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        width: "100vw",
+        margin: "18px",
+        flexDirection: "column",
+      }}
+    >
+      <div className="window" style={{ width: "100%" }}>
+        <div
+          className="field-column"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <h4 style={{ marginBottom: 0 }}>{points.city}</h4>
+          <h4 style={{ marginTop: 0, marginBottom: 0 }}>
+            {hourlyForecastData?.properties?.periods[0]?.temperature}°
+          </h4>
+          <h4 style={{ marginTop: 0, marginBottom: 0 }}>
+            {hourlyForecastData?.properties?.periods[0]?.shortForecast}
+          </h4>
+          {/* <h4 style={{ marginTop: 0, marginBottom: 0 }}>H:94° L:74°</h4> */}
+          <div className="window-body">
+            <div
+              className="field-column"
+              style={{
+                width: "250px",
+                display: "flex",
+                alignContent: "space-between",
+                justifyContent: "center",
+                flexDirection: "column",
+                textAlign: "center",
+              }}
+            >
+              <button style={{ margin: "4px" }} onClick={refresh}>
+                Refresh
+              </button>
 
-                {`Last refreshed: ${lastQueryTime} ${
-                  hourlyFetching ? "refreshing now ..." : ""
-                }`}
-              </div>
-              {/* <div style={{ width: "250px" }}>
+              {`Last refreshed: ${lastQueryTime} ${
+                hourlyFetching ? "refreshing now ..." : ""
+              }`}
+            </div>
+            {/* <div style={{ width: "250px" }}>
                 {positionError ? (
                   <p>Error: {positionError}</p>
                 ) : (
@@ -230,145 +239,32 @@ function App() {
                   </p>
                 )}
               </div> */}
-            </div>
           </div>
         </div>
-        <HourlyForecast
-          data={hourlyForecastData}
-          currentDetailed={
-            forecastData?.properties?.periods[0]?.detailedForecast
-          }
-        />
-        <div className="grid-container">
-          <div className="grid-item">
-            <OneWeekForecast
-              forecastPending={forecastPending}
-              forecastError={forecastError}
-              forecastData={forecastData}
-            />
-          </div>
-          <div className="grid-item">
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <div className="window" style={{ height: "100%" }}>
-                <div className="title-bar">
-                  <div className="title-bar-text">Map</div>
-                </div>
-                <div className="window-body">
-                  {position.latitude && position.longitude ? (
-                    <MapChart
-                      cityName={points.city}
-                      coords={position}
-                      currentIconName={getIcon(
-                        hourlyForecastData?.properties?.periods[0]?.isDaytime,
-                        hourlyForecastData?.properties?.periods[0]
-                          ?.shortForecast
-                      )}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid-item">
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <div className="window" style={{ height: "50%" }}>
-                <div className="title-bar">
-                  <div className="title-bar-text">Wind</div>
-                </div>
-                <div className="window-body">
-                  <div
-                    className="field-row"
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-evenly",
-                      alignItems: "center",
-                    }}
-                  >
-                    <p style={{ fontSize: "22px" }}>
-                      {forecastData?.properties?.periods[0]?.windSpeed}
-                    </p>
-                    <p style={{ fontSize: "22px" }}>
-                      {forecastData?.properties?.periods[0]?.windDirection}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  height: "40%",
-                }}
-              >
-                <div
-                  className="window"
-                  style={{ width: "45%", height: "100%" }}
-                >
-                  <div className="title-bar">
-                    <div className="title-bar-text">Chance of Rain</div>
-                  </div>
-                  <div className="window-body" style={{ height: "100%" }}>
-                    <h1
-                      style={{
-                        fontSize: "22px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignContent: "center",
-                      }}
-                    >
-                      {
-                        hourlyForecastData?.properties?.periods[0]
-                          ?.probabilityOfPrecipitation?.value
-                      }
-                      %
-                    </h1>
-                  </div>
-                </div>
-                <div
-                  className="window"
-                  style={{ width: "45%", height: "100%" }}
-                >
-                  <div className="title-bar">
-                    <div className="title-bar-text">Relative Humidity</div>
-                  </div>
-                  <div className="window-body">
-                    <p
-                      style={{
-                        fontSize: "22px",
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {
-                        hourlyForecastData?.properties?.periods[0]
-                          ?.relativeHumidity?.value
-                      }
-                      %
-                    </p>
-                  </div>
-                </div>
-              </div>
-              {/* <div className="window" style={{ height: "47%" }}>
+      </div>
+      <HourlyForecast
+        data={hourlyForecastData}
+        currentDetailed={forecastData?.properties?.periods[0]?.detailedForecast}
+      />
+      <div className="grid-container">
+        <div>
+          <OneWeekForecast
+            forecastPending={forecastPending}
+            forecastError={forecastError}
+            forecastData={forecastData}
+          />
+        </div>
+        <div>
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <div className="window" style={{ height: "100%" }}>
               <div className="title-bar">
                 <div className="title-bar-text">Map</div>
               </div>
@@ -387,26 +283,54 @@ function App() {
                 )}
               </div>
             </div>
+          </div>
+        </div>
 
+        <div>
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <div className="window" style={{ height: "50%" }}>
+              <div className="title-bar">
+                <div className="title-bar-text">Wind</div>
+              </div>
+              <div className="window-body">
+                <div
+                  className="field-row"
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-evenly",
+                    alignItems: "center",
+                  }}
+                >
+                  <p style={{ fontSize: "22px" }}>
+                    {forecastData?.properties?.periods[0]?.windSpeed}
+                  </p>
+                  <p style={{ fontSize: "22px" }}>
+                    {forecastData?.properties?.periods[0]?.windDirection}
+                  </p>
+                </div>
+              </div>
+            </div>
             <div
               style={{
                 width: "100%",
                 display: "flex",
                 justifyContent: "space-between",
-                height: "20%",
+                height: "40%",
               }}
             >
-              <div className="window" style={{ width: "45%" }}>
-                <div className="title-bar">
-                  <div className="title-bar-text">Feels Like</div>
-                </div>
-                <div className="window-body">Feels Like Stuff</div>
-              </div>
-              <div className="window" style={{ width: "45%" }}>
+              <div className="window" style={{ width: "45%", height: "100%" }}>
                 <div className="title-bar">
                   <div className="title-bar-text">Chance of Rain</div>
                 </div>
-                <div className="window-body">
+                <div className="window-body" style={{ height: "100%" }}>
                   <p
                     style={{
                       fontSize: "22px",
@@ -422,28 +346,26 @@ function App() {
                   </p>
                 </div>
               </div>
-            </div>
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                height: "20%",
-              }}
-            >
-              <div className="window" style={{ width: "45%" }}>
+              <div className="window" style={{ width: "45%", height: "100%" }}>
                 <div className="title-bar">
-                  <div className="title-bar-text">Feels Like</div>
+                  <div className="title-bar-text">Relative Humidity</div>
                 </div>
-                <div className="window-body">Feels Like Stuff</div>
-              </div>
-              <div className="window" style={{ width: "45%" }}>
-                <div className="title-bar">
-                  <div className="title-bar-text">Averages</div>
+                <div className="window-body">
+                  <p
+                    style={{
+                      fontSize: "22px",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {
+                      hourlyForecastData?.properties?.periods[0]
+                        ?.relativeHumidity?.value
+                    }
+                    %
+                  </p>
                 </div>
-                <div className="window-body">Averages Stuff</div>
               </div>
-            </div> */}
             </div>
           </div>
         </div>

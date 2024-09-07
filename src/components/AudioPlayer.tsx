@@ -27,9 +27,17 @@ export default function Player() {
   };
 
   return (
-    <div style={{ textAlign: "center", fontWeight: "bold", fontSize: "12px" }}>
+    <div
+      style={{
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: "12px",
+        width: "100vw",
+      }}
+    >
       <p> Now playing: {playlist[currentTrack].src.split("").splice(1)}</p>
       <AudioPlayer
+        showJumpControls={false}
         src={playlist[currentTrack].src}
         showSkipControls
         onClickNext={handleClickNext}
