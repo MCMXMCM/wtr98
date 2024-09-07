@@ -9,6 +9,8 @@ import HourlyForecast from "./components/hourly/Hourly";
 import { Tile } from "./components/ProgressBar";
 import MapChart from "./components/map/Map";
 import { getIcon } from "./helpers/global";
+import Player from "./components/AudioPlayer";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 
 interface Points {
   forecastUrl: string;
@@ -118,7 +120,7 @@ function App() {
         <div className="window">
           <div className="title-bar" style={{ marginBottom: "18px" }}>
             <div className="title-bar-text">
-              <h4 style={{ letterSpacing: 1.4 }}>WEATHER 98 - Version 1</h4>
+              <h4 style={{ letterSpacing: 1.4 }}>WEATHER 98 - v1.0.0</h4>
             </div>
           </div>
           <Tile />
@@ -180,6 +182,9 @@ function App() {
 
   return (
     <div className="main-container">
+      <div className="window">
+        <Player />
+      </div>
       <div>
         <div className="window">
           <div
@@ -289,7 +294,7 @@ function App() {
                 justifyContent: "space-between",
               }}
             >
-              <div className="window">
+              <div className="window" style={{ height: "50%" }}>
                 <div className="title-bar">
                   <div className="title-bar-text">Wind</div>
                 </div>
