@@ -181,46 +181,45 @@ function App() {
   return (
     <div className="main-container">
       <div>
-        <div>
-          <div className="window" style={{ width: "99.4%" }}>
-            <div
-              className="field-column"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <h4 style={{ marginBottom: 0 }}>{points.city}</h4>
-              <h4 style={{ marginTop: 0, marginBottom: 0 }}>
-                {hourlyForecastData?.properties?.periods[0]?.temperature}°
-              </h4>
-              <h4 style={{ marginTop: 0, marginBottom: 0 }}>
-                {hourlyForecastData?.properties?.periods[0]?.shortForecast}
-              </h4>
-              {/* <h4 style={{ marginTop: 0, marginBottom: 0 }}>H:94° L:74°</h4> */}
-              <div className="window-body">
-                <div
-                  className="field-column"
-                  style={{
-                    width: "250px",
-                    display: "flex",
-                    alignContent: "space-between",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                    textAlign: "center",
-                  }}
-                >
-                  <button style={{ margin: "4px" }} onClick={refresh}>
-                    Refresh
-                  </button>
+        <div className="window">
+          <div
+            className="field-column"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <h4 style={{ marginBottom: 0 }}>{points.city}</h4>
+            <h4 style={{ marginTop: 0, marginBottom: 0 }}>
+              {hourlyForecastData?.properties?.periods[0]?.temperature}°
+            </h4>
+            <h4 style={{ marginTop: 0, marginBottom: 0 }}>
+              {hourlyForecastData?.properties?.periods[0]?.shortForecast}
+            </h4>
+            {/* <h4 style={{ marginTop: 0, marginBottom: 0 }}>H:94° L:74°</h4> */}
+            <div className="window-body">
+              <div
+                className="field-column"
+                style={{
+                  width: "250px",
+                  display: "flex",
+                  alignContent: "space-between",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  textAlign: "center",
+                }}
+              >
+                <button style={{ margin: "4px" }} onClick={refresh}>
+                  Refresh
+                </button>
 
-                  {`Last refreshed: ${lastQueryTime} ${
-                    hourlyFetching ? "refreshing now ..." : ""
-                  }`}
-                </div>
-                {/* <div style={{ width: "250px" }}>
+                {`Last refreshed: ${lastQueryTime} ${
+                  hourlyFetching ? "refreshing now ..." : ""
+                }`}
+              </div>
+              {/* <div style={{ width: "250px" }}>
                 {positionError ? (
                   <p>Error: {positionError}</p>
                 ) : (
@@ -230,7 +229,6 @@ function App() {
                   </p>
                 )}
               </div> */}
-              </div>
             </div>
           </div>
         </div>
@@ -325,12 +323,13 @@ function App() {
                   <div className="title-bar">
                     <div className="title-bar-text">Chance of Rain</div>
                   </div>
-                  <div className="window-body">
-                    <p
+                  <div className="window-body" style={{ height: "100%" }}>
+                    <h1
                       style={{
                         fontSize: "22px",
                         display: "flex",
                         justifyContent: "center",
+                        alignContent: "center",
                       }}
                     >
                       {
@@ -338,7 +337,7 @@ function App() {
                           ?.probabilityOfPrecipitation?.value
                       }
                       %
-                    </p>
+                    </h1>
                   </div>
                 </div>
                 <div className="window" style={{ width: "45%" }}>
