@@ -5,6 +5,10 @@ import "react-h5-audio-player/lib/styles.css";
 // import 'react-h5-audio-player/src/styles.scss' Use SASS
 
 const playlist = [
+  { src: "/Christopher Mason - Something Beautiful.mp3" },
+  { src: "/Bob Thompson - I Just Want You To Be Happy.mp3" },
+  { src: "/Dan Siegel - Celestial Body.mp3" },
+  { src: "/George Howard - Broad Street.mp3" },
   { src: "/Birds Of A Feather - Down For The Count.mp3" },
   { src: "/Brian Bromberg - Magic Rain.mp3" },
   { src: "/Bill Shields - Sunset Breeze.mp3" },
