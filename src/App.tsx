@@ -308,21 +308,40 @@ function App() {
               <div className="title-bar">
                 <div className="title-bar-text">Wind</div>
               </div>
-              <div className="window-body">
+              <div
+                className="window-body"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <div
                   className="field-row"
                   style={{
                     display: "flex",
                     justifyContent: "space-evenly",
                     alignItems: "center",
+                    alignContent: "center",
+                    width: "80%",
                   }}
                 >
-                  <p style={{ fontSize: "22px" }}>
-                    {forecastData?.properties?.periods[0]?.windSpeed}
-                  </p>
-                  <p style={{ fontSize: "22px" }}>
-                    {forecastData?.properties?.periods[0]?.windDirection}
-                  </p>
+                  <div
+                    className="status-bar-field"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                      alignItems: "center",
+                    }}
+                  >
+                    <p style={{ fontSize: "22px" }}>
+                      {forecastData?.properties?.periods[0]?.windSpeed}
+                    </p>
+                    <p style={{ fontSize: "22px" }}>
+                      {forecastData?.properties?.periods[0]?.windDirection}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -339,19 +358,22 @@ function App() {
                   <div className="title-bar-text">Chance of Rain</div>
                 </div>
                 <div className="window-body" style={{ height: "100%" }}>
-                  <p
+                  <div
+                    className="status-bar-field"
                     style={{
-                      fontSize: "22px",
+                      fontSize: "14px",
                       display: "flex",
                       justifyContent: "center",
                     }}
                   >
-                    {
-                      hourlyForecastData?.properties?.periods[0]
-                        ?.probabilityOfPrecipitation?.value
-                    }
-                    %
-                  </p>
+                    <p>
+                      {
+                        hourlyForecastData?.properties?.periods[0]
+                          ?.probabilityOfPrecipitation?.value
+                      }
+                      %
+                    </p>
+                  </div>
                 </div>
               </div>
               <div className="window" style={{ width: "45%", height: "100%" }}>
@@ -359,19 +381,22 @@ function App() {
                   <div className="title-bar-text">Relative Humidity</div>
                 </div>
                 <div className="window-body">
-                  <p
+                  <div
+                    className="status-bar-field"
                     style={{
-                      fontSize: "22px",
+                      fontSize: "14px",
                       display: "flex",
                       justifyContent: "center",
                     }}
                   >
-                    {
-                      hourlyForecastData?.properties?.periods[0]
-                        ?.relativeHumidity?.value
-                    }
-                    %
-                  </p>
+                    <p>
+                      {
+                        hourlyForecastData?.properties?.periods[0]
+                          ?.relativeHumidity?.value
+                      }
+                      %
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

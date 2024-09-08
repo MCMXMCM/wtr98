@@ -39,7 +39,13 @@ export default function Player() {
         fontSize: "12px",
       }}
     >
-      <p> Now playing: {playlist[currentTrack].src.split("").splice(1)}</p>
+      <p>
+        {" "}
+        Now playing:{" "}
+        {playlist[currentTrack].src
+          .split("")
+          .splice(1, playlist[currentTrack].src.length - 5)}
+      </p>
       <AudioPlayer
         autoPlay
         customVolumeControls={[]}
