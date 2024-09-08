@@ -366,7 +366,7 @@ function App() {
                       justifyContent: "center",
                     }}
                   >
-                    <p>
+                    <p style={{ fontWeight: "bold" }}>
                       {
                         hourlyForecastData?.properties?.periods[0]
                           ?.probabilityOfPrecipitation?.value
@@ -389,7 +389,7 @@ function App() {
                       justifyContent: "center",
                     }}
                   >
-                    <p>
+                    <p style={{ fontWeight: "bold" }}>
                       {
                         hourlyForecastData?.properties?.periods[0]
                           ?.relativeHumidity?.value

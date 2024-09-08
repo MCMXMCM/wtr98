@@ -13,7 +13,9 @@ export default function OneWeekRow({ period }: { period: WeatherForecast }) {
         height: "100%",
       }}
     >
-      <div style={{ width: "20%", textAlign: "center" }}>{period.name}</div>
+      <div style={{ width: "20%", textAlign: "center" }}>
+        <p style={{ fontWeight: "bold" }}>{period.name}</p>
+      </div>
       <img style={{ height: "33px", width: "33px" }} src={`${icon}.gif`} />
       <div style={{ width: "53%" }}>
         <hr
@@ -25,7 +27,9 @@ export default function OneWeekRow({ period }: { period: WeatherForecast }) {
           }}
         />
         <div style={{ marginLeft: `${period.temperature}%` }}>
-          <div className="example">{period.temperature}°</div>
+          <div className="example">
+            <p style={{ fontWeight: "bold" }}>{period.temperature}°</p>
+          </div>
         </div>
       </div>
     </div>
