@@ -49,18 +49,18 @@ export default function MapChart({
       >
         <image
           x={-60}
-          y={-80}
-          width={140}
-          height={140}
+          y={-50}
+          width={100}
+          height={100}
           xlinkHref={`data:image/png;base64, ${
             base64Icons[currentIconName as keyof object]
           }`}
         ></image>
         <text
-          y={110}
-          x={-135}
+          y={80}
+          x={-80}
           fontWeight="bold"
-          fontSize="70px"
+          fontSize="40px"
           fill="#fafafa"
           stroke="#DFFF00"
           strokeWidth={1}
