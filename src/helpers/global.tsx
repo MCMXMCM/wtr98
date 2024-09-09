@@ -38,3 +38,20 @@ export function getIcon(isDaytime: boolean, shortFC: string) {
 
   return `PM ${shortFC}`;
 }
+
+export function shuffle(array: Array<{ src: string }>) {
+  let currentIndex = array.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+}

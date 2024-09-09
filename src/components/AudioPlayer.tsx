@@ -1,11 +1,14 @@
 import { useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import { shuffle } from "../helpers/global";
 // import 'react-h5-audio-player/lib/styles.less' Use LESS
 // import 'react-h5-audio-player/src/styles.scss' Use SASS
 
 const playlist = [
   { src: "/Christopher Mason - Something Beautiful.mp3" },
+  { src: "/Jim Horn - Divided Soul.mp3" },
+  { src: "/Ben Sidran - Like Sonny.mp3" },
   { src: "/Bob Thompson - I Just Want You To Be Happy.mp3" },
   { src: "/George Benson And Earl Klugh - Mimosa.mp3" },
   { src: "/Dan Siegel - Celestial Body.mp3" },
@@ -14,6 +17,8 @@ const playlist = [
   { src: "/Brian Bromberg - Magic Rain.mp3" },
   { src: "/Bill Shields - Sunset Breeze.mp3" },
 ];
+
+shuffle(playlist);
 
 export default function Player() {
   const [currentTrack, setTrackIndex] = useState(0);
