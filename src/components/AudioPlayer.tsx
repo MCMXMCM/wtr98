@@ -16,6 +16,13 @@ const playlist = [
   { src: "/Birds Of A Feather - Down For The Count.mp3" },
   { src: "/Brian Bromberg - Magic Rain.mp3" },
   { src: "/Bill Shields - Sunset Breeze.mp3" },
+  { src: "/Dave Grusin - Welcome To The Road.mp3" },
+  { src: "/Dan Siegel - Distant Thoughts.mp3" },
+  { src: "/Jim Horn - Neon Nights.mp3" },
+  { src: "/George Howard - I Like This Groove.mp3" },
+  { src: "/David Sanborn - Lets Just Say Goodbye.mp3" },
+  { src: "/Dave Grusin And Lee Ritenour - Early A.M. Attitude.mp3" },
+  { src: "/Dave Grusin - Punta Del Soul.mp3" },
 ];
 
 shuffle(playlist);
