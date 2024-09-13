@@ -29,6 +29,12 @@ shuffle(playlist);
 
 export default function Player() {
   const [currentTrack, setTrackIndex] = useState(0);
+
+  const handleClickBack = () => {
+    console.log("click back");
+    setTrackIndex((currentTrack) => (currentTrack > 0 ? currentTrack - 1 : 0));
+  };
+
   const handleClickNext = () => {
     console.log("click next");
     setTrackIndex((currentTrack) =>
@@ -64,6 +70,7 @@ export default function Player() {
         showJumpControls={false}
         src={playlist[currentTrack].src}
         showSkipControls
+        onClickPrevious={handleClickBack}
         onClickNext={handleClickNext}
         onEnded={handleEnd}
         onError={() => {
