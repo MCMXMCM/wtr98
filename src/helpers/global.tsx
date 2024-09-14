@@ -16,6 +16,14 @@ export function getIcon(isDaytime: boolean, shortFC: string) {
     return "Rain";
   }
 
+  if (shortFC.includes("Showers")) {
+    return "Showers";
+  }
+
+  if (shortFC.includes("Drizzle")) {
+    return "Showers";
+  }
+
   if (shortFC.includes("Light Snow")) {
     return "Light Snow";
   }
