@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { WeatherForecastHourly } from "../../types/global";
 import HourlyRowIcon from "./HourlyRowIcon";
 
@@ -8,6 +9,7 @@ export default function HourlyForecast({
   data: WeatherForecastHourly;
   currentDetailed: string;
 }) {
+  // 2024-09-16T01:00:00-05
   return (
     <div className="window hourly-forecast">
       <div className="title-bar">
@@ -18,21 +20,31 @@ export default function HourlyForecast({
         <div
           className="field-row"
           style={{
-            height: "130px",
+            height: "145px",
             overflowX: "auto",
             whiteSpace: "nowrap",
           }}
         >
           {data.properties.periods.map((period) => (
             <div
-              key={period.number}
-              className="status-bar-field"
+              className="field-column"
               style={{
-                width: "90px",
-                height: "100px",
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: "14px",
               }}
             >
-              <HourlyRowIcon period={period} />
+              {dayjs(period.startTime).format("dddd")}
+              <div
+                key={period.number}
+                className="status-bar-field"
+                style={{
+                  width: "90px",
+                  height: "100px",
+                }}
+              >
+                <HourlyRowIcon period={period} />
+              </div>
             </div>
           ))}
         </div>
