@@ -20,6 +20,10 @@ export function getIcon(isDaytime: boolean, shortFC: string) {
     return "Showers";
   }
 
+  if (shortFC.includes("Rain")) {
+    return "Rain";
+  }
+
   if (shortFC.includes("Drizzle")) {
     return "Showers";
   }

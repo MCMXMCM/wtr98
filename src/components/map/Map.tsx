@@ -18,12 +18,11 @@ export default function MapChart({
   coords: Position;
   currentIconName: string;
 }) {
-  console.log("current icon name on map - ", currentIconName);
   return (
     <ComposableMap
       projection="geoAlbersUsa"
-      width={800}
-      height={600}
+      width={925}
+      height={725}
       style={{
         width: "100%",
         height: "auto",
