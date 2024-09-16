@@ -13,7 +13,9 @@ export default function HourlyForecast({
   return (
     <div className="window hourly-forecast">
       <div className="title-bar">
-        <div className="title-bar-text">{currentDetailed}</div>
+        <div className="title-bar-text" style={{ fontSize: "16px" }}>
+          {currentDetailed}
+        </div>
       </div>
 
       <div className="window-body">
