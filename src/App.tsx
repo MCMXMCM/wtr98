@@ -207,6 +207,7 @@ function App() {
             flexDirection: "column",
             alignItems: "center",
             width: "100%",
+            textAlign: "center",
           }}
         >
           <h4 style={{ marginBottom: 0 }}>{points.city}</h4>
