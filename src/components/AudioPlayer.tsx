@@ -57,8 +57,7 @@ export default function Player() {
         fontSize: "12px",
       }}
     >
-      <p>
-        {" "}
+      <p style={{ margin: 0 }}>
         Now playing:{" "}
         {playlist[currentTrack].src
           .split("")
