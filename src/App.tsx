@@ -264,6 +264,20 @@ function App() {
                     >
                       Refresh
                     </button>
+                    <label
+                      style={{
+                        width: "100%",
+                        fontSize: "16px",
+                        margin: 0,
+                        textAlign: "center",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {`Refreshed at: ${lastQueryTime} ${
+                        hourlyFetching ? "Refreshing ..." : ""
+                      }`}
+                    </label>
                   </div>
                   <div
                     style={{
@@ -275,13 +289,13 @@ function App() {
                   >
                     <div
                       className="window"
-                      style={{ width: "48%", textAlign: "center" }}
+                      style={{
+                        width: "48%",
+                        textAlign: "center",
+                        display: "flex",
+                        alignContent: "end",
+                      }}
                     >
-                      <label style={{ fontSize: "16px", margin: 0 }}>
-                        {`Refreshed at: ${lastQueryTime} ${
-                          hourlyFetching ? "Refreshing ..." : ""
-                        }`}
-                      </label>
                       {useCurrentLocation ? (
                         <div
                           className="field-column"
