@@ -11,7 +11,7 @@ export default function Attributions() {
       <div className="title-bar">
         <div className="title-bar-text">Weather98 Attributions</div>
       </div>
-      <div>
+      <div style={{ padding: "8px" }}>
         <p style={{ fontWeight: "bold" }}>
           Icons used on this site were made available by{" "}
           <a href="https://twcclassics.com/downloads.html">TWC Classics</a>{" "}

@@ -1,6 +1,8 @@
 .main-container {
   @media (max-width: 767px) {
     width: 100%;
+    display: flex;
+    justify-content: center;
     margin: 18px;
   }
   height: 100%;
@@ -79,6 +81,10 @@
 
 /* Styles for screens larger than mobile devices */
 @media (min-width: 768px) {
+  .main-app-div {
+    display: flex;
+    justify-content: center;
+  }
   .banner {
     display: flex;
     flex-direction: row;

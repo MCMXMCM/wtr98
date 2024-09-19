@@ -158,11 +158,15 @@ function App() {
         pointsFetching,
       }}
     >
-      <>
+      <div className="main-app-div">
         {hourlyPending ? (
           <SplashPage onCurrentLocationSelect={onCurrentLocationSelect} />
         ) : (
-          <div>
+          <div
+            style={{
+              maxWidth: "1182px",
+            }}
+          >
             <div
               className="window"
               style={{
@@ -610,7 +614,7 @@ function App() {
             </div>
           </div>
         )}
-      </>
+      </div>
     </GlobalContext.Provider>
   );
 }
