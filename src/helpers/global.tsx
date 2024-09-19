@@ -1,6 +1,9 @@
 export function getIcon(isDaytime: boolean, shortFC: string) {
   // catch where the short forecast has various prefixes before
   // the actual forecast like slight chance and chance of ...
+  if (!shortFC) {
+    return "";
+  }
   if (shortFC.includes("Showers And Thunderstorms")) {
     return "Showers And Thunderstorms";
   }

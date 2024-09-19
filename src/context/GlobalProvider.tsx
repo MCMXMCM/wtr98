@@ -20,6 +20,9 @@ interface GlobalContextType {
   position: Position;
   positionError: string | null;
   setPositionError: Dispatch<SetStateAction<string | null>>;
+  specificCity: string;
+  pointsIsPending: boolean;
+  pointsFetching: boolean;
 }
 
 export const GlobalContext = createContext<GlobalContextType | undefined>(
@@ -53,6 +56,9 @@ export const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
         position,
         setPositionError,
         positionError,
+        specificCity: "",
+        pointsIsPending: true,
+        pointsFetching: true,
       }}
     >
       {children}

@@ -7,13 +7,8 @@ export default function SplashPage({
 }: {
   onCurrentLocationSelect: CallableFunction;
 }) {
-  const {
-    positionError,
-    setPosition,
-    setSelectedCity,
-    selectedCity,
-    setUseCurrentLocation,
-  } = useGlobalContext();
+  const { positionError, specificCity, pointsIsPending, pointsFetching } =
+    useGlobalContext();
   return (
     <div
       style={{
@@ -31,7 +26,7 @@ export default function SplashPage({
             <h4 style={{ letterSpacing: 1.4 }}>WEATHER 98 - v1.0.1</h4>
           </div>
         </div>
-        <Tile />
+        {specificCity || !pointsIsPending || !pointsFetching ? <></> : <Tile />}
 
         {positionError ? (
           <div
@@ -73,7 +68,11 @@ export default function SplashPage({
                   padding: "4px",
                 }}
               >
-                Waiting on your selection...
+                {specificCity || !pointsIsPending || !pointsFetching ? (
+                  <>Waiting on your selection...</>
+                ) : (
+                  <>Loading weather data...</>
+                )}
               </p>
               <p
                 style={{
@@ -87,8 +86,8 @@ export default function SplashPage({
                 selected city...
               </p>
             </div>
+
             <div
-              className="status-bar"
               style={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -97,49 +96,26 @@ export default function SplashPage({
               }}
             >
               <div
-                className="status-bar-field"
+                className="window"
                 style={{
                   width: "48%",
                   textAlign: "center",
                   display: "flex",
-                  alignContent: "center",
-                  flexDirection: "column",
-                  padding: "8px",
+                  alignContent: "end",
                 }}
               >
-                <label style={{ width: "100%", fontSize: "16px" }}>
-                  Requires Permission*
-                </label>
                 <button
                   style={{
                     width: "100%",
-                    // height: "30px",
                     fontSize: "16px",
-                    // marginTop: "8px",
                   }}
                   onClick={() => onCurrentLocationSelect()}
                 >
                   Use Current Location
                 </button>
               </div>
-              <div
-                className="status-bar-field"
-                style={{
-                  width: "48%",
-                  textAlign: "center",
-                  display: "flex",
-                  alignContent: "center",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  padding: "8px",
-                }}
-              >
-                <CitySelector
-                  setPosition={setPosition}
-                  selectedCity={selectedCity}
-                  setSelectedCity={setSelectedCity}
-                  setUseCurrentLocation={setUseCurrentLocation}
-                />
+              <div className="window" style={{ width: "48%" }}>
+                <CitySelector />
               </div>
             </div>
           </div>
