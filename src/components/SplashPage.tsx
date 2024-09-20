@@ -1,6 +1,6 @@
 import CitySelector from "./CitySelector";
 import { Tile } from "./ProgressBar";
-import { useGlobalContext } from "../hooks/Globalhooks";
+import { useGlobalContext } from "../hooks/GlobalHooks";
 
 export default function SplashPage({
   onCurrentLocationSelect,
