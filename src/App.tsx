@@ -279,7 +279,7 @@ function App() {
                         style={{
                           marginTop: 0,
                           marginBottom: 0,
-                          fontSize: "22px",
+                          fontSize: "16px",
                           padding: "8px",
                           maxHeight: "130px",
                           overflowY: "auto",
