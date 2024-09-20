@@ -1,13 +1,13 @@
 import { Hourglass } from "react95";
 import { useGlobalContext } from "../../hooks/GlobalHooks";
 
-import { WeatherForecastHourly } from "../../types/global";
+import { WeatherForecast } from "../../types/global";
 import Compass from "../Compass";
 
 export default function Wind({
   forecastData,
 }: {
-  forecastData: WeatherForecastHourly;
+  forecastData: { properties: { periods: WeatherForecast[] } };
 }) {
   const { specificCity, pointsIsPending, pointsFetching } = useGlobalContext();
 

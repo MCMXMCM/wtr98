@@ -169,7 +169,10 @@ function App() {
             <div className="grid-container">
               <OneWeekForecast forecastData={forecastData} />
               <Wind forecastData={forecastData} />
-              <Additional hourlyForecastData={hourlyForecastData} />
+              <Additional
+                forecastData={forecastData}
+                hourlyForecastData={hourlyForecastData}
+              />
             </div>
 
             <div

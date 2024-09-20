@@ -1,12 +1,14 @@
 import { Hourglass } from "react95";
 import Attributions from "../Attributions";
-import { WeatherForecastHourly } from "../../types/global";
+import { WeatherForecast, WeatherForecastHourly } from "../../types/global";
 import { useGlobalContext } from "../../hooks/GlobalHooks";
 
 export default function Additional({
+  forecastData,
   hourlyForecastData,
 }: {
   hourlyForecastData: WeatherForecastHourly;
+  forecastData: { properties: { periods: WeatherForecast[] } };
 }) {
   const { specificCity, pointsIsPending, pointsFetching } = useGlobalContext();
 
@@ -49,11 +51,11 @@ export default function Additional({
                 }}
               >
                 <p style={{ fontWeight: "bold" }}>
-                  {
-                    hourlyForecastData?.properties?.periods[0]
-                      ?.probabilityOfPrecipitation?.value
-                  }
-                  %
+                  {forecastData?.properties?.periods[0]
+                    ?.probabilityOfPrecipitation?.value
+                    ? `${forecastData?.properties?.periods[0]?.probabilityOfPrecipitation?.value}%
+                    `
+                    : "0%"}
                 </p>
               </div>
             </div>
@@ -78,11 +80,11 @@ export default function Additional({
                 }}
               >
                 <p style={{ fontWeight: "bold" }}>
-                  {
-                    hourlyForecastData?.properties?.periods[0]?.relativeHumidity
-                      ?.value
-                  }
-                  %
+                  {hourlyForecastData?.properties?.periods[0]?.relativeHumidity
+                    ?.value
+                    ? `${hourlyForecastData?.properties?.periods[0]?.relativeHumidity?.value}%
+                    `
+                    : "N/A"}
                 </p>
               </div>
             </div>
