@@ -1,55 +1,11 @@
-.main-container {
-  @media (max-width: 767px) {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin: 18px;
-  }
-  height: 100%;
-  /* max-width: 1200px; */
-  width: 100%;
-  overflow-x: hidden;
-  margin: 18px;
-}
-
-.sub-container {
-  @media (max-width: 767px) {
-    height: 100%;
-    width: 100%;
-  }
-}
-
 .hourly-forecast {
   margin-top: 8px;
-  width: 100%;
-  /* max-width: 1200px; */
+  width: 99.5%;
   max-height: 250px;
 }
 
-.boxes-container {
-  @media (max-width: 767px) {
-    width: 100%;
-    max-width: 100vw;
-  }
-
-  width: 100%;
-  max-width: 900px;
-  height: 60%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.one-week-forecast {
-  @media (max-width: 767px) {
-    width: 100%;
-    max-width: 100vw;
-    margin: 0;
-  }
-}
-
 .one-week-window {
-  @media (max-width: 767px) {
+  @media (max-width: 1200px) {
     width: 100%;
     max-width: 100vw;
     margin: 0;
@@ -71,7 +27,7 @@
 }
 
 /* Media Query for Single Column Grid */
-@media (max-width: 767px) {
+@media (max-width: 1200px) {
   .grid-container {
     width: 100%;
     grid-template-columns: 1fr;
@@ -80,7 +36,7 @@
 }
 
 /* Styles for screens larger than mobile devices */
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .main-app-div {
     display: flex;
     justify-content: center;
@@ -123,7 +79,7 @@
 }
 
 /* Styles for mobile devices */
-@media (max-width: 767px) {
+@media (max-width: 1200px) {
   .banner {
     display: flex;
     flex-direction: column;
