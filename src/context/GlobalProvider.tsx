@@ -1,4 +1,4 @@
-import { createContext, SetStateAction, Dispatch, useContext } from "react";
+import { createContext, SetStateAction, Dispatch } from "react";
 import { Position } from "../types/global";
 
 interface GlobalContextType {
