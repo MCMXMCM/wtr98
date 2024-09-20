@@ -2,8 +2,6 @@ import { useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { shuffle } from "../helpers/global";
-// import 'react-h5-audio-player/lib/styles.less' Use LESS
-// import 'react-h5-audio-player/src/styles.scss' Use SASS
 
 const playlist = [
   { src: "/Christopher Mason - Something Beautiful.mp3" },
@@ -75,7 +73,6 @@ export default function Player() {
         onError={() => {
           console.log("play error");
         }}
-        // Try other props!
       />
     </div>
   );

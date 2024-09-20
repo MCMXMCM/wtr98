@@ -6,16 +6,13 @@ import "98.css";
 import { Position } from "./types/global";
 import OneWeekForecast from "./components/oneweek/OneWeek";
 import HourlyForecast from "./components/hourly/Hourly";
-import MapChart from "./components/map/Map";
-import { getIcon } from "./helpers/global";
 import Player from "./components/AudioPlayer";
-import CitySelector from "./components/CitySelector";
 import SplashPage from "./components/SplashPage";
 import { GlobalContext } from "./context/GlobalProvider";
-import Compass from "./components/Compass";
-import Attributions from "./components/Attributions";
-import { Hourglass } from "react95";
 import InfiniteMarquee from "./components/Marquee";
+import Wind from "./components/wind/Wind";
+import Additional from "./components/additional/Additional";
+import Banner from "./components/banner/Banner";
 
 interface Points {
   forecastUrl: string;
@@ -43,7 +40,6 @@ function App() {
   const {
     isPending: pointsIsPending,
     isFetching: pointsFetching,
-    // error: pointsError,
     data: pointsData,
     refetch: pointsRefetch,
   } = useQuery({
@@ -69,7 +65,6 @@ function App() {
   const {
     isPending: hourlyPending,
     isFetching: hourlyFetching,
-    // error: hourlyError,
     data: hourlyForecastData,
     refetch: hourlyRefetch,
   } = useQuery({
@@ -82,12 +77,7 @@ function App() {
       }),
   });
 
-  const {
-    // isPending: forecastPending,
-    // error: forecastError,
-    data: forecastData,
-    // refetch: dailyRefetch,
-  } = useQuery({
+  const { data: forecastData, refetch: dailyRefetch } = useQuery({
     queryKey: ["dailyForecast"],
     enabled: !!points.forecastUrl,
     queryFn: () => fetch(points.forecastUrl).then((res) => res.json()),
@@ -135,6 +125,7 @@ function App() {
       updatePosition();
     }
     hourlyRefetch();
+    dailyRefetch();
   }
 
   return (
@@ -153,6 +144,9 @@ function App() {
         specificCity: points.city,
         pointsIsPending,
         pointsFetching,
+        hourlyFetching,
+        refresh,
+        onCurrentLocationSelect,
       }}
     >
       <div className="main-app-div">
@@ -164,452 +158,20 @@ function App() {
               maxWidth: "1200px",
             }}
           >
-            <div
-              className="window"
-              style={{
-                width: "100%",
-              }}
-            >
+            <div className="window">
               <InfiniteMarquee
                 text={forecastData?.properties?.periods[0]?.detailedForecast}
               />
-              <div className="banner">
-                {points.city || !pointsIsPending || !pointsFetching ? (
-                  <>
-                    <div
-                      className="child-div"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignContent: "center",
-                        alignItems: "center",
-                        columnGap: "2%",
-                        flexDirection: "column",
-                        height: "100%",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignContent: "center",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <h4
-                          style={{
-                            marginTop: 15,
-                            marginBottom: 0,
-                          }}
-                        >
-                          {points.city}
-                        </h4>
-                        <div
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            columnGap: "5%",
-                            width: "50%",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              alignContent: "center",
-                              flexDirection: "column",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                alignContent: "center",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                              }}
-                            >
-                              <div>
-                                <h4
-                                  style={{
-                                    marginTop: 0,
-                                    marginBottom: 0,
-                                    fontSize: "33px",
-                                  }}
-                                >
-                                  {
-                                    hourlyForecastData?.properties?.periods[0]
-                                      ?.temperature
-                                  }
-                                  °
-                                </h4>
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              alignContent: "center",
-                              flexDirection: "column",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <img
-                              style={{ height: "70px", width: "70px" }}
-                              src={`/${getIcon(
-                                hourlyForecastData?.properties?.periods[0]
-                                  ?.isDaytime,
-                                hourlyForecastData?.properties?.periods[0]
-                                  ?.shortForecast
-                              )}.gif`}
-                            />
-                          </div>
-                        </div>
-
-                        <div
-                          style={{
-                            marginTop: 0,
-                            marginBottom: 0,
-                            fontSize: "23px",
-                            maxHeight: "100px",
-                            overflowY: "auto",
-                          }}
-                        >
-                          <p style={{ marginBottom: 0, marginTop: 0 }}>
-                            {
-                              hourlyForecastData?.properties?.periods[0]
-                                ?.shortForecast
-                            }
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <div
-                    style={{
-                      width: "33%",
-                      height: "100%",
-                      minHeight: "150px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignContent: "center",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      margin: "8px",
-                    }}
-                  >
-                    <Hourglass size={50} style={{ margin: 20 }} />
-                  </div>
-                )}
-
-                <div className="child-div">
-                  <div>
-                    <div
-                      className="field-column"
-                      style={{
-                        width: "98%",
-                        margin: "2%",
-                        marginLeft: "1%",
-                        marginRight: "1%",
-                        display: "flex",
-                        alignContent: "space-between",
-                        justifyContent: "center",
-                        flexDirection: "column",
-                        textAlign: "center",
-                      }}
-                    >
-                      <button
-                        style={{
-                          marginBottom: "4px",
-                          fontSize: "16px",
-                          height: "30px",
-                          width: "100%",
-                        }}
-                        onClick={refresh}
-                      >
-                        Refresh ({" "}
-                        {`Refreshed at: ${lastQueryTime} ${
-                          hourlyFetching ? "Refreshing ..." : ""
-                        }`}
-                        )
-                      </button>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          columnGap: "2%",
-                          width: "100%",
-                        }}
-                      >
-                        <div
-                          className="window"
-                          style={{
-                            width: "48%",
-                            textAlign: "center",
-                            display: "flex",
-                            alignContent: "end",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          {useCurrentLocation ? (
-                            <div
-                              className="field-column"
-                              style={{
-                                fontSize: "16px",
-                                marginBottom: "8px",
-                                marginTop: 0,
-                                textAlign: "center",
-                              }}
-                            >
-                              using current location*
-                            </div>
-                          ) : (
-                            <button
-                              style={{
-                                width: "100%",
-                                height: "100%",
-                                fontSize: "16px",
-                              }}
-                              onClick={() => onCurrentLocationSelect()}
-                            >
-                              Use Current Location
-                            </button>
-                          )}
-                        </div>
-                        <div className="window" style={{ width: "48%" }}>
-                          <CitySelector />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="child-div">
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <div style={{ height: "100%" }}>
-                      <div className="window-body">
-                        {position.latitude && position.longitude ? (
-                          <MapChart
-                            cityName={points.city}
-                            coords={position}
-                            currentIconName={getIcon(
-                              hourlyForecastData?.properties?.periods[0]
-                                ?.isDaytime,
-                              hourlyForecastData?.properties?.periods[0]
-                                ?.shortForecast
-                            )}
-                          />
-                        ) : (
-                          <></>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Banner hourlyForecastData={hourlyForecastData} />
             </div>
             <HourlyForecast data={hourlyForecastData} />
+
             <div className="grid-container">
-              <div>
-                <OneWeekForecast forecastData={forecastData} />
-              </div>
-              <div>
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                >
-                  <div className="window" style={{ height: "100%" }}>
-                    <div className="title-bar" style={{ height: "5%" }}>
-                      <div className="title-bar-text">Wind</div>
-                    </div>
-
-                    {points.city || !pointsIsPending || !pointsFetching ? (
-                      <div
-                        className="window-body"
-                        style={{
-                          height: "88%",
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            display: "flex",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-evenly",
-                              alignItems: "center",
-                              width: "100%",
-                            }}
-                          >
-                            <div
-                              className="status-bar-field"
-                              style={{
-                                textAlign: "center",
-                                width: "100%",
-                                height: "200px",
-                              }}
-                            >
-                              <p style={{ fontSize: "22px" }}>Wind Speed</p>
-                              <p
-                                style={{ fontSize: "22px", fontWeight: "bold" }}
-                              >
-                                {
-                                  forecastData?.properties?.periods[0]
-                                    ?.windSpeed
-                                }
-                              </p>
-                            </div>
-
-                            <div
-                              className="status-bar-field"
-                              style={{
-                                textAlign: "center",
-                                width: "100%",
-                                height: "200px",
-                              }}
-                            >
-                              <Compass
-                                cardinalDirection={
-                                  forecastData?.properties?.periods[0]
-                                    ?.windDirection
-                                }
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Hourglass size={50} style={{ margin: 20 }} />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <div className="window">
-                {points.city || !pointsIsPending || !pointsFetching ? (
-                  <div
-                    style={{
-                      width: "98%",
-                      height: "98%",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      alignItems: "stretch",
-                      padding: "2%",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <div
-                        className="window"
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignContent: "center",
-                          flexDirection: "column",
-                          width: "48%",
-                        }}
-                      >
-                        <div className="title-bar">
-                          <div className="title-bar-text">Chance of Rain</div>
-                        </div>
-                        <div
-                          style={{
-                            fontSize: "16px",
-                            textAlign: "center",
-                          }}
-                        >
-                          <p style={{ fontWeight: "bold" }}>
-                            {
-                              hourlyForecastData?.properties?.periods[0]
-                                ?.probabilityOfPrecipitation?.value
-                            }
-                            %
-                          </p>
-                        </div>
-                      </div>
-
-                      <div
-                        className="window"
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignContent: "center",
-                          flexDirection: "column",
-                          width: "48%",
-                        }}
-                      >
-                        <div className="title-bar">
-                          <div className="title-bar-text">
-                            Relative Humidity
-                          </div>
-                        </div>
-                        <div
-                          style={{
-                            fontSize: "16px",
-                            textAlign: "center",
-                          }}
-                        >
-                          <p style={{ fontWeight: "bold" }}>
-                            {
-                              hourlyForecastData?.properties?.periods[0]
-                                ?.relativeHumidity?.value
-                            }
-                            %
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <Attributions />
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Hourglass size={50} style={{ margin: 20 }} />
-                  </div>
-                )}
-              </div>
+              <OneWeekForecast forecastData={forecastData} />
+              <Wind forecastData={forecastData} />
+              <Additional hourlyForecastData={hourlyForecastData} />
             </div>
+
             <div
               className="window"
               style={{ position: "sticky", bottom: 0, left: 0 }}

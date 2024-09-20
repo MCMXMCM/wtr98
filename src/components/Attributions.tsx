@@ -3,8 +3,7 @@ export default function Attributions() {
     <div
       className="window"
       style={{
-        height: "80%",
-        marginBottom: "8px",
+        height: "90%",
         marginTop: "8px",
       }}
     >
@@ -13,9 +12,10 @@ export default function Attributions() {
       </div>
       <div style={{ padding: "8px" }}>
         <p style={{ fontWeight: "bold" }}>
-          Icons used on this site were made available by{" "}
-          <a href="https://twcclassics.com/downloads.html">TWC Classics</a>{" "}
-          where the original creators are cited as Charles A. and Nick S.
+          Icons and music used on this site were made available by{" "}
+          <a href="https://twcclassics.com/downloads.html">TWC Classics</a>. The
+          original creators of the icons are cited there as Charles A. and Nick
+          S.
         </p>
         <p style={{ fontWeight: "bold" }}>
           Styled with 98.css. Give it a star on github{" "}

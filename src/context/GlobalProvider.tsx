@@ -23,6 +23,9 @@ interface GlobalContextType {
   specificCity: string;
   pointsIsPending: boolean;
   pointsFetching: boolean;
+  hourlyFetching: boolean;
+  refresh: CallableFunction;
+  onCurrentLocationSelect: CallableFunction;
 }
 
 export const GlobalContext = createContext<GlobalContextType | undefined>(
@@ -59,6 +62,9 @@ export const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
         specificCity: "",
         pointsIsPending: true,
         pointsFetching: true,
+        hourlyFetching: false,
+        refresh: () => {},
+        onCurrentLocationSelect: () => {},
       }}
     >
       {children}
