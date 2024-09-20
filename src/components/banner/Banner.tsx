@@ -1,5 +1,6 @@
 import { Hourglass } from "react95";
-import { useGlobalContext } from "../../context/GlobalProvider";
+import { useGlobalContext } from "../../hooks/GlobalHooks";
+
 import { getIcon } from "../../helpers/global";
 import { WeatherForecastHourly } from "../../types/global";
 import CitySelector from "../CitySelector";

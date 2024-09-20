@@ -1,7 +1,7 @@
 import { Hourglass } from "react95";
 import Attributions from "../Attributions";
 import { WeatherForecastHourly } from "../../types/global";
-import { useGlobalContext } from "../../context/GlobalProvider";
+import { useGlobalContext } from "../../hooks/GlobalHooks";
 
 export default function Additional({
   hourlyForecastData,

@@ -1,5 +1,6 @@
 import { Hourglass } from "react95";
-import { useGlobalContext } from "../../context/GlobalProvider";
+import { useGlobalContext } from "../../hooks/GlobalHooks";
+
 import { WeatherForecastHourly } from "../../types/global";
 import Compass from "../Compass";
 

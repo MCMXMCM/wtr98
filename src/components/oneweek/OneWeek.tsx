@@ -1,6 +1,6 @@
 import OneWeekRow from "./OneWeekRow";
 import { WeatherForecast } from "../../types/global";
-import { useGlobalContext } from "../../context/GlobalProvider";
+import { useGlobalContext } from "../../hooks/Globalhooks";
 import { Hourglass } from "react95";
 
 export default function OneWeekForecast({

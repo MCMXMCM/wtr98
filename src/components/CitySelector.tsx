@@ -1,5 +1,5 @@
 import { cityOptions } from "../assets/majorCityPositions";
-import { useGlobalContext } from "../context/GlobalProvider";
+import { useGlobalContext } from "../hooks/GlobalHooks";
 
 export default function CitySelector() {
   const {
