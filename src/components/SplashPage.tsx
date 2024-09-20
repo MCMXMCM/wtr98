@@ -21,9 +21,18 @@ export default function SplashPage({
       }}
     >
       <div className="window">
-        <div className="title-bar" style={{ marginBottom: "18px" }}>
+        <div
+          className="title-bar"
+          style={{
+            marginBottom: "18px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <div className="title-bar-text">
-            <h4 style={{ letterSpacing: 1.4 }}>WEATHER 98 - v1.0.1</h4>
+            <h4 style={{ letterSpacing: 1.4, textAlign: "center" }}>
+              WEATHER 98 - v1.0.1
+            </h4>
           </div>
         </div>
         {specificCity || !pointsIsPending || !pointsFetching ? <></> : <Tile />}
