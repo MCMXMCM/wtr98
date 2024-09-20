@@ -15,6 +15,7 @@ import { GlobalContext } from "./context/GlobalProvider";
 import Compass from "./components/Compass";
 import Attributions from "./components/Attributions";
 import { Hourglass } from "react95";
+import InfiniteMarquee from "./components/Marquee";
 
 interface Points {
   forecastUrl: string;
@@ -28,6 +29,10 @@ function App() {
   const [lastQueryTime, setLastQueryTime] = useState("");
   const [useCurrentLocation, setUseCurrentLocation] = useState<boolean>(false);
   const [selectedCity, setSelectedCity] = useState<string>("");
+  const [
+    switchingToOrFromCurrentLocation,
+    setSwitchingToOrFromCurrentLocation,
+  ] = useState<boolean>(false);
 
   const [position, setPosition] = useState<Position>({
     latitude: 0,
@@ -70,7 +75,7 @@ function App() {
     isFetching: hourlyFetching,
     error: hourlyError,
     data: hourlyForecastData,
-    // refetch: hourlyRefetch,
+    refetch: hourlyRefetch,
   } = useQuery({
     queryKey: ["hourlyForecastData", pointsRefetch],
     enabled: !!points.forecastHourlyUrl,
@@ -98,6 +103,7 @@ function App() {
         (pos) => {
           const { latitude, longitude } = pos.coords;
           setPosition({ latitude, longitude });
+          setSwitchingToOrFromCurrentLocation(false);
         },
         (err) => {
           setPositionError(err.message);
@@ -109,6 +115,7 @@ function App() {
   };
 
   function onCurrentLocationSelect() {
+    setSwitchingToOrFromCurrentLocation(true);
     setUseCurrentLocation(true);
     getCurrentPosition();
   }
@@ -137,7 +144,7 @@ function App() {
     if (useCurrentLocation) {
       updatePosition();
     }
-    pointsRefetch();
+    hourlyRefetch();
   }
 
   return (
@@ -173,48 +180,52 @@ function App() {
                 width: "100%",
               }}
             >
+              <InfiniteMarquee
+                text={forecastData?.properties?.periods[0]?.detailedForecast}
+              />
               <div className="banner">
-                {points.city || !pointsIsPending || !pointsFetching ? (
-                  <div
-                    className="child-div"
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-around",
-                      alignContent: "center",
-                      alignItems: "center",
-                      columnGap: "2%",
-                      flexDirection: "column",
-                      height: "100%",
-                    }}
-                  >
+                {points.city ||
+                !pointsIsPending ||
+                !pointsFetching ||
+                !switchingToOrFromCurrentLocation ? (
+                  <>
                     <div
+                      className="child-div"
                       style={{
-                        width: "100%",
-                        height: "100%",
                         display: "flex",
-                        flexDirection: "column",
+                        justifyContent: "space-around",
                         alignContent: "center",
                         alignItems: "center",
-                        justifyContent: "center",
-                        margin: "8px",
+                        columnGap: "2%",
+                        flexDirection: "column",
+                        height: "100%",
                       }}
                     >
                       <div
                         style={{
+                          width: "100%",
+                          height: "100%",
                           display: "flex",
-                          flexDirection: "row",
-                          columnGap: "5%",
-                          width: "50%",
+                          flexDirection: "column",
+                          alignContent: "center",
+                          alignItems: "center",
                           justifyContent: "center",
                         }}
                       >
+                        <h4
+                          style={{
+                            marginTop: 15,
+                            marginBottom: 0,
+                          }}
+                        >
+                          {points.city}
+                        </h4>
                         <div
                           style={{
-                            width: "49%",
                             display: "flex",
-                            alignItems: "center",
-                            alignContent: "center",
-                            flexDirection: "column",
+                            flexDirection: "row",
+                            columnGap: "5%",
+                            width: "50%",
                             justifyContent: "center",
                           }}
                         >
@@ -227,73 +238,78 @@ function App() {
                               justifyContent: "center",
                             }}
                           >
-                            <h4
+                            <div
                               style={{
-                                marginTop: 0,
-                                marginBottom: 0,
-                                minWidth: "100px",
+                                display: "flex",
+                                alignItems: "center",
+                                alignContent: "center",
+                                flexDirection: "column",
+                                justifyContent: "center",
                               }}
                             >
-                              {points.city}
-                            </h4>
-                            <div>
-                              <h4
-                                style={{
-                                  marginTop: 0,
-                                  marginBottom: 0,
-                                  fontSize: "33px",
-                                }}
-                              >
-                                {
-                                  hourlyForecastData?.properties?.periods[0]
-                                    ?.temperature
-                                }
-                                °
-                              </h4>
+                              <div>
+                                <h4
+                                  style={{
+                                    marginTop: 0,
+                                    marginBottom: 0,
+                                    fontSize: "33px",
+                                  }}
+                                >
+                                  {
+                                    hourlyForecastData?.properties?.periods[0]
+                                      ?.temperature
+                                  }
+                                  °
+                                </h4>
+                              </div>
                             </div>
                           </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              alignContent: "center",
+                              flexDirection: "column",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <img
+                              style={{ height: "70px", width: "70px" }}
+                              src={`/${getIcon(
+                                hourlyForecastData?.properties?.periods[0]
+                                  ?.isDaytime,
+                                hourlyForecastData?.properties?.periods[0]
+                                  ?.shortForecast
+                              )}.gif`}
+                            />
+                          </div>
                         </div>
+
                         <div
                           style={{
-                            width: "49%",
-                            display: "flex",
-                            alignItems: "center",
-                            alignContent: "center",
-                            flexDirection: "column",
-                            justifyContent: "center",
+                            marginTop: 0,
+                            marginBottom: 0,
+                            fontSize: "23px",
+                            maxHeight: "100px",
+                            overflowY: "auto",
                           }}
                         >
-                          <img
-                            style={{ height: "70px", width: "70px" }}
-                            src={`/${getIcon(
-                              hourlyForecastData?.properties?.periods[0]
-                                ?.isDaytime,
-                              hourlyForecastData?.properties?.periods[0]
+                          <p style={{ marginBottom: 0, marginTop: 0 }}>
+                            {
+                              forecastData?.properties?.periods[0]
                                 ?.shortForecast
-                            )}.gif`}
-                          />
-                          <div></div>
+                            }
+                          </p>
                         </div>
                       </div>
-                      <p
-                        style={{
-                          marginTop: 0,
-                          marginBottom: 0,
-                          fontSize: "16px",
-                          padding: "8px",
-                          maxHeight: "130px",
-                          overflowY: "auto",
-                        }}
-                      >
-                        {forecastData?.properties?.periods[0]?.detailedForecast}
-                      </p>
                     </div>
-                  </div>
+                  </>
                 ) : (
                   <div
                     style={{
                       width: "33%",
                       height: "100%",
+                      minHeight: "150px",
                       display: "flex",
                       flexDirection: "column",
                       alignContent: "center",
@@ -389,6 +405,7 @@ function App() {
                     </div>
                   </div>
                 </div>
+
                 <div className="child-div">
                   <div
                     style={{

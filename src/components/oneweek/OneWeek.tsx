@@ -38,6 +38,7 @@ export default function OneWeekForecast({
         <div
           style={{
             width: "100%",
+            minHeight: "350px",
             display: "flex",
             justifyContent: "center",
           }}

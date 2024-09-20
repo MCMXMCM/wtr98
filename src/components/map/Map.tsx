@@ -21,8 +21,8 @@ export default function MapChart({
   return (
     <ComposableMap
       projection="geoAlbersUsa"
-      width={925}
-      height={725}
+      width={900}
+      height={600}
       style={{
         width: "100%",
         height: "auto",
