@@ -73,7 +73,7 @@ function App() {
     data: hourlyForecastData,
     refetch: hourlyRefetch,
   } = useQuery({
-    queryKey: ["hourlyForecastData", pointsRefetch, lastQueryTime],
+    queryKey: ["hourlyForecastData", pointsRefetch],
     enabled: !!points.forecastHourlyUrl,
     queryFn: () =>
       fetch(points.forecastHourlyUrl).then((res) => {
@@ -88,7 +88,7 @@ function App() {
     data: forecastData,
     // refetch: dailyRefetch,
   } = useQuery({
-    queryKey: ["dailyForecast", lastQueryTime],
+    queryKey: ["dailyForecast"],
     enabled: !!points.forecastUrl,
     queryFn: () => fetch(points.forecastUrl).then((res) => res.json()),
   });
@@ -161,7 +161,7 @@ function App() {
         ) : (
           <div
             style={{
-              maxWidth: "1182px",
+              maxWidth: "1200px",
             }}
           >
             <div
