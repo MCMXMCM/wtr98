@@ -1,6 +1,8 @@
 # Weather98
 
-check the weather like it's 1998
+Check the weather in style like it's 1998
+
+What if the weather channel released an win98 application ... this is what could have been
 
 Uses:
 

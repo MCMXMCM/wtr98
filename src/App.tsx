@@ -29,10 +29,6 @@ function App() {
   const [lastQueryTime, setLastQueryTime] = useState("");
   const [useCurrentLocation, setUseCurrentLocation] = useState<boolean>(false);
   const [selectedCity, setSelectedCity] = useState<string>("");
-  const [
-    switchingToOrFromCurrentLocation,
-    setSwitchingToOrFromCurrentLocation,
-  ] = useState<boolean>(false);
 
   const [position, setPosition] = useState<Position>({
     latitude: 0,
@@ -47,7 +43,7 @@ function App() {
   const {
     isPending: pointsIsPending,
     isFetching: pointsFetching,
-    error: pointsError,
+    // error: pointsError,
     data: pointsData,
     refetch: pointsRefetch,
   } = useQuery({
@@ -73,11 +69,11 @@ function App() {
   const {
     isPending: hourlyPending,
     isFetching: hourlyFetching,
-    error: hourlyError,
+    // error: hourlyError,
     data: hourlyForecastData,
     refetch: hourlyRefetch,
   } = useQuery({
-    queryKey: ["hourlyForecastData", pointsRefetch],
+    queryKey: ["hourlyForecastData", pointsRefetch, lastQueryTime],
     enabled: !!points.forecastHourlyUrl,
     queryFn: () =>
       fetch(points.forecastHourlyUrl).then((res) => {
@@ -92,7 +88,7 @@ function App() {
     data: forecastData,
     // refetch: dailyRefetch,
   } = useQuery({
-    queryKey: ["dailyForecast"],
+    queryKey: ["dailyForecast", lastQueryTime],
     enabled: !!points.forecastUrl,
     queryFn: () => fetch(points.forecastUrl).then((res) => res.json()),
   });
@@ -103,7 +99,6 @@ function App() {
         (pos) => {
           const { latitude, longitude } = pos.coords;
           setPosition({ latitude, longitude });
-          setSwitchingToOrFromCurrentLocation(false);
         },
         (err) => {
           setPositionError(err.message);
@@ -115,14 +110,9 @@ function App() {
   };
 
   function onCurrentLocationSelect() {
-    setSwitchingToOrFromCurrentLocation(true);
     setUseCurrentLocation(true);
     getCurrentPosition();
   }
-
-  if (hourlyError) alert("An error has occurred: " + hourlyError.message);
-
-  if (pointsError) alert("An error has occurred: " + pointsError.message);
 
   function updatePosition() {
     if (navigator.geolocation) {
@@ -184,10 +174,7 @@ function App() {
                 text={forecastData?.properties?.periods[0]?.detailedForecast}
               />
               <div className="banner">
-                {points.city ||
-                !pointsIsPending ||
-                !pointsFetching ||
-                !switchingToOrFromCurrentLocation ? (
+                {points.city || !pointsIsPending || !pointsFetching ? (
                   <>
                     <div
                       className="child-div"
@@ -296,7 +283,7 @@ function App() {
                         >
                           <p style={{ marginBottom: 0, marginTop: 0 }}>
                             {
-                              forecastData?.properties?.periods[0]
+                              hourlyForecastData?.properties?.periods[0]
                                 ?.shortForecast
                             }
                           </p>
