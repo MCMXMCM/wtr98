@@ -28,7 +28,7 @@ export default function HourlyForecast({
                 whiteSpace: "nowrap",
               }}
             >
-              {data.properties.periods.map((period) => (
+              {data?.properties?.periods.map((period) => (
                 <div
                   key={period.number}
                   className="status-bar-field"
