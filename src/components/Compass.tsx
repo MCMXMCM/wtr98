@@ -56,8 +56,6 @@ const Compass: React.FC<CompassProps> = ({ cardinalDirection }) => {
         height: "100%",
       }}
     >
-      <div style={{ fontSize: "17px" }}>{cardinalDirection}</div>
-
       <div
         style={{
           width: "150px",
@@ -78,6 +76,17 @@ const Compass: React.FC<CompassProps> = ({ cardinalDirection }) => {
             transform: `translate(-50%, -50%) rotate(${angle}deg)`,
           }}
         >
+          <text
+            x="50"
+            y="50"
+            fontSize="33px"
+            fill="white"
+            textAnchor="middle"
+            dominantBaseline="central"
+            transform={`rotate(${-angle}, 50, 50)`}
+          >
+            {cardinalDirection}
+          </text>
           <line
             x1="50"
             y1="0"
