@@ -24,13 +24,14 @@ export default function Wind({
         </div>
 
         {loaded ? (
-          <div className="window-body">
+          <div className="window-body" style={{ height: "80%" }}>
             <div
               style={{
                 display: "flex",
                 justifyContent: "space-evenly",
                 alignItems: "center",
                 width: "100%",
+                height: "100%",
               }}
             >
               <div
@@ -38,7 +39,10 @@ export default function Wind({
                 style={{
                   textAlign: "center",
                   width: "100%",
-                  height: "200px",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
                 }}
               >
                 <p style={{ fontSize: "22px" }}>Wind Speed</p>
@@ -52,7 +56,7 @@ export default function Wind({
                 style={{
                   textAlign: "center",
                   width: "100%",
-                  height: "200px",
+                  height: "100%",
                 }}
               >
                 <Compass
