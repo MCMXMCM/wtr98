@@ -8,7 +8,7 @@ export default function HourlyForecast({
 }: {
   data: WeatherForecastHourly;
 }) {
-  const { specificCity, pointsIsPending, pointsFetching } = useGlobalContext();
+  const { loaded } = useGlobalContext();
 
   return (
     <div className="window hourly-forecast">
@@ -16,7 +16,7 @@ export default function HourlyForecast({
         <div className="title-bar-text">Hourly Forecast</div>
       </div>
 
-      {specificCity || !pointsIsPending || !pointsFetching ? (
+      {loaded ? (
         <>
           {" "}
           <div className="window-body">

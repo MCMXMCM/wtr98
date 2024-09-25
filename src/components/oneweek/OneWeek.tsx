@@ -8,14 +8,14 @@ export default function OneWeekForecast({
 }: {
   forecastData: { properties: { periods: WeatherForecast[] } };
 }) {
-  const { specificCity, pointsIsPending, pointsFetching } = useGlobalContext();
+  const { loaded } = useGlobalContext();
 
   return (
     <div className="window one-week-window">
       <div className="title-bar">
         <div className="title-bar-text">One-Week Forecast</div>
       </div>
-      {specificCity || !pointsIsPending || !pointsFetching ? (
+      {loaded ? (
         <div className="window-body">
           <div className="field-column" style={{ height: "40px" }}>
             {forecastData?.properties?.periods.map(

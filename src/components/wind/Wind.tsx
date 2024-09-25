@@ -9,7 +9,7 @@ export default function Wind({
 }: {
   forecastData: { properties: { periods: WeatherForecast[] } };
 }) {
-  const { specificCity, pointsIsPending, pointsFetching } = useGlobalContext();
+  const { loaded } = useGlobalContext();
 
   return (
     <div
@@ -19,60 +19,47 @@ export default function Wind({
       }}
     >
       <div className="window" style={{ height: "100%" }}>
-        <div className="title-bar" style={{ height: "5%" }}>
+        <div className="title-bar">
           <div className="title-bar-text">Wind</div>
         </div>
 
-        {specificCity || !pointsIsPending || !pointsFetching ? (
-          <div
-            className="window-body"
-            style={{
-              height: "88%",
-            }}
-          >
+        {loaded ? (
+          <div className="window-body">
             <div
               style={{
-                width: "100%",
-                height: "100%",
                 display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+                width: "100%",
               }}
             >
               <div
+                className="status-bar-field"
                 style={{
-                  display: "flex",
-                  justifyContent: "space-evenly",
-                  alignItems: "center",
+                  textAlign: "center",
                   width: "100%",
+                  height: "200px",
                 }}
               >
-                <div
-                  className="status-bar-field"
-                  style={{
-                    textAlign: "center",
-                    width: "100%",
-                    height: "200px",
-                  }}
-                >
-                  <p style={{ fontSize: "22px" }}>Wind Speed</p>
-                  <p style={{ fontSize: "22px", fontWeight: "bold" }}>
-                    {forecastData?.properties?.periods[0]?.windSpeed}
-                  </p>
-                </div>
+                <p style={{ fontSize: "22px" }}>Wind Speed</p>
+                <p style={{ fontSize: "22px", fontWeight: "bold" }}>
+                  {forecastData?.properties?.periods[0]?.windSpeed}
+                </p>
+              </div>
 
-                <div
-                  className="status-bar-field"
-                  style={{
-                    textAlign: "center",
-                    width: "100%",
-                    height: "200px",
-                  }}
-                >
-                  <Compass
-                    cardinalDirection={
-                      forecastData?.properties?.periods[0]?.windDirection
-                    }
-                  />
-                </div>
+              <div
+                className="status-bar-field"
+                style={{
+                  textAlign: "center",
+                  width: "100%",
+                  height: "200px",
+                }}
+              >
+                <Compass
+                  cardinalDirection={
+                    forecastData?.properties?.periods[0]?.windDirection
+                  }
+                />
               </div>
             </div>
           </div>

@@ -7,8 +7,7 @@ export default function SplashPage({
 }: {
   onCurrentLocationSelect: CallableFunction;
 }) {
-  const { positionError, specificCity, pointsIsPending, pointsFetching } =
-    useGlobalContext();
+  const { positionError, loaded } = useGlobalContext();
   return (
     <div
       style={{
@@ -35,7 +34,7 @@ export default function SplashPage({
             </h4>
           </div>
         </div>
-        {specificCity || !pointsIsPending || !pointsFetching ? <></> : <Tile />}
+        {loaded ? <></> : <Tile />}
 
         {positionError ? (
           <div
@@ -77,7 +76,7 @@ export default function SplashPage({
                   padding: "4px",
                 }}
               >
-                {specificCity || !pointsIsPending || !pointsFetching ? (
+                {loaded ? (
                   <>Waiting on your selection...</>
                 ) : (
                   <>Loading weather data...</>
@@ -128,46 +127,6 @@ export default function SplashPage({
               </div>
             </div>
           </div>
-
-          // <div
-          //   style={{
-          //     display: "flex",
-          //     justifyContent: "center",
-          //     flexDirection: "column",
-          //     textAlign: "center",
-          //   }}
-          // >
-          //   <div
-          //     className="field-row"
-          //     style={{ width: "100%", padding: "8px" }}
-          //   >
-          //     <p
-          //       style={{
-          //         fontSize: "22px",
-          //         textAlign: "center",
-          //         padding: "18px",
-          //       }}
-          //     >
-          //       Waiting on your selection below...
-          //     </p>
-          //   </div>
-
-          //   <div style={{ marginBottom: "26px" }}>
-          //     <CitySelector
-          //       setPosition={setPosition}
-          //       selectedCity={selectedCity}
-          //       setSelectedCity={setSelectedCity}
-          //       setUseCurrentLocation={setUseCurrentLocation}
-          //     />
-          //   </div>
-          //   <p>OR</p>
-          //   <button
-          //     style={{ width: "100%", height: "50px", fontSize: "16px" }}
-          //     onClick={() => onCurrentLocationSelect()}
-          //   >
-          //     Use Current Location
-          //   </button>
-          // </div>
         )}
       </div>
     </div>

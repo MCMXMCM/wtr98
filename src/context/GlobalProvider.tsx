@@ -17,6 +17,7 @@ interface GlobalContextType {
   pointsFetching: boolean;
   hourlyFetching: boolean;
   refresh: CallableFunction;
+  loaded: boolean;
   onCurrentLocationSelect: CallableFunction;
 }
 

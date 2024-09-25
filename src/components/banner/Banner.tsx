@@ -12,8 +12,7 @@ export default function Banner({
 }) {
   const {
     specificCity,
-    pointsIsPending,
-    pointsFetching,
+    loaded,
     lastQueryTime,
     hourlyFetching,
     refresh,
@@ -23,7 +22,7 @@ export default function Banner({
   } = useGlobalContext();
   return (
     <div className="banner">
-      {specificCity || !pointsIsPending || !pointsFetching ? (
+      {loaded ? (
         <div className="child-div">
           <div
             style={{

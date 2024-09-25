@@ -83,7 +83,7 @@ function App() {
     queryFn: () => fetch(points.forecastUrl).then((res) => res.json()),
   });
 
-  const getCurrentPosition = () => {
+  function getCurrentPosition() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -97,7 +97,7 @@ function App() {
     } else {
       setPositionError("Geolocation is not supported by this browser.");
     }
-  };
+  }
 
   function onCurrentLocationSelect() {
     setUseCurrentLocation(true);
@@ -128,6 +128,8 @@ function App() {
     dailyRefetch();
   }
 
+  const loaded = !!points.city || !pointsIsPending || !pointsFetching;
+
   return (
     <GlobalContext.Provider
       value={{
@@ -145,6 +147,7 @@ function App() {
         pointsIsPending,
         pointsFetching,
         hourlyFetching,
+        loaded,
         refresh,
         onCurrentLocationSelect,
       }}

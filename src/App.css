@@ -17,7 +17,6 @@
   height: 100%;
 }
 
-/* Grid Container */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -26,7 +25,6 @@
   margin-bottom: 18px;
 }
 
-/* Media Query for Single Column Grid */
 @media (max-width: 1200px) {
   .grid-container {
     width: 100%;
@@ -35,7 +33,6 @@
   }
 }
 
-/* Styles for screens larger than mobile devices */
 @media (min-width: 1200px) {
   .main-app-div {
     display: flex;
@@ -78,7 +75,6 @@
   }
 }
 
-/* Styles for mobile devices */
 @media (max-width: 1200px) {
   .banner {
     display: flex;

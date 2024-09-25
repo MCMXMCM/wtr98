@@ -10,11 +10,11 @@ export default function Additional({
   hourlyForecastData: WeatherForecastHourly;
   forecastData: { properties: { periods: WeatherForecast[] } };
 }) {
-  const { specificCity, pointsIsPending, pointsFetching } = useGlobalContext();
+  const { loaded } = useGlobalContext();
 
   return (
     <div>
-      {specificCity || !pointsIsPending || !pointsFetching ? (
+      {loaded ? (
         <div
           style={{
             width: "100%",
