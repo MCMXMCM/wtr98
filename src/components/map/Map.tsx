@@ -7,8 +7,6 @@ import {
 import { Position } from "../../types/global";
 import { base64Icons } from "../../assets/base64icons/icons";
 
-// const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
-
 export default function MapChart({
   cityName,
   coords,
