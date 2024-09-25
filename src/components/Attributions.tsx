@@ -32,7 +32,11 @@ export default function Attributions() {
 
         <p style={{ fontWeight: "bold" }}>
           For questions, concerns, issues, requests, et cetera, reach out via
-          github at <a href="https://github.com/MCMXMCM/wtr98">wtr98</a>.
+          github at{" "}
+          <a href="https://github.com/MCMXMCM/wtr98">
+            https://github.com/MCMXMCM/wtr98
+          </a>
+          .
         </p>
       </div>
     </div>
