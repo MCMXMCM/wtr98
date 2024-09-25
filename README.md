@@ -2,8 +2,7 @@
 
 ### Check the weather like it's 1998
 
-What if the weather channel released an win98 application?
-This is what could have been.
+[https://weather98.com](https://weather98.com/)
 
 Uses:
 
