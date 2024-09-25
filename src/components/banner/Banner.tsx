@@ -63,7 +63,7 @@ export default function Banner({
               </div>
               <div className="grandchild-div">
                 <img
-                  style={{ height: "70px", width: "70px" }}
+                  style={{ height: "70px", maxWidth: "110px" }}
                   src={`/${getIcon(
                     hourlyForecastData?.properties?.periods[0]?.isDaytime,
                     hourlyForecastData?.properties?.periods[0]?.shortForecast

@@ -24,7 +24,10 @@ export default function HourlyRowIcon({ period }: { period: WeatherForecast }) {
         {dayjs(period.startTime).format("h a")}
       </p>
       <div style={{ minHeight: "48%" }}>
-        <img style={{ height: "100%", width: "40px" }} src={`/${icon}.gif`} />
+        <img
+          style={{ height: "100%", maxWidth: "65px" }}
+          src={`/${icon}.gif`}
+        />
       </div>
       <p style={{ fontSize: "12px", fontWeight: "bold", margin: 0 }}>
         {period.temperature}°

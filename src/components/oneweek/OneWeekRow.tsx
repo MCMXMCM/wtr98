@@ -16,7 +16,7 @@ export default function OneWeekRow({ period }: { period: WeatherForecast }) {
       <div style={{ width: "20%", textAlign: "center" }}>
         <p style={{ fontWeight: "bold" }}>{period.name}</p>
       </div>
-      <img style={{ height: "33px", width: "33px" }} src={`${icon}.gif`} />
+      <img style={{ height: "33px", maxWidth: "50px" }} src={`${icon}.gif`} />
       <div style={{ width: "53%" }}>
         <hr
           style={{
