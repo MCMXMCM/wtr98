@@ -13,8 +13,6 @@ interface GlobalContextType {
   positionError: string | null;
   setPositionError: Dispatch<SetStateAction<string | null>>;
   specificCity: string;
-  pointsIsPending: boolean;
-  pointsFetching: boolean;
   hourlyFetching: boolean;
   refresh: CallableFunction;
   loaded: boolean;

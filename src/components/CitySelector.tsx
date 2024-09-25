@@ -24,7 +24,7 @@ export default function CitySelector() {
         Select a city:
       </label>
       <select
-        style={{ fontSize: "16px", width: "100%" }}
+        style={{ fontSize: "16px", width: "100%", cursor: "pointer" }}
         id="city-select"
         onChange={handleCityChange}
         value={useCurrentLocation ? "make a selection" : selectedCity}

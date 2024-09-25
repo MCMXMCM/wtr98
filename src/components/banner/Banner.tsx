@@ -113,6 +113,7 @@ export default function Banner({
               fontSize: "16px",
               height: "30px",
               width: "100%",
+              cursor: "pointer",
             }}
             onClick={() => refresh()}
           >
@@ -132,7 +133,6 @@ export default function Banner({
             }}
           >
             <div
-              className="window"
               style={{
                 textAlign: "center",
                 display: "flex",
@@ -141,30 +141,18 @@ export default function Banner({
                 alignItems: "center",
               }}
             >
-              {useCurrentLocation ? (
-                <div
-                  className="field-column"
-                  style={{
-                    fontSize: "16px",
-                    marginBottom: "8px",
-                    marginTop: 0,
-                    textAlign: "center",
-                  }}
-                >
-                  using current location*
-                </div>
-              ) : (
-                <button
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    fontSize: "16px",
-                  }}
-                  onClick={() => onCurrentLocationSelect()}
-                >
-                  Use Current Location
-                </button>
-              )}
+              <button
+                disabled={useCurrentLocation}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                }}
+                onClick={() => onCurrentLocationSelect()}
+              >
+                Use Current Location
+              </button>
             </div>
             <div className="window">
               <CitySelector />

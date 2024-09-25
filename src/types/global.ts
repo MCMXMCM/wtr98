@@ -3,6 +3,14 @@ export interface Position {
   longitude: number;
 }
 
+export interface Points {
+  forecastUrl: string;
+  forecastHourlyUrl: string;
+  forecastGridDataUrl: string;
+  city: string;
+  state: string;
+}
+
 export interface WeatherForecastHourly {
   properties: {
     updated: string; // ISO 8601 timestamp of when the forecast was last updated

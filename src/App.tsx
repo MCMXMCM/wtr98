@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "./App.css";
 import "98.css";
-import { Position } from "./types/global";
+import { Points, Position } from "./types/global";
 import OneWeekForecast from "./components/oneweek/OneWeek";
 import HourlyForecast from "./components/hourly/Hourly";
 import Player from "./components/AudioPlayer";
@@ -13,14 +13,6 @@ import InfiniteMarquee from "./components/Marquee";
 import Wind from "./components/wind/Wind";
 import Additional from "./components/additional/Additional";
 import Banner from "./components/banner/Banner";
-
-interface Points {
-  forecastUrl: string;
-  forecastHourlyUrl: string;
-  forecastGridDataUrl: string;
-  city: string;
-  state: string;
-}
 
 function App() {
   const [lastQueryTime, setLastQueryTime] = useState("");
@@ -104,25 +96,9 @@ function App() {
     getCurrentPosition();
   }
 
-  function updatePosition() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords;
-          setPosition({ latitude, longitude });
-        },
-        (err) => {
-          setPositionError(err.message);
-        }
-      );
-    } else {
-      setPositionError("Geolocation is not supported by this browser.");
-    }
-  }
-
   function refresh() {
     if (useCurrentLocation) {
-      updatePosition();
+      getCurrentPosition();
     }
     hourlyRefetch();
     dailyRefetch();
@@ -144,8 +120,6 @@ function App() {
         setPositionError,
         positionError,
         specificCity: points.city,
-        pointsIsPending,
-        pointsFetching,
         hourlyFetching,
         loaded,
         refresh,
