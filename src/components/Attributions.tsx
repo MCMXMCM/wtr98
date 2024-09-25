@@ -3,7 +3,7 @@ export default function Attributions() {
     <div
       className="window"
       style={{
-        height: "90%",
+        height: "100%",
         marginTop: "8px",
       }}
     >
@@ -12,7 +12,7 @@ export default function Attributions() {
       </div>
       <div style={{ padding: "8px" }}>
         <p style={{ fontWeight: "bold" }}>
-          Icons and music used on this site was made available by{" "}
+          Icons and songs used on this site were made available by{" "}
           <a href="https://twcclassics.com/downloads.html">TWC Classics</a>. The
           original creators of the icons are cited there as Charles A. and Nick
           S.

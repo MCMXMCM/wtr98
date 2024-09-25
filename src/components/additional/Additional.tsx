@@ -13,7 +13,7 @@ export default function Additional({
   const { loaded } = useGlobalContext();
 
   return (
-    <div>
+    <div style={{ height: "102%" }}>
       {loaded ? (
         <div
           style={{
