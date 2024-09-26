@@ -7,7 +7,7 @@ export default function SplashPage({
 }: {
   onCurrentLocationSelect: CallableFunction;
 }) {
-  const { positionError, loaded } = useGlobalContext();
+  const { positionError, hourlyFetching } = useGlobalContext();
   return (
     <div
       style={{
@@ -34,7 +34,7 @@ export default function SplashPage({
             </h4>
           </div>
         </div>
-        {loaded ? <></> : <Tile />}
+        {hourlyFetching ? <Tile /> : <></>}
 
         {positionError ? (
           <div
@@ -76,10 +76,10 @@ export default function SplashPage({
                   padding: "4px",
                 }}
               >
-                {loaded ? (
-                  <>Waiting on your selection...</>
-                ) : (
+                {hourlyFetching ? (
                   <>Loading weather data...</>
+                ) : (
+                  <>Waiting on your selection...</>
                 )}
               </p>
               <p

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import "./App.css";
@@ -18,6 +18,7 @@ function App() {
   const [lastQueryTime, setLastQueryTime] = useState("");
   const [useCurrentLocation, setUseCurrentLocation] = useState<boolean>(false);
   const [selectedCity, setSelectedCity] = useState<string>("");
+  const [showSplash, setShowSplash] = useState<boolean>(true);
 
   const [position, setPosition] = useState<Position>({
     latitude: 0,
@@ -30,8 +31,7 @@ function App() {
   }
 
   const {
-    isPending: pointsIsPending,
-    isFetching: pointsFetching,
+    isFetched: pointsIsFetched,
     data: pointsData,
     refetch: pointsRefetch,
   } = useQuery({
@@ -55,9 +55,9 @@ function App() {
   };
 
   const {
-    isPending: hourlyPending,
     isFetching: hourlyFetching,
     data: hourlyForecastData,
+    isFetched: hourlyIsFetched,
     refetch: hourlyRefetch,
   } = useQuery({
     queryKey: ["hourlyForecastData", pointsRefetch],
@@ -69,7 +69,11 @@ function App() {
       }),
   });
 
-  const { data: forecastData, refetch: dailyRefetch } = useQuery({
+  const {
+    data: forecastData,
+    refetch: dailyRefetch,
+    isFetched: dailyIsFetched,
+  } = useQuery({
     queryKey: ["dailyForecast"],
     enabled: !!points.forecastUrl,
     queryFn: () => fetch(points.forecastUrl).then((res) => res.json()),
@@ -104,7 +108,13 @@ function App() {
     dailyRefetch();
   }
 
-  const loaded = !!points.city || !pointsIsPending || !pointsFetching;
+  const loaded = pointsIsFetched && hourlyIsFetched && dailyIsFetched;
+
+  useEffect(() => {
+    if (hourlyIsFetched && dailyIsFetched) {
+      setShowSplash(false);
+    }
+  }, [dailyIsFetched, hourlyIsFetched]);
 
   return (
     <GlobalContext.Provider
@@ -127,7 +137,7 @@ function App() {
       }}
     >
       <div className="main-app-div">
-        {hourlyPending ? (
+        {showSplash ? (
           <SplashPage onCurrentLocationSelect={onCurrentLocationSelect} />
         ) : (
           <div
