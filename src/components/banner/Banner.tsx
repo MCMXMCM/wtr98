@@ -11,6 +11,7 @@ export default function Banner({
   hourlyForecastData: WeatherForecastHourly;
 }) {
   const {
+    positionError,
     specificCity,
     loaded,
     lastQueryTime,
@@ -151,7 +152,7 @@ export default function Banner({
                 }}
                 onClick={() => onCurrentLocationSelect()}
               >
-                Use Current Location
+                {positionError ? positionError : "Use Current Location"}
               </button>
             </div>
             <div className="window">
@@ -167,6 +168,7 @@ export default function Banner({
             <MapChart
               cityName={specificCity}
               coords={position}
+              temp={hourlyForecastData?.properties?.periods[0]?.temperature}
               currentIconName={getIcon(
                 hourlyForecastData?.properties?.periods[0]?.isDaytime,
                 hourlyForecastData?.properties?.periods[0]?.shortForecast

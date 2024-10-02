@@ -57,6 +57,17 @@ export default function SplashPage({
               {`${positionError} -- if you're on mobile, make sure your current browser
          has permission to use location services while in use.`}
             </p>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <div className="window" style={{ width: "48%" }}>
+                <CitySelector />
+              </div>
+            </div>
           </div>
         ) : (
           <div

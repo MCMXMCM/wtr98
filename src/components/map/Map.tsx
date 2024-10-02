@@ -8,10 +8,12 @@ import { Position } from "../../types/global";
 import { base64Icons } from "../../assets/base64icons/icons";
 
 export default function MapChart({
+  temp,
   cityName,
   coords,
   currentIconName,
 }: {
+  temp: number;
   cityName: string;
   coords: Position;
   currentIconName: string;
@@ -19,8 +21,8 @@ export default function MapChart({
   return (
     <ComposableMap
       projection="geoAlbersUsa"
-      width={900}
-      height={600}
+      width={1000}
+      height={650}
       style={{
         width: "100%",
         height: "auto",
@@ -40,10 +42,29 @@ export default function MapChart({
         }
       </Geographies>
       <Marker
-        key={"test"}
+        key={"coords"}
         coordinates={[coords.longitude, coords.latitude]}
-        id={"test"}
+        id={"coords"}
       >
+        <text
+          y={-55}
+          // x={-10}
+          fontWeight="bold"
+          fontSize="40px"
+          fill="#f3f5b7"
+          // textLength="300"
+          // width="300"
+          // lengthAdjust="spacingAndGlyphs"
+          text-anchor="middle"
+          style={{
+            fontSize: "45px",
+            maxWidth: "350px",
+            wordWrap: "break-word",
+            textShadow: "1px 1px 2px black",
+          }}
+        >
+          {temp}°
+        </text>
         <image
           x={-60}
           y={-50}
@@ -54,13 +75,21 @@ export default function MapChart({
           }`}
         ></image>
         <text
-          y={80}
-          x={-80}
+          y={90}
+          // x={-10}
           fontWeight="bold"
           fontSize="40px"
-          fill="#fafafa"
-          stroke="#DFFF00"
-          strokeWidth={1}
+          fill="#f3f5b7"
+          // textLength="300"
+          // width="300"
+          // lengthAdjust="spacingAndGlyphs"
+          text-anchor="middle"
+          style={{
+            fontSize: "45px",
+            maxWidth: "350px",
+            wordWrap: "break-word",
+            textShadow: "1px 1px 2px black",
+          }}
         >
           {cityName}
         </text>
