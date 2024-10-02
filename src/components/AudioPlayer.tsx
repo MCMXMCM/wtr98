@@ -59,7 +59,8 @@ export default function Player() {
         Now playing:{" "}
         {playlist[currentTrack].src
           .split("")
-          .splice(1, playlist[currentTrack].src.length - 5)}
+          .splice(1, playlist[currentTrack].src.length - 5)
+          .splice(6)}
       </p>
       <AudioPlayer
         autoPlay
