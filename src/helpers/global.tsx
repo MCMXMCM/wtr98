@@ -65,6 +65,14 @@ export function getIcon(isDaytime: boolean, shortFC: string) {
     return "Frigid";
   }
 
+  if (shortFC.includes("Wind")) {
+    return "Windy";
+  }
+
+  if (shortFC.includes("Blowing Dust")) {
+    return "Windy";
+  }
+
   if (isDaytime) {
     return shortFC;
   }
