@@ -53,7 +53,7 @@ export function getIcon(isDaytime: boolean, shortFC: string) {
     return "Thunderstorms";
   }
 
-  if (shortFC.includes("T-Storms")) {
+  if (shortFC.includes("T-storms")) {
     return "Thunderstorms";
   }
 
