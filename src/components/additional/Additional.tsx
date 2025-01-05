@@ -42,7 +42,7 @@ export default function Additional({
               }}
             >
               <div className="title-bar">
-                <div className="title-bar-text">Chance of Rain</div>
+                <div className="title-bar-text">Chance of Precipitation</div>
               </div>
               <div
                 style={{
