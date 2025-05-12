@@ -16,11 +16,17 @@ function App() {
   const lat = localStorage.getItem("latitude");
   const long = localStorage.getItem("longitude");
   // default to chicago unless localStorage has a position
-  const [position, setPosition] = useState<Position>(
+  const start: Position =
     lat && long
       ? { latitude: Number(lat), longitude: Number(long) }
-      : { latitude: 41.8781136, longitude: -87.6297982 }
-  );
+      : { latitude: 41.8781136, longitude: -87.6297982 };
+
+  if (!lat && !long) {
+    localStorage.setItem("latitude", String(start.latitude));
+    localStorage.setItem("longitude", String(start.longitude));
+  }
+
+  const [position, setPosition] = useState<Position>(start);
 
   const [positionError, setPositionError] = useState<string | null>(null);
   if (positionError) {
