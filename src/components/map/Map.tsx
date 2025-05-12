@@ -5,7 +5,7 @@ import {
   Marker,
 } from "react-simple-maps";
 import { Position } from "../../types/global";
-import { base64Icons } from "../../assets/base64icons/icons";
+import { base64Icons, hourglass } from "../../assets/base64icons/icons";
 
 export default function MapChart({
   temp,
@@ -13,10 +13,10 @@ export default function MapChart({
   coords,
   currentIconName,
 }: {
-  temp: number;
-  cityName: string;
-  coords: Position;
-  currentIconName: string;
+  temp: number | undefined;
+  cityName: string | undefined;
+  coords: Position | undefined;
+  currentIconName: string | undefined;
 }) {
   return (
     <ComposableMap
@@ -41,59 +41,57 @@ export default function MapChart({
           ))
         }
       </Geographies>
-      <Marker
-        key={"coords"}
-        coordinates={[coords.longitude, coords.latitude]}
-        id={"coords"}
-      >
-        <text
-          y={-55}
-          // x={-10}
-          fontWeight="bold"
-          fontSize="40px"
-          fill="#f3f5b7"
-          // textLength="300"
-          // width="300"
-          // lengthAdjust="spacingAndGlyphs"
-          text-anchor="middle"
-          style={{
-            fontSize: "45px",
-            maxWidth: "350px",
-            wordWrap: "break-word",
-            textShadow: "1px 1px 2px black",
-          }}
+      {coords?.longitude && coords?.latitude && (
+        <Marker
+          key={"coords"}
+          coordinates={[coords.longitude, coords.latitude]}
+          id={"coords"}
         >
-          {temp}°
-        </text>
-        <image
-          x={-60}
-          y={-50}
-          width={100}
-          height={100}
-          xlinkHref={`data:image/png;base64, ${
-            base64Icons[currentIconName as keyof object]
-          }`}
-        ></image>
-        <text
-          y={90}
-          // x={-10}
-          fontWeight="bold"
-          fontSize="40px"
-          fill="#f3f5b7"
-          // textLength="300"
-          // width="300"
-          // lengthAdjust="spacingAndGlyphs"
-          text-anchor="middle"
-          style={{
-            fontSize: "45px",
-            maxWidth: "350px",
-            wordWrap: "break-word",
-            textShadow: "1px 1px 2px black",
-          }}
-        >
-          {cityName}
-        </text>
-      </Marker>
+          <text
+            y={-55}
+            fontWeight="bold"
+            fontSize="40px"
+            fill="#f3f5b7"
+            textAnchor="middle"
+            style={{
+              fontSize: "45px",
+              maxWidth: "350px",
+              wordWrap: "break-word",
+              textShadow: "1px 1px 2px black",
+            }}
+          >
+            {temp}°
+          </text>
+          <image
+            x={-60}
+            y={-50}
+            width={100}
+            height={100}
+            xlinkHref={`data:image/png;base64, ${
+              base64Icons[currentIconName as keyof object] || hourglass
+            }`}
+          ></image>
+          <text
+            y={90}
+            // x={-10}
+            fontWeight="bold"
+            fontSize="40px"
+            fill="#f3f5b7"
+            // textLength="300"
+            // width="300"
+            // lengthAdjust="spacingAndGlyphs"
+            textAnchor="middle"
+            style={{
+              fontSize: "45px",
+              maxWidth: "350px",
+              wordWrap: "break-word",
+              textShadow: "1px 1px 2px black",
+            }}
+          >
+            {cityName}
+          </text>
+        </Marker>
+      )}
     </ComposableMap>
   );
 }

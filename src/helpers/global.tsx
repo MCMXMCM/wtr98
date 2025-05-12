@@ -85,6 +85,10 @@ export function getIcon(isDaytime: boolean, shortFC: string) {
     return "Windy";
   }
 
+  if (shortFC.includes("Smoke")) {
+    return "Haze";
+  }
+
   if (isDaytime) {
     return shortFC;
   }

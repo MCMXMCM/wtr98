@@ -1,89 +1,39 @@
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
+import { Dispatch, SetStateAction, useState } from "react";
+
 import "./App.css";
 import "98.css";
-import { Points, Position } from "./types/global";
+import { Position } from "./types/global";
 import OneWeekForecast from "./components/oneweek/OneWeek";
 import HourlyForecast from "./components/hourly/Hourly";
 import Player from "./components/AudioPlayer";
-import SplashPage from "./components/SplashPage";
-import { GlobalContext } from "./context/GlobalProvider";
 import InfiniteMarquee from "./components/Marquee";
 import Wind from "./components/wind/Wind";
 import Additional from "./components/additional/Additional";
 import Banner from "./components/banner/Banner";
 
 function App() {
-  const [lastQueryTime, setLastQueryTime] = useState("");
-  const [useCurrentLocation, setUseCurrentLocation] = useState<boolean>(false);
-  const [selectedCity, setSelectedCity] = useState<string>("");
-  const [showSplash, setShowSplash] = useState<boolean>(true);
-
-  const [position, setPosition] = useState<Position>({
-    latitude: 0,
-    longitude: 0,
-  });
+  const [currentLocation, setCurrentLocation] = useState<boolean>(false);
+  const lat = localStorage.getItem("latitude");
+  const long = localStorage.getItem("longitude");
+  // default to chicago unless localStorage has a position
+  const [position, setPosition] = useState<Position>(
+    lat && long
+      ? { latitude: Number(lat), longitude: Number(long) }
+      : { latitude: 41.8781136, longitude: -87.6297982 }
+  );
 
   const [positionError, setPositionError] = useState<string | null>(null);
   if (positionError) {
     console.log(positionError);
   }
 
-  const {
-    isFetched: pointsIsFetched,
-    data: pointsData,
-    refetch: pointsRefetch,
-  } = useQuery({
-    queryKey: ["getPoints", position, selectedCity],
-    enabled: !!position.latitude && !!position.longitude,
-    queryFn: () =>
-      fetch(
-        `https://api.weather.gov/points/${position.latitude},${position.longitude}`
-      ).then((res) => {
-        setLastQueryTime(dayjs().format("hh:mm a"));
-        return res.json();
-      }),
-  });
-
-  const points: Points = {
-    forecastUrl: pointsData?.properties?.forecast,
-    forecastHourlyUrl: pointsData?.properties?.forecastHourly,
-    forecastGridDataUrl: pointsData?.properties?.forecastGridData,
-    city: pointsData?.properties?.relativeLocation?.properties?.city,
-    state: pointsData?.properties?.relativeLocation?.properties?.state,
-  };
-
-  const {
-    isFetching: hourlyFetching,
-    data: hourlyForecastData,
-    isFetched: hourlyIsFetched,
-    refetch: hourlyRefetch,
-  } = useQuery({
-    queryKey: ["hourlyForecastData", pointsRefetch],
-    enabled: !!points.forecastHourlyUrl,
-    queryFn: () =>
-      fetch(points.forecastHourlyUrl).then((res) => {
-        setLastQueryTime(dayjs().format("hh:mm a"));
-        return res.json();
-      }),
-  });
-
-  const {
-    data: forecastData,
-    refetch: dailyRefetch,
-    isFetched: dailyIsFetched,
-  } = useQuery({
-    queryKey: ["dailyForecast"],
-    enabled: !!points.forecastUrl,
-    queryFn: () => fetch(points.forecastUrl).then((res) => res.json()),
-  });
-
   function getCurrentPosition() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const { latitude, longitude } = pos.coords;
+          localStorage.setItem("latitude", String(latitude));
+          localStorage.setItem("longitude", String(longitude));
           setPosition({ latitude, longitude });
         },
         (err) => {
@@ -96,82 +46,86 @@ function App() {
   }
 
   function onCurrentLocationSelect() {
-    setUseCurrentLocation(true);
+    setCurrentLocation(true);
     getCurrentPosition();
   }
 
   function refresh() {
-    if (useCurrentLocation) {
+    if (currentLocation) {
       getCurrentPosition();
     }
-    hourlyRefetch();
-    dailyRefetch();
   }
 
-  const loaded = pointsIsFetched && hourlyIsFetched && dailyIsFetched;
-
-  useEffect(() => {
-    if (hourlyIsFetched && dailyIsFetched) {
-      setShowSplash(false);
-    }
-  }, [dailyIsFetched, hourlyIsFetched]);
-
   return (
-    <GlobalContext.Provider
-      value={{
-        lastQueryTime,
-        setLastQueryTime,
-        useCurrentLocation,
-        setUseCurrentLocation,
-        selectedCity,
-        setSelectedCity,
-        setPosition,
-        position,
-        setPositionError,
-        positionError,
-        specificCity: points.city,
-        hourlyFetching,
-        loaded,
-        refresh,
-        onCurrentLocationSelect,
+    <div className="main-app-div">
+      <WeatherPanelsLayout
+        currentLocation={currentLocation}
+        setCurrentLocation={setCurrentLocation}
+        setPosition={setPosition}
+        position={position}
+        setPositionError={setPositionError}
+        positionError={positionError}
+        refresh={refresh}
+        onCurrentLocationSelect={onCurrentLocationSelect}
+      />
+    </div>
+  );
+}
+
+interface WeatherPanelsProps {
+  currentLocation: boolean;
+  setCurrentLocation: Dispatch<SetStateAction<boolean>>;
+  setPosition: Dispatch<SetStateAction<Position>>;
+  position: Position;
+  positionError: string | null;
+  setPositionError: Dispatch<SetStateAction<string | null>>;
+  refresh: CallableFunction;
+  onCurrentLocationSelect: CallableFunction;
+}
+
+function WeatherPanelsLayout({
+  currentLocation,
+  setCurrentLocation,
+  setPosition,
+  position,
+  setPositionError,
+  positionError,
+  refresh,
+  onCurrentLocationSelect,
+}: WeatherPanelsProps) {
+  return (
+    <div
+      style={{
+        maxWidth: "1200px",
       }}
     >
-      <div className="main-app-div">
-        {showSplash ? (
-          <SplashPage onCurrentLocationSelect={onCurrentLocationSelect} />
-        ) : (
-          <div
-            style={{
-              maxWidth: "1200px",
-            }}
-          >
-            <div className="window">
-              <InfiniteMarquee
-                text={forecastData?.properties?.periods[0]?.detailedForecast}
-              />
-              <Banner hourlyForecastData={hourlyForecastData} />
-            </div>
-            <HourlyForecast data={hourlyForecastData} />
+      <div className="window">
+        <InfiniteMarquee />
 
-            <div className="grid-container">
-              <OneWeekForecast forecastData={forecastData} />
-              <Wind forecastData={forecastData} />
-              <Additional
-                forecastData={forecastData}
-                hourlyForecastData={hourlyForecastData}
-              />
-            </div>
-
-            <div
-              className="window"
-              style={{ position: "sticky", bottom: 0, left: 0 }}
-            >
-              <Player />
-            </div>
-          </div>
-        )}
+        <Banner
+          currentLocation={currentLocation}
+          setCurrentLocation={setCurrentLocation}
+          setPosition={setPosition}
+          position={position}
+          setPositionError={setPositionError}
+          positionError={positionError}
+          refresh={refresh}
+          onCurrentLocationSelect={onCurrentLocationSelect}
+        />
       </div>
-    </GlobalContext.Provider>
+
+      <HourlyForecast />
+
+      <div className="grid-container">
+        <OneWeekForecast />
+
+        <Wind />
+
+        <Additional />
+      </div>
+
+      <Player />
+    </div>
   );
 }
 

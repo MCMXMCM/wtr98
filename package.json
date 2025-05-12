@@ -12,9 +12,10 @@
   "dependencies": {
     "@tanstack/react-query": "^5.54.1",
     "98.css": "^0.1.20",
+    "axios": "^1.9.0",
     "dayjs": "^1.11.13",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "react-fast-marquee": "^1.6.5",
     "react-h5-audio-player": "^3.9.3",
     "react-simple-maps": "^3.0.0",
@@ -23,8 +24,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.0",
     "@types/react-simple-maps": "^3.0.6",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^9.9.0",

@@ -1,7 +1,7 @@
 import { getIcon } from "../../helpers/global";
-import { WeatherForecast } from "../../types/global";
+import { WeatherPeriod } from "../../types/forecast";
 
-export default function OneWeekRow({ period }: { period: WeatherForecast }) {
+export default function OneWeekRow({ period }: { period: WeatherPeriod }) {
   const icon = getIcon(period.isDaytime, period.shortForecast);
   return (
     <div
@@ -26,7 +26,7 @@ export default function OneWeekRow({ period }: { period: WeatherForecast }) {
               "linear-gradient(to right, blue 60%, green 60%, green 80%, yellow 80%, yellow 90%, red 90%, red 100%)",
           }}
         />
-        <div style={{ marginLeft: `${period.temperature}%` }}>
+        <div style={{ marginLeft: `${period.temperature >= 100 ? 90 : period.temperature < 0 ? 10 : period.temperature - 10}%` }}>
           <div className="example">
             <p style={{ fontWeight: "bold" }}>{period.temperature}°</p>
           </div>

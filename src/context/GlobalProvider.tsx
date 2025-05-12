@@ -1,24 +1,27 @@
-import { createContext, SetStateAction, Dispatch } from "react";
-import { Position } from "../types/global";
+// import { createContext, SetStateAction, Dispatch } from "react";
+// import { Position } from "../types/global";
 
-interface GlobalContextType {
-  lastQueryTime: string;
-  setLastQueryTime: (time: string) => void;
-  useCurrentLocation: boolean;
-  setUseCurrentLocation: Dispatch<SetStateAction<boolean>>;
-  selectedCity: string;
-  setSelectedCity: Dispatch<SetStateAction<string>>;
-  setPosition: Dispatch<SetStateAction<Position>>;
-  position: Position;
-  positionError: string | null;
-  setPositionError: Dispatch<SetStateAction<string | null>>;
-  specificCity: string;
-  hourlyFetching: boolean;
-  refresh: CallableFunction;
-  loaded: boolean;
-  onCurrentLocationSelect: CallableFunction;
-}
+// interface GlobalContextType {
+//   currentLocation: boolean;
+//   setCurrentLocation: Dispatch<SetStateAction<boolean>>;
+//   setPosition: Dispatch<SetStateAction<Position>>;
+//   position: Position;
+//   positionError: string | null;
+//   setPositionError: Dispatch<SetStateAction<string | null>>;
+//   refresh: CallableFunction;
+//   onCurrentLocationSelect: CallableFunction;
+// }
 
-export const GlobalContext = createContext<GlobalContextType | undefined>(
-  undefined
-);
+// export const GlobalContext = createContext<GlobalContextType>({
+//   currentLocation: false,
+//   setCurrentLocation: () => {},
+//   setPosition: () => {},
+//   position: {
+//     latitude: 0,
+//     longitude: 0,
+//   },
+//   positionError: null,
+//   setPositionError: () => {},
+//   refresh: () => {},
+//   onCurrentLocationSelect: () => {},
+// });

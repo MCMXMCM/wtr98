@@ -1,102 +1,45 @@
-import { Hourglass } from "react95";
-import { useGlobalContext } from "../../hooks/GlobalHooks";
 import { getIcon } from "../../helpers/global";
-import { WeatherForecastHourly } from "../../types/global";
 import CitySelector from "../CitySelector";
 import MapChart from "../map/Map";
+import { useQueryClient } from "@tanstack/react-query";
+import { useWeather } from "../../hooks/use-points";
+import dayjs from "dayjs";
+import { Hourly } from "../../types/hourly";
+import { Points, Position } from "../../types/global";
+import { Hourglass } from "react95";
+import { Dispatch, SetStateAction } from "react";
+
+interface BannerProps {
+  currentLocation: boolean;
+  setCurrentLocation: Dispatch<SetStateAction<boolean>>;
+  setPosition: Dispatch<SetStateAction<Position>>;
+  position: Position;
+  positionError: string | null;
+  setPositionError: Dispatch<SetStateAction<string | null>>;
+  refresh: CallableFunction;
+  onCurrentLocationSelect: CallableFunction;
+}
 
 export default function Banner({
-  hourlyForecastData,
-}: {
-  hourlyForecastData: WeatherForecastHourly;
-}) {
-  const {
-    positionError,
-    specificCity,
-    loaded,
-    lastQueryTime,
-    hourlyFetching,
-    refresh,
-    useCurrentLocation,
-    onCurrentLocationSelect,
-    position,
-  } = useGlobalContext();
+  positionError,
+  refresh,
+  currentLocation,
+  onCurrentLocationSelect,
+  position,
+  setCurrentLocation,
+  setPosition,
+}: BannerProps) {
+  const queryClient = useQueryClient();
+
+  const { status, points, hourly, dataUpdatedAt } = useWeather();
+
   return (
     <div className="banner">
-      {loaded ? (
-        <div className="child-div">
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <h4
-              style={{
-                marginTop: 15,
-                marginBottom: 0,
-              }}
-            >
-              {specificCity}
-            </h4>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                columnGap: "5%",
-                width: "50%",
-                justifyContent: "center",
-              }}
-            >
-              <div className="grandchild-div">
-                <div>
-                  <h4
-                    style={{
-                      marginTop: 0,
-                      marginBottom: 0,
-                      fontSize: "33px",
-                    }}
-                  >
-                    {hourlyForecastData?.properties?.periods[0]?.temperature}°
-                  </h4>
-                </div>
-              </div>
-              <div className="grandchild-div">
-                <img
-                  style={{ height: "70px", maxWidth: "110px" }}
-                  src={`/${getIcon(
-                    hourlyForecastData?.properties?.periods[0]?.isDaytime,
-                    hourlyForecastData?.properties?.periods[0]?.shortForecast
-                  )}.gif`}
-                />
-              </div>
-            </div>
-
-            <div className="short-description">
-              <p style={{ marginBottom: 0, marginTop: 0 }}>
-                {hourlyForecastData?.properties?.periods[0]?.shortForecast}
-              </p>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div
-          style={{
-            width: "33%",
-            height: "100%",
-            minHeight: "150px",
-            display: "flex",
-            flexDirection: "column",
-            alignContent: "center",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "8px",
-          }}
-        >
-          <Hourglass size={50} style={{ margin: 20 }} />
-        </div>
-      )}
+      <NameIconAndTemp
+        isFetching={status !== "success"}
+        points={points}
+        hourly={hourly}
+      />
 
       <div className="child-div">
         <div
@@ -116,15 +59,19 @@ export default function Banner({
               width: "100%",
               cursor: "pointer",
             }}
-            onClick={() => refresh()}
+            onClick={() => {
+              queryClient.refetchQueries({
+                queryKey: ["weather", position.latitude, position.longitude],
+              });
+              refresh();
+            }}
           >
-            Refresh ({" "}
-            {`Refreshed at: ${lastQueryTime} ${
-              hourlyFetching ? "Refreshing ..." : ""
-            }`}
+            Refresh (
+            {`Refreshed at: ${dayjs(new Date(dataUpdatedAt)).format(
+              "hh:mm a"
+            )}`}
             )
           </button>
-
           <div
             style={{
               display: "flex",
@@ -143,7 +90,7 @@ export default function Banner({
               }}
             >
               <button
-                disabled={useCurrentLocation}
+                disabled={currentLocation}
                 style={{
                   width: "100%",
                   height: "100%",
@@ -156,7 +103,11 @@ export default function Banner({
               </button>
             </div>
             <div className="window">
-              <CitySelector />
+              <CitySelector
+                currentLocation={currentLocation}
+                setCurrentLocation={setCurrentLocation}
+                setPosition={setPosition}
+              />
             </div>
           </div>
         </div>
@@ -164,19 +115,112 @@ export default function Banner({
 
       <div className="child-div">
         <div className="window-body">
-          {position.latitude && position.longitude ? (
-            <MapChart
-              cityName={specificCity}
-              coords={position}
-              temp={hourlyForecastData?.properties?.periods[0]?.temperature}
-              currentIconName={getIcon(
-                hourlyForecastData?.properties?.periods[0]?.isDaytime,
-                hourlyForecastData?.properties?.periods[0]?.shortForecast
-              )}
-            />
+          <MapChart
+            cityName={points?.city}
+            coords={position}
+            temp={hourly?.properties?.periods[0]?.temperature}
+            currentIconName={
+              hourly?.properties?.periods[0]
+                ? getIcon(
+                    hourly?.properties?.periods[0]?.isDaytime,
+                    hourly?.properties?.periods[0]?.shortForecast
+                  )
+                : "???"
+            }
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function NameIconAndTemp({
+  isFetching,
+  hourly,
+  points,
+}: {
+  isFetching: boolean;
+  hourly: Hourly | undefined;
+  points: Points | undefined;
+}) {
+  return (
+    <div className="child-div">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <h4
+          style={{
+            marginTop: 15,
+            marginBottom: 0,
+          }}
+        >
+          {isFetching ? (
+            <div style={{ display: "flex", alignItems: "center" }}>
+              loading <Hourglass />
+            </div>
           ) : (
-            <></>
+            points?.city
           )}
+        </h4>
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            columnGap: "5%",
+            width: "50%",
+            justifyContent: "center",
+          }}
+        >
+          <div className="grandchild-div">
+            {isFetching ? (
+              <h4
+                style={{
+                  fontSize: "33px",
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "row",
+                  width: "150px",
+                  marginTop: 0,
+                }}
+              >
+                {"- - °"}
+              </h4>
+            ) : (
+              <h4
+                style={{
+                  marginTop: 0,
+                  marginBottom: 0,
+                  fontSize: "33px",
+                }}
+              >
+                {hourly?.properties?.periods[0]?.temperature}°
+              </h4>
+            )}
+          </div>
+          <div className="grandchild-div">
+            {hourly?.properties?.periods[0] ? (
+              <img
+                style={{ height: "70px", maxWidth: "110px" }}
+                src={`/${getIcon(
+                  hourly?.properties?.periods[0]?.isDaytime,
+                  hourly?.properties?.periods[0]?.shortForecast
+                )}.gif`}
+              />
+            ) : (
+              <div style={{ height: "70px", width: "110px" }} />
+            )}
+          </div>
+        </div>
+
+        <div className="short-description">
+          <p style={{ marginBottom: 0, marginTop: 0 }}>
+            {hourly?.properties?.periods[0]?.shortForecast}
+          </p>
         </div>
       </div>
     </div>

@@ -1,17 +1,18 @@
 import React from "react";
 import Marquee from "react-fast-marquee";
+import { useWeather } from "../hooks/use-points";
 
 interface MarqueeProps {
-  text: string;
   speed?: number;
   pauseOnHover?: boolean;
 }
 
 const InfiniteMarquee: React.FC<MarqueeProps> = ({
-  text,
   speed = 20,
   pauseOnHover = true,
 }) => {
+  const { weekly } = useWeather();
+
   return (
     <div className="window">
       <div className="title-bar" style={{ height: "30px" }}>
@@ -23,7 +24,7 @@ const InfiniteMarquee: React.FC<MarqueeProps> = ({
           loop={0}
         >
           <div className="title-bar-text" style={{ fontSize: "16px" }}>
-            {text}
+            {weekly?.properties?.periods[0]?.detailedForecast}
           </div>
         </Marquee>
       </div>

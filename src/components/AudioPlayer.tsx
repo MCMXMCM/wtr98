@@ -27,6 +27,7 @@ shuffle(playlist);
 
 export default function Player() {
   const [currentTrack, setTrackIndex] = useState(0);
+  const [minimized, setMinimized] = useState(false);
 
   const handleClickBack = () => {
     console.log("click back");
@@ -49,31 +50,59 @@ export default function Player() {
 
   return (
     <div
+      className="window"
       style={{
-        textAlign: "center",
-        fontWeight: "bold",
-        fontSize: "12px",
+        position: "sticky",
+        bottom: 0,
+        left: "100%",
+        maxWidth: "500px",
+        height: "fit-content",
       }}
     >
-      <p style={{ margin: 0 }}>
-        Now playing:{" "}
-        {playlist[currentTrack].src
-          .split("")
-          .splice(7, playlist[currentTrack].src.length - 11)}
-      </p>
-      <AudioPlayer
-        autoPlay
-        customVolumeControls={[]}
-        showJumpControls={false}
-        src={playlist[currentTrack].src}
-        showSkipControls
-        onClickPrevious={handleClickBack}
-        onClickNext={handleClickNext}
-        onEnded={handleEnd}
-        onError={() => {
-          console.log("play error");
+      <div
+        style={{
+          textAlign: "center",
+          fontWeight: "bold",
+          fontSize: "12px",
         }}
-      />
+      >
+        <div style={{ display: "grid", gridAutoFlow: "column", width: "100%" }}>
+          <p style={{ margin: 0 }}>
+            Now playing:{" "}
+            {playlist[currentTrack].src
+              .split("")
+              .splice(7, playlist[currentTrack].src.length - 11)}
+          </p>{" "}
+          <div style={{ display: "flex", justifyContent: "end" }}>
+            <button
+              onClick={() => {
+                setMinimized(!minimized);
+              }}
+              style={{ maxWidth: "5px", height: "5px", padding: 0 }}
+            >
+              {minimized ? "maximize" : "minimize"}{" "}
+            </button>
+          </div>
+        </div>
+
+        <AudioPlayer
+          style={{
+            visibility: minimized ? "hidden" : "visible",
+            height: minimized ? "0px" : "fit-content",
+          }}
+          autoPlay
+          customVolumeControls={[]}
+          showJumpControls={false}
+          src={playlist[currentTrack].src}
+          showSkipControls
+          onClickPrevious={handleClickBack}
+          onClickNext={handleClickNext}
+          onEnded={handleEnd}
+          onError={() => {
+            console.log("play error");
+          }}
+        />
+      </div>
     </div>
   );
 }

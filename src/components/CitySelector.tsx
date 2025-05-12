@@ -1,20 +1,33 @@
+import { Dispatch, SetStateAction, useState } from "react";
 import { cityOptions } from "../assets/majorCityPositions";
-import { useGlobalContext } from "../hooks/GlobalHooks";
+import { useQueryClient } from "@tanstack/react-query";
+import { Position } from "../types/global";
 
-export default function CitySelector() {
-  const {
-    setPosition,
-    setSelectedCity,
-    selectedCity,
-    setUseCurrentLocation,
-    useCurrentLocation,
-  } = useGlobalContext();
+interface CitySelectorProps {
+  currentLocation: boolean;
+  setCurrentLocation: Dispatch<SetStateAction<boolean>>;
+  setPosition: Dispatch<SetStateAction<Position>>;
+}
+export default function CitySelector({
+  setPosition,
+  setCurrentLocation,
+  currentLocation,
+}: CitySelectorProps) {
+  const queryClient = useQueryClient();
+
+  const [selected, setSelected] = useState("make a selection");
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCity = event.target.value;
-    setSelectedCity(selectedCity);
-    setUseCurrentLocation(false);
+    setSelected(selectedCity);
+    setCurrentLocation(false);
     const { latitude, longitude } = cityOptions[selectedCity];
+    localStorage.setItem("latitude", String(latitude));
+    localStorage.setItem("longitude", String(longitude));
+    queryClient.prefetchQuery({
+      queryKey: ["weather", latitude, longitude],
+    });
     setPosition({ latitude, longitude });
   };
 
@@ -24,10 +37,17 @@ export default function CitySelector() {
         Select a city:
       </label>
       <select
-        style={{ fontSize: "16px", width: "100%", cursor: "pointer" }}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        style={{
+          fontSize: "16px",
+          color: isFocused ? "white" : "black",
+          width: "100%",
+          cursor: "pointer",
+        }}
         id="city-select"
         onChange={handleCityChange}
-        value={useCurrentLocation ? "make a selection" : selectedCity}
+        value={currentLocation ? "make a selction" : selected}
       >
         <option>make a selection</option>
         {Object.keys(cityOptions).map((city) => (

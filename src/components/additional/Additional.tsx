@@ -1,109 +1,86 @@
-import { Hourglass } from "react95";
 import Attributions from "../Attributions";
-import { WeatherForecast, WeatherForecastHourly } from "../../types/global";
-import { useGlobalContext } from "../../hooks/GlobalHooks";
+import { useWeather } from "../../hooks/use-points";
 
-export default function Additional({
-  forecastData,
-  hourlyForecastData,
-}: {
-  hourlyForecastData: WeatherForecastHourly;
-  forecastData: { properties: { periods: WeatherForecast[] } };
-}) {
-  const { loaded } = useGlobalContext();
+export default function Additional() {
+  const { weekly, hourly } = useWeather();
 
   return (
     <div style={{ height: "102%" }}>
-      {loaded ? (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "stretch",
+        }}
+      >
         <div
           style={{
-            width: "100%",
-            height: "100%",
             display: "flex",
-            flexDirection: "column",
             justifyContent: "space-between",
-            alignItems: "stretch",
           }}
         >
           <div
+            className="window"
             style={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "center",
+              alignContent: "center",
+              flexDirection: "column",
+              width: "48%",
             }}
           >
-            <div
-              className="window"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignContent: "center",
-                flexDirection: "column",
-                width: "48%",
-              }}
-            >
-              <div className="title-bar">
-                <div className="title-bar-text">Chance of Precipitation</div>
-              </div>
-              <div
-                style={{
-                  fontSize: "16px",
-                  textAlign: "center",
-                }}
-              >
-                <p style={{ fontWeight: "bold" }}>
-                  {forecastData?.properties?.periods[0]
-                    ?.probabilityOfPrecipitation?.value
-                    ? `${forecastData?.properties?.periods[0]?.probabilityOfPrecipitation?.value}%
-                    `
-                    : "0%"}
-                </p>
-              </div>
+            <div className="title-bar">
+              <div className="title-bar-text">Chance of Precipitation</div>
             </div>
-
             <div
-              className="window"
               style={{
-                display: "flex",
-                justifyContent: "center",
-                alignContent: "center",
-                flexDirection: "column",
-                width: "48%",
+                fontSize: "16px",
+                textAlign: "center",
               }}
             >
-              <div className="title-bar">
-                <div className="title-bar-text">Relative Humidity</div>
-              </div>
-              <div
-                style={{
-                  fontSize: "16px",
-                  textAlign: "center",
-                }}
-              >
-                <p style={{ fontWeight: "bold" }}>
-                  {hourlyForecastData?.properties?.periods[0]?.relativeHumidity
-                    ?.value
-                    ? `${hourlyForecastData?.properties?.periods[0]?.relativeHumidity?.value}%
+              <p style={{ fontWeight: "bold" }}>
+                {weekly?.properties?.periods[0]?.probabilityOfPrecipitation
+                  ?.value
+                  ? `${weekly?.properties?.periods[0]?.probabilityOfPrecipitation?.value}%
                     `
-                    : "N/A"}
-                </p>
-              </div>
+                  : "0%"}
+              </p>
             </div>
           </div>
-          <Attributions />
+
+          <div
+            className="window"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignContent: "center",
+              flexDirection: "column",
+              width: "48%",
+            }}
+          >
+            <div className="title-bar">
+              <div className="title-bar-text">Relative Humidity</div>
+            </div>
+            <div
+              style={{
+                fontSize: "16px",
+                textAlign: "center",
+              }}
+            >
+              <p style={{ fontWeight: "bold" }}>
+                {hourly?.properties?.periods[0]?.relativeHumidity?.value
+                  ? `${hourly?.properties?.periods[0]?.relativeHumidity?.value}%
+                    `
+                  : "N/A"}
+              </p>
+            </div>
+          </div>
         </div>
-      ) : (
-        <div
-          className="window"
-          style={{
-            width: "100%",
-            height: "350px",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <Hourglass size={50} style={{ margin: 20 }} />
-        </div>
-      )}
+        <Attributions />
+      </div>
     </div>
   );
 }
