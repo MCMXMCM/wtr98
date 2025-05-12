@@ -1,6 +1,6 @@
 import axios from "axios";
 import { WeeklyForecast } from "../types/forecast";
-import { Points, Position, WeatherForecastHourly } from "../types/global";
+import { Points, WeatherForecastHourly } from "../types/global";
 import { Hourly } from "../types/hourly";
 import { WeatherGovPoint } from "../types/points";
 

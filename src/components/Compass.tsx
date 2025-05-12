@@ -1,11 +1,11 @@
 import React from "react";
 
 interface CompassProps {
-  cardinalDirection: string;
+  cardinalDirection: string | undefined;
 }
 
 const Compass: React.FC<CompassProps> = ({ cardinalDirection }) => {
-  const getAngle = (direction: string): number => {
+  const getAngle = (direction: string | undefined): number => {
     switch (direction) {
       case "N":
         return 0;
