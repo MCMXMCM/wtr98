@@ -1,6 +1,6 @@
 .hourly-forecast {
   margin-top: 8px;
-  width: 99.5%;
+  width: 100%;
   max-height: 250px;
 }
 
@@ -25,6 +25,7 @@
     overflow-x: hidden
   }
 }
+
 
 
 .one-week-window {
@@ -52,13 +53,24 @@
     grid-template-columns: 1fr;
     margin-bottom: 5%;
   }
+
+}
+
+.marquee {
+  width: 100%;
+  position: sticky;
+  z-index: 999;
+  top: 0;
 }
 
 @media (min-width: 1200px) {
   .main-app-div {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
+
 
   .banner {
     display: flex;
@@ -94,6 +106,7 @@
       max-height: 100px;
       overflow-y: auto;
     }
+ 
   }
 }
 

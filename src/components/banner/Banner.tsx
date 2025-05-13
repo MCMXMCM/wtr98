@@ -67,9 +67,11 @@ export default function Banner({
             }}
           >
             Refresh (
-            {`Refreshed at: ${dayjs(new Date(dataUpdatedAt)).format(
-              "hh:mm a"
-            )}`}
+            {status === "success"
+              ? `Refreshed at: ${dayjs(new Date(dataUpdatedAt)).format(
+                  "hh:mm a"
+                )}`
+              : "loading"}
             )
           </button>
           <div

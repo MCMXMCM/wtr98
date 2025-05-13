@@ -64,6 +64,8 @@ function App() {
 
   return (
     <div className="main-app-div">
+      <Player />
+
       <WeatherPanelsLayout
         currentLocation={currentLocation}
         setCurrentLocation={setCurrentLocation}
@@ -102,12 +104,10 @@ function WeatherPanelsLayout({
   return (
     <div
       style={{
-        maxWidth: "1200px",
+        width: "98dvw",
       }}
     >
-      <div className="window">
-        <InfiniteMarquee />
-
+      <div className="window" style={{ paddingTop: "50px" }}>
         <Banner
           currentLocation={currentLocation}
           setCurrentLocation={setCurrentLocation}
@@ -129,8 +129,6 @@ function WeatherPanelsLayout({
 
         <Additional />
       </div>
-
-      <Player />
     </div>
   );
 }

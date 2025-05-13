@@ -14,20 +14,24 @@ const InfiniteMarquee: React.FC<MarqueeProps> = ({
   const { weekly } = useWeather();
 
   return (
-    <div className="window">
-      <div className="title-bar" style={{ height: "30px" }}>
-        <Marquee
-          speed={speed}
-          gradient={false}
-          pauseOnHover={pauseOnHover}
-          direction="left"
-          loop={0}
-        >
-          <div className="title-bar-text" style={{ fontSize: "16px" }}>
-            {weekly?.properties?.periods[0]?.detailedForecast}
-          </div>
-        </Marquee>
-      </div>
+    <div
+      className="title-bar"
+      style={{
+        height: "30px",
+        width: "100%",
+      }}
+    >
+      <Marquee
+        speed={speed}
+        gradient={false}
+        pauseOnHover={pauseOnHover}
+        direction="left"
+        loop={0}
+      >
+        <div className="title-bar-text" style={{ fontSize: "16px" }}>
+          {weekly?.properties?.periods[0]?.detailedForecast}
+        </div>
+      </Marquee>
     </div>
   );
 };

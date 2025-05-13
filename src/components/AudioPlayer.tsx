@@ -2,6 +2,7 @@ import { useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { shuffle } from "../helpers/global";
+import InfiniteMarquee from "./Marquee";
 
 const playlist = [
   { src: "/music/Christopher Mason - Something Beautiful.mp3" },
@@ -26,8 +27,12 @@ const playlist = [
 shuffle(playlist);
 
 export default function Player() {
+  const minimizedPreference = localStorage.getItem("minimizePlayer");
+
   const [currentTrack, setTrackIndex] = useState(0);
-  const [minimized, setMinimized] = useState(false);
+  const [minimized, setMinimized] = useState(
+    Boolean(minimizedPreference) || false
+  );
 
   const handleClickBack = () => {
     console.log("click back");
@@ -49,46 +54,48 @@ export default function Player() {
   };
 
   return (
-    <div
-      className="window"
-      style={{
-        position: "sticky",
-        bottom: 0,
-        left: "100%",
-        maxWidth: "500px",
-        height: "fit-content",
-      }}
-    >
+    <div className="marquee">
+      <InfiniteMarquee />
+
+      <div className="title-bar" style={{ width: "100%" }}>
+        <div className="title-bar-text">
+          {" "}
+          Now playing:{" "}
+          {playlist[currentTrack].src
+            .split("")
+            .splice(7, playlist[currentTrack].src.length - 11)}
+        </div>
+        <div className="title-bar-controls">
+          <button
+            style={{ height: "25px", width: "25px" }}
+            onClick={() => {
+              localStorage.setItem("minimizePlayer", String(!minimized));
+              setMinimized(!minimized);
+            }}
+            aria-label={minimized ? "Maximize" : "Minimize"}
+          ></button>
+        </div>
+      </div>
+
       <div
+        className="window"
         style={{
+          width: "100%",
           textAlign: "center",
           fontWeight: "bold",
           fontSize: "12px",
+          visibility: minimized ? "hidden" : "visible",
+          height: minimized ? "0px" : "fit-content",
         }}
       >
-        <div style={{ display: "grid", gridAutoFlow: "column", width: "100%" }}>
-          <p style={{ margin: 0 }}>
-            Now playing:{" "}
-            {playlist[currentTrack].src
-              .split("")
-              .splice(7, playlist[currentTrack].src.length - 11)}
-          </p>{" "}
-          <div style={{ display: "flex", justifyContent: "end" }}>
-            <button
-              onClick={() => {
-                setMinimized(!minimized);
-              }}
-              style={{ maxWidth: "5px", height: "5px", padding: 0 }}
-            >
-              {minimized ? "maximize" : "minimize"}{" "}
-            </button>
-          </div>
-        </div>
-
         <AudioPlayer
           style={{
             visibility: minimized ? "hidden" : "visible",
-            height: minimized ? "0px" : "fit-content",
+            height: minimized ? "0px" : "80px",
+            backgroundColor: "transparent",
+            border: "none",
+            outline: "none",
+            boxShadow: "none",
           }}
           autoPlay
           customVolumeControls={[]}
