@@ -67,7 +67,12 @@ export default function Player() {
         </div>
         <div className="title-bar-controls">
           <button
-            style={{ height: "25px", width: "25px" }}
+            style={{
+              height: "25px",
+              width: "25px",
+              marginRight: "5px",
+              marginLeft: "5px",
+            }}
             onClick={() => {
               localStorage.setItem("minimizePlayer", String(!minimized));
               setMinimized(!minimized);
@@ -76,39 +81,43 @@ export default function Player() {
           ></button>
         </div>
       </div>
-
       <div
         className="window"
         style={{
-          width: "100%",
-          textAlign: "center",
-          fontWeight: "bold",
-          fontSize: "12px",
           visibility: minimized ? "hidden" : "visible",
           height: minimized ? "0px" : "fit-content",
         }}
       >
-        <AudioPlayer
+        <div
           style={{
-            visibility: minimized ? "hidden" : "visible",
-            height: minimized ? "0px" : "80px",
-            backgroundColor: "transparent",
-            border: "none",
-            outline: "none",
-            boxShadow: "none",
+            width: "100%",
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: "12px",
           }}
-          autoPlay
-          customVolumeControls={[]}
-          showJumpControls={false}
-          src={playlist[currentTrack].src}
-          showSkipControls
-          onClickPrevious={handleClickBack}
-          onClickNext={handleClickNext}
-          onEnded={handleEnd}
-          onError={() => {
-            console.log("play error");
-          }}
-        />
+        >
+          <AudioPlayer
+            style={{
+              visibility: minimized ? "hidden" : "visible",
+              height: minimized ? "0px" : "80px",
+              backgroundColor: "transparent",
+              border: "none",
+              outline: "none",
+              boxShadow: "none",
+            }}
+            autoPlay
+            customVolumeControls={[]}
+            showJumpControls={false}
+            src={playlist[currentTrack].src}
+            showSkipControls
+            onClickPrevious={handleClickBack}
+            onClickNext={handleClickNext}
+            onEnded={handleEnd}
+            onError={() => {
+              console.log("play error");
+            }}
+          />
+        </div>
       </div>
     </div>
   );

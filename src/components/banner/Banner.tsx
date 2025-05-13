@@ -179,30 +179,17 @@ function NameIconAndTemp({
           }}
         >
           <div className="grandchild-div">
-            {isFetching ? (
-              <h4
-                style={{
-                  fontSize: "33px",
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "row",
-                  width: "150px",
-                  marginTop: 0,
-                }}
-              >
-                {"- - °"}
-              </h4>
-            ) : (
-              <h4
-                style={{
-                  marginTop: 0,
-                  marginBottom: 0,
-                  fontSize: "33px",
-                }}
-              >
-                {hourly?.properties?.periods[0]?.temperature}°
-              </h4>
-            )}
+            <h4
+              style={{
+                marginTop: 0,
+                marginBottom: 0,
+                fontSize: "33px",
+              }}
+            >
+              {isFetching
+                ? ""
+                : `${hourly?.properties?.periods[0]?.temperature}°`}
+            </h4>
           </div>
           <div className="grandchild-div">
             {hourly?.properties?.periods[0] ? (
@@ -214,14 +201,14 @@ function NameIconAndTemp({
                 )}.gif`}
               />
             ) : (
-              <div style={{ height: "70px", width: "110px" }} />
+              <div style={{ height: "90px", width: "50px" }} />
             )}
           </div>
         </div>
 
         <div className="short-description">
           <p style={{ marginBottom: 0, marginTop: 0 }}>
-            {hourly?.properties?.periods[0]?.shortForecast}
+            {isFetching ? "" : hourly?.properties?.periods[0]?.shortForecast}
           </p>
         </div>
       </div>

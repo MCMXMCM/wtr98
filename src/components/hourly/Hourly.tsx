@@ -6,7 +6,7 @@ export default function HourlyForecast() {
   const { status, hourly } = useWeather();
 
   return (
-    <div className="window hourly-forecast">
+    <div className="hourly-forecast">
       <div className="title-bar">
         <div className="title-bar-text">
           {status !== "success" ? (
