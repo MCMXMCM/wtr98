@@ -6,7 +6,6 @@ import { Position } from "./types/global";
 import OneWeekForecast from "./components/oneweek/OneWeek";
 import HourlyForecast from "./components/hourly/Hourly";
 import Player from "./components/AudioPlayer";
-import InfiniteMarquee from "./components/Marquee";
 import Wind from "./components/wind/Wind";
 import Additional from "./components/additional/Additional";
 import Banner from "./components/banner/Banner";
@@ -63,7 +62,12 @@ function App() {
   }
 
   return (
-    <div className="main-app-div">
+    <div
+      className="main-app-div"
+      style={{
+        overflowX: "hidden",
+      }}
+    >
       <Player />
 
       <WeatherPanelsLayout
