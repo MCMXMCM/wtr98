@@ -129,6 +129,15 @@ export default function Banner({
                   )
                 : "???"
             }
+            onMapClick={(newPosition) => {
+              setPosition(newPosition);
+              setCurrentLocation(false);
+              localStorage.setItem("latitude", newPosition.latitude.toString());
+              localStorage.setItem("longitude", newPosition.longitude.toString());
+              queryClient.refetchQueries({
+                queryKey: ["weather", newPosition.latitude, newPosition.longitude],
+              });
+            }}
           />
         </div>
       </div>
@@ -142,9 +151,12 @@ function NameIconAndTemp({
   points,
 }: {
   isFetching: boolean;
-  hourly: Hourly | undefined;
+  hourly: Hourly | null | undefined;
   points: Points | undefined;
 }) {
+  const currentPeriod = hourly?.properties?.periods?.[0];
+  const isHourlyAvailable = !!currentPeriod;
+
   return (
     <div className="child-div">
       <div
@@ -188,16 +200,18 @@ function NameIconAndTemp({
             >
               {isFetching
                 ? ""
-                : `${hourly?.properties?.periods[0]?.temperature}°`}
+                : isHourlyAvailable
+                ? `${currentPeriod.temperature}°`
+                : "N/A"}
             </h4>
           </div>
           <div className="grandchild-div">
-            {hourly?.properties?.periods[0] ? (
+            {isHourlyAvailable ? (
               <img
                 style={{ height: "70px", maxWidth: "110px" }}
                 src={`/${getIcon(
-                  hourly?.properties?.periods[0]?.isDaytime,
-                  hourly?.properties?.periods[0]?.shortForecast
+                  currentPeriod.isDaytime,
+                  currentPeriod.shortForecast
                 )}.gif`}
               />
             ) : (
@@ -208,7 +222,7 @@ function NameIconAndTemp({
 
         <div className="short-description">
           <p style={{ marginBottom: 0, marginTop: 0 }}>
-            {isFetching ? "" : hourly?.properties?.periods[0]?.shortForecast}
+            {isFetching ? "" : isHourlyAvailable ? currentPeriod.shortForecast : "Hourly forecast not available"}
           </p>
         </div>
       </div>

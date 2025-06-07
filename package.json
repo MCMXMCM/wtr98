@@ -14,11 +14,12 @@
     "98.css": "^0.1.20",
     "axios": "^1.9.0",
     "dayjs": "^1.11.13",
+    "prop-types": "^15.8.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-fast-marquee": "^1.6.5",
     "react-h5-audio-player": "^3.9.3",
-    "react-simple-maps": "^1.0.0",
+    "react-simple-maps": "^3.0.0",
     "react95": "^4.0.0",
     "styled-components": "^6.1.13"
   },

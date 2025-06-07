@@ -4,6 +4,7 @@ import { Hourglass } from "react95";
 
 export default function HourlyForecast() {
   const { status, hourly } = useWeather();
+  const isHourlyAvailable = !!hourly?.properties?.periods?.length;
 
   return (
     <div className="hourly-forecast">
@@ -21,27 +22,33 @@ export default function HourlyForecast() {
 
       <>
         <div className="window-body">
-          <div
-            className="field-row"
-            style={{
-              height: "145px",
-              overflowX: "auto",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {hourly?.properties?.periods.map((period) => (
-              <div
-                key={period.number}
-                className="status-bar-field"
-                style={{
-                  width: "90px",
-                  height: "100px",
-                }}
-              >
-                <HourlyRowIcon period={period} />
-              </div>
-            ))}
-          </div>
+          {isHourlyAvailable ? (
+            <div
+              className="field-row"
+              style={{
+                height: "145px",
+                overflowX: "auto",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {hourly?.properties?.periods.map((period) => (
+                <div
+                  key={period.number}
+                  className="status-bar-field"
+                  style={{
+                    width: "90px",
+                    height: "100px",
+                  }}
+                >
+                  <HourlyRowIcon period={period} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={{ padding: "20px", textAlign: "center" }}>
+              Hourly forecast is not available for this location
+            </div>
+          )}
         </div>
       </>
     </div>
