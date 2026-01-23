@@ -5,10 +5,10 @@ import "98.css";
 import { Position } from "./types/global";
 import OneWeekForecast from "./components/oneweek/OneWeek";
 import HourlyForecast from "./components/hourly/Hourly";
-import Player from "./components/AudioPlayer";
 import Wind from "./components/wind/Wind";
 import Additional from "./components/additional/Additional";
 import Banner from "./components/banner/Banner";
+import InfiniteMarquee from "./components/Marquee";
 
 function App() {
   const [currentLocation, setCurrentLocation] = useState<boolean>(false);
@@ -68,8 +68,9 @@ function App() {
         overflowX: "hidden",
       }}
     >
-      <Player />
-
+      <div className="marquee">
+        <InfiniteMarquee />
+      </div>
       <WeatherPanelsLayout
         currentLocation={currentLocation}
         setCurrentLocation={setCurrentLocation}
@@ -106,7 +107,7 @@ function WeatherPanelsLayout({
   onCurrentLocationSelect,
 }: WeatherPanelsProps) {
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", paddingTop: "8px" }}>
       <div className="window" style={{ padding: "5px" }}>
         <Banner
           currentLocation={currentLocation}

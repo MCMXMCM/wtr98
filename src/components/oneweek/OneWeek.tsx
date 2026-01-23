@@ -4,6 +4,12 @@ import { useWeather } from "../../hooks/use-points";
 export default function OneWeekForecast() {
   const { weekly } = useWeather();
 
+  // Calculate min and max temperatures from all periods
+  const periods = weekly?.properties?.periods || [];
+  const temperatures = periods.map(p => p.temperature);
+  const minTemp = temperatures.length > 0 ? Math.min(...temperatures) : 0;
+  const maxTemp = temperatures.length > 0 ? Math.max(...temperatures) : 100;
+
   return (
     <div className="window">
       <div className="one-week-window ">
@@ -13,7 +19,7 @@ export default function OneWeekForecast() {
 
         <div className="window-body ">
           <div className="field-column one-week-forecast-list">
-            {weekly?.properties?.periods.map((period) => (
+            {periods.map((period, index) => (
               <div
                 key={period.number}
                 className="status-bar-field "
@@ -22,7 +28,12 @@ export default function OneWeekForecast() {
                   height: "50px",
                 }}
               >
-                <OneWeekRow period={period} />
+                <OneWeekRow 
+                  period={period} 
+                  minTemp={minTemp} 
+                  maxTemp={maxTemp}
+                  previousTemp={index > 0 ? periods[index - 1].temperature : undefined}
+                />
               </div>
             ))}
           </div>

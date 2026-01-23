@@ -1,0 +1,48 @@
+.forecast-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px;
+  min-width: 120px;
+  align-self: center;
+}
+
+.forecast-preview-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.forecast-preview-temp-icon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.forecast-preview-temp {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.forecast-preview-icon {
+  height: 36px;
+  max-width: 48px;
+}
+
+.forecast-preview-name {
+  font-size: 14px;
+  text-align: center;
+  font-weight: bold;
+}
+
+@media (min-width: 1200px) {
+  .forecast-preview {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .forecast-preview {
+    display: flex;
+  }
+}

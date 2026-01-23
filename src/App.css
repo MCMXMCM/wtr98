@@ -59,9 +59,161 @@
 
 .marquee {
   width: 100%;
-  position: sticky;
+  position: fixed;
   z-index: 999;
   top: 0;
+  left: 0;
+  background-color: #c0c0c0;
+}
+
+.name-forecast-container {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 431px;
+  margin: 0 auto;
+}
+
+.name-temp-with-forecast {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.name-temp-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  max-width: 431px;
+}
+
+.city-name {
+  margin-top: 15px;
+  margin-bottom: 0;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.temp-icon-row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  gap: 0;
+}
+
+.temp-icon-left {
+  flex: 0 0 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 8px;
+  min-width: 0;
+}
+
+.temp-icon-top-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.temp-value h4 {
+  margin: 0;
+  font-size: 50px;
+}
+
+.high-low-temps {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 4px;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.high-temp {
+  color: #000;
+}
+
+.temp-separator {
+  margin: 0 4px;
+  color: #666;
+}
+
+.low-temp {
+  color: #666;
+}
+
+.main-weather-icon {
+  height: 120px;
+  max-width: 200px;
+}
+
+.temp-icon-left .short-description {
+  text-align: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.temp-icon-left .short-description h4 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.forecast-preview-column {
+  flex: 0 0 30%;
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.forecast-preview-column .forecast-preview {
+  width: 100%;
+  align-self: stretch;
+}
+
+.name-temp-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.name-temp-section .child-div {
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .name-forecast-container {
+    justify-content: center;
+    align-items: center;
+    width: 33%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .name-temp-section {
+    width: 100%;
+  }
+
+  .forecast-preview {
+    display: none;
+  }
+
+  .forecast-preview-column {
+    display: none;
+  }
+
+  .temp-icon-left {
+    flex: 1 1 100%;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -107,7 +259,39 @@
       max-height: 100px;
       overflow-y: auto;
     }
- 
+  }
+
+  /* Desktop order: Name, Map, Controls */
+  .name-forecast-container {
+    order: 1;
+    width: 33%;
+  }
+
+  .banner-map-section {
+    order: 2;
+  }
+
+  .banner-controls-section {
+    order: 3;
+  }
+
+  /* Make map fill available space on desktop */
+  .banner-map-section .window-body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .banner-map-section .rsm-svg {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    object-fit: contain;
   }
 }
 
@@ -146,5 +330,50 @@
       max-height: 100px;
       overflow-y: auto;
     }
+  }
+
+  /* Reorder sections on mobile: Name/Forecast, Map, Controls */
+  .name-forecast-container {
+    order: 1;
+  }
+
+  .banner-map-section {
+    order: 2;
+  }
+
+  .banner-controls-section {
+    order: 3;
+  }
+
+  /* Make map fill available space and extend to window edges */
+  .banner-map-section {
+    width: calc(100% + 70px);
+    margin-left: -5px;
+    margin-right: -5px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0;
+    min-height: 0;
+  }
+
+  .banner-map-section .window-body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .banner-map-section .rsm-svg {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    object-fit: contain;
   }
 }

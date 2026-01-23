@@ -1,0 +1,142 @@
+.minimal-audio-player {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8px;
+  padding: 8px 0;
+}
+
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+
+.audio-btn {
+  flex: 1;
+  height: 24px;
+  background-color: #c0c0c0;
+  border: 1px outset #c0c0c0 !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1;
+  user-select: none;
+  box-sizing: border-box !important;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.audio-btn:active {
+  border: 1px inset #c0c0c0;
+}
+
+.audio-btn:hover {
+  background-color: #d4d4d4;
+}
+
+/* Icon styles using CSS - works on all platforms including iOS */
+.icon-prev,
+.icon-next,
+.icon-play,
+.icon-pause {
+  display: inline-block;
+  position: relative;
+}
+
+/* Previous: double left arrow */
+.icon-prev {
+  width: 16px;
+  height: 12px;
+}
+
+.icon-prev::before,
+.icon-prev::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 8px solid #000;
+}
+
+.icon-prev::before {
+  left: 0;
+}
+
+.icon-prev::after {
+  left: 4px;
+}
+
+/* Next: double right arrow */
+.icon-next {
+  width: 16px;
+  height: 12px;
+}
+
+.icon-next::before,
+.icon-next::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 8px solid #000;
+}
+
+.icon-next::before {
+  left: 0;
+}
+
+.icon-next::after {
+  left: 4px;
+}
+
+/* Play: single right triangle */
+.icon-play {
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 10px solid #000;
+  margin-left: 2px;
+}
+
+/* Pause: two vertical bars */
+.icon-pause {
+  width: 10px;
+  height: 12px;
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-pause::before,
+.icon-pause::after {
+  content: '';
+  width: 3px;
+  height: 10px;
+  background-color: #000;
+}
+
+.now-playing {
+  width: 100%;
+  font-size: 12px;
+  color: #000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  padding: 4px 0 12px 0;
+}

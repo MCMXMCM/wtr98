@@ -31,10 +31,7 @@ function calculateCentroid(geometry: any, stateName: string) {
     return [0, 0];
   }
 
-  console.log('Processing geometry:', {
-    type: geometry.type,
-    coordinates: geometry.coordinates
-  });
+ 
 
   let x = 0;
   let y = 0;
@@ -66,7 +63,6 @@ function calculateCentroid(geometry: any, stateName: string) {
     }
 
     const centroid = [x / totalPoints, y / totalPoints];
-    console.log('Calculated centroid:', centroid);
     return centroid;
   } catch (error) {
     console.error('Error calculating centroid:', error);
@@ -94,7 +90,8 @@ export default function MapChart({
       height={650}
       style={{
         width: "100%",
-        height: "auto",
+        height: "100%",
+        maxWidth: "100%",
       }}
     >
       <Geographies geography="/usa.json">

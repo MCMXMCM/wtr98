@@ -1,8 +1,6 @@
-import { useState } from "react";
-import AudioPlayer from "react-h5-audio-player";
-import "react-h5-audio-player/lib/styles.css";
+import { useState, useRef, useEffect } from "react";
 import { shuffle } from "../helpers/global";
-import InfiniteMarquee from "./Marquee";
+import "./AudioPlayer.css";
 
 const playlist = [
   { src: "/music/Christopher Mason - Something Beautiful.mp3" },
@@ -27,98 +25,96 @@ const playlist = [
 shuffle(playlist);
 
 export default function Player() {
-  const minimizedPreference = localStorage.getItem("minimizePlayer");
-
   const [currentTrack, setTrackIndex] = useState(0);
-  const [minimized, setMinimized] = useState(
-    Boolean(minimizedPreference) || false
-  );
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      const wasPlaying = !audioRef.current.paused;
+      audioRef.current.src = playlist[currentTrack].src;
+      audioRef.current.load();
+      if (wasPlaying) {
+        audioRef.current.play().catch((err) => {
+          console.log("Play error:", err);
+        });
+      }
+    }
+  }, [currentTrack]);
 
   const handleClickBack = () => {
-    console.log("click back");
-    setTrackIndex((currentTrack) => (currentTrack > 0 ? currentTrack - 1 : 0));
+    setTrackIndex((currentTrack) => (currentTrack > 0 ? currentTrack - 1 : playlist.length - 1));
   };
 
   const handleClickNext = () => {
-    console.log("click next");
     setTrackIndex((currentTrack) =>
       currentTrack < playlist.length - 1 ? currentTrack + 1 : 0
     );
+  };
+
+  const handlePlayPause = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
   };
 
   const handleEnd = () => {
-    console.log("end");
     setTrackIndex((currentTrack) =>
       currentTrack < playlist.length - 1 ? currentTrack + 1 : 0
     );
   };
 
-  return (
-    <div className="marquee">
-      <InfiniteMarquee />
+  const getSongName = (src: string) => {
+    return src.replace("/music/", "").replace(".mp3", "");
+  };
 
-      <div className="title-bar" style={{ width: "100%" }}>
-        <div className="title-bar-text">
-          {" "}
-          Now playing:{" "}
-          {playlist[currentTrack].src
-            .split("")
-            .splice(7, playlist[currentTrack].src.length - 11)}
-        </div>
-        <div className="title-bar-controls">
-          <button
-            style={{
-              height: "25px",
-              width: "25px",
-              marginRight: "5px",
-              marginLeft: "5px",
-            }}
-            onClick={() => {
-              localStorage.setItem("minimizePlayer", String(!minimized));
-              setMinimized(!minimized);
-            }}
-            aria-label={minimized ? "Maximize" : "Minimize"}
-          ></button>
-        </div>
+  return (
+    <div className="minimal-audio-player">
+      <div className="now-playing">
+        Now Playing: {getSongName(playlist[currentTrack].src)}
       </div>
-      <div
-        className="window"
-        style={{
-          visibility: minimized ? "hidden" : "visible",
-          height: minimized ? "0px" : "fit-content",
-        }}
-      >
-        <div
-          style={{
-            width: "100%",
-            textAlign: "center",
-            fontWeight: "bold",
-            fontSize: "12px",
-          }}
+      <div className="audio-controls">
+        <button 
+          className="audio-btn audio-btn-prev" 
+          onClick={handleClickBack} 
+          aria-label="Previous"
         >
-          <AudioPlayer
-            style={{
-              visibility: minimized ? "hidden" : "visible",
-              height: minimized ? "0px" : "80px",
-              backgroundColor: "transparent",
-              border: "none",
-              outline: "none",
-              boxShadow: "none",
-            }}
-            autoPlay
-            customVolumeControls={[]}
-            showJumpControls={false}
-            src={playlist[currentTrack].src}
-            showSkipControls
-            onClickPrevious={handleClickBack}
-            onClickNext={handleClickNext}
-            onEnded={handleEnd}
-            onError={() => {
-              console.log("play error");
-            }}
-          />
-        </div>
+          <span className="icon-prev"></span>
+        </button>
+        <button 
+          className="audio-btn audio-btn-play" 
+          onClick={handlePlayPause} 
+          aria-label={isPlaying ? "Pause" : "Play"}
+        >
+          {isPlaying ? (
+            <span className="icon-pause"></span>
+          ) : (
+            <span className="icon-play"></span>
+          )}
+        </button>
+        <button 
+          className="audio-btn audio-btn-next" 
+          onClick={handleClickNext} 
+          aria-label="Next"
+        >
+          <span className="icon-next"></span>
+        </button>
       </div>
+      
+      <audio
+        ref={audioRef}
+        onEnded={handleEnd}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onError={() => {
+          console.log("play error");
+        }}
+      />
     </div>
   );
 }
