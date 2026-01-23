@@ -15,7 +15,7 @@ interface MapChartProps {
 }
 
 // Function to calculate centroid of a polygon
-function calculateCentroid(geometry: any, stateName: string) {
+function calculateCentroid(geometry: { type: string; coordinates: unknown[] } | null | undefined, stateName: string) {
   // Use predefined coordinates for Alaska and Hawaii to ensure we get land points
   if (stateName === 'Alaska') {
     // Anchorage coordinates
@@ -41,17 +41,18 @@ function calculateCentroid(geometry: any, stateName: string) {
     // For Polygon, coordinates is an array of rings
     // For MultiPolygon, coordinates is an array of polygons
     const polygons = geometry.type === 'MultiPolygon' 
-      ? geometry.coordinates 
-      : [geometry.coordinates];
+      ? geometry.coordinates as unknown[][]
+      : [geometry.coordinates] as unknown[][];
 
     for (const polygon of polygons) {
       // First ring is the outer boundary
-      const outerRing = polygon[0];
+      const outerRing = polygon[0] as unknown[];
       
       for (const point of outerRing) {
         if (Array.isArray(point) && point.length >= 2) {
-          x += point[0];
-          y += point[1];
+          const coords = point as number[];
+          x += coords[0];
+          y += coords[1];
           totalPoints++;
         }
       }

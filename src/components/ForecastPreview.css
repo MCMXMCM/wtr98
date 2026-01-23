@@ -35,11 +35,6 @@
   font-weight: bold;
 }
 
-@media (min-width: 1200px) {
-  .forecast-preview {
-    display: none;
-  }
-}
 
 @media (max-width: 1200px) {
   .forecast-preview {

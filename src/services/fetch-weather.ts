@@ -80,7 +80,7 @@ export const fetchHourly = async (
   try {
     const resp = await fetch(url);
     return await resp.json();
-  } catch (err) {
+  } catch {
     throw new Error("failed to fetch hourly forecast from location url");
   }
 };
@@ -91,7 +91,7 @@ export const fetchWeeklyForecast = async (
   try {
     const resp = await fetch(url);
     return await resp.json();
-  } catch (err) {
+  } catch {
     throw new Error("failed to fetch hourly forecast from location url");
   }
 };

@@ -16,11 +16,10 @@ const celsiusToFahrenheit = (celsius: number): number => {
 };
 
 export default function Modal({ isOpen, onClose, forecast }: ModalProps) {
-  if (!isOpen || !forecast) return null;
-
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isOpen || !forecast) return;
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
@@ -40,7 +39,9 @@ export default function Modal({ isOpen, onClose, forecast }: ModalProps) {
       document.removeEventListener('keydown', handleEscapeKey);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [onClose]);
+  }, [onClose, isOpen, forecast]);
+
+  if (!isOpen || !forecast) return null;
 
   const icon = getIcon(forecast.isDaytime, forecast.shortForecast);
   const hasDetailedInfo = 'dewpoint' in forecast;
@@ -69,12 +70,7 @@ export default function Modal({ isOpen, onClose, forecast }: ModalProps) {
             <button
               aria-label="Close"
               onClick={onClose}
-              style={{
-                height: "25px",
-                width: "25px",
-                marginRight: "5px",
-                marginLeft: "5px",
-              }}
+             
             />
           </div>
         </div>
