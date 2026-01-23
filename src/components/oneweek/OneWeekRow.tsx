@@ -37,20 +37,24 @@ export default function OneWeekRow({ period, minTemp, maxTemp, previousTemp }: O
 
   // Calculate the range for the highlighted segment
   const getRangeStyle = () => {
-    if (previousTempPosition === null) return null;
+    if (previousTempPosition === null || previousTemp === undefined) return null;
     
     const leftPosition = Math.min(previousTempPosition, tempPosition);
     const rightPosition = Math.max(previousTempPosition, tempPosition);
     const width = rightPosition - leftPosition;
     
+    // Determine border color based on temperature change
+    // Pink (#ff0081) if temp increased, dark blue (#010081) if temp decreased
+    const borderColor = previousTemp < period.temperature ? "#dd6541" : "#008689";
+    
     return {
       position: "absolute" as const,
       left: `${leftPosition}%`,
       width: `${width}%`,
-      top: "3.3px",
+      top: "2.5px",
       height: "7px",
-      border: "1px solid #010081",
-      borderStyle: "dashed" as const,
+      border: `2px dotted ${borderColor}`,
+      borderStyle: "dotted" as const,
       backgroundColor: "rgba(150, 150, 150, 0.3)",
       zIndex: 1,
       // boxShadow: "inset 0 0 2px rgba(0, 0, 0, 0.5)",
