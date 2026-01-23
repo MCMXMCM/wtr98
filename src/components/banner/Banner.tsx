@@ -3,6 +3,7 @@ import CitySelector from "../CitySelector";
 import MapChart from "../map/Map";
 import { useQueryClient } from "@tanstack/react-query";
 import { useWeather } from "../../hooks/use-points";
+import { useFavicon } from "../../hooks/use-favicon";
 import dayjs from "dayjs";
 import { Hourly } from "../../types/hourly";
 import { Points, Position } from "../../types/global";
@@ -35,6 +36,9 @@ export default function Banner({
 
   const { status, points, hourly, dataUpdatedAt } = useWeather();
   const isFetching = status !== "success";
+  
+  // Update favicon based on current weather and city name
+  useFavicon(hourly, points);
 
   return (
     <div className="banner">
