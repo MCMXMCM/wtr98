@@ -107,7 +107,7 @@ function WeatherPanelsLayout({
   onCurrentLocationSelect,
 }: WeatherPanelsProps) {
   return (
-    <div style={{ width: "100%", paddingTop: "8px" }}>
+    <div className="weather-panels-wrapper" style={{ width: "100%", paddingTop: "8px" }}>
       <div className="window" style={{ padding: "5px", marginBottom: "8px", marginTop: "25px" }}>
         <Banner
           currentLocation={currentLocation}

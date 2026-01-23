@@ -4,13 +4,17 @@ export default function Attributions() {
       className="window"
       style={{
         height: "100%",
+        minHeight: 0,
         marginTop: "8px",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
       }}
     >
       <div className="title-bar">
         <div className="title-bar-text">Weather98 Attributions</div>
       </div>
-      <div style={{ padding: "8px" }}>
+      <div style={{ padding: "8px", overflowY: "auto", flex: 1, minHeight: 0 }}>
         <p style={{ fontWeight: "bold" }}>
           Icons and songs used on this site were made available by{" "}
           <a href="https://twcclassics.com/downloads.html">TWC Classics</a>. The

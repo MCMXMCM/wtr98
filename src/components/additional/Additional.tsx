@@ -5,11 +5,12 @@ export default function Additional() {
   const { weekly, hourly } = useWeather();
 
   return (
-    <div style={{ height: "102%" }}>
+    <div style={{ height: "100%", minHeight: 0, display: "flex", flexDirection: "column" }}>
       <div
         style={{
           width: "100%",
           height: "100%",
+          minHeight: 0,
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -20,6 +21,7 @@ export default function Additional() {
           style={{
             display: "flex",
             justifyContent: "space-between",
+            flexShrink: 0,
           }}
         >
           <div
@@ -79,7 +81,9 @@ export default function Additional() {
             </div>
           </div>
         </div>
-        <Attributions />
+        <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+          <Attributions />
+        </div>
       </div>
     </div>
   );
