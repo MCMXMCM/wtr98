@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, memo } from "react";
 import { cityOptions } from "../assets/majorCityPositions";
 import { useQueryClient } from "@tanstack/react-query";
 import { Position } from "../types/global";
@@ -8,7 +8,7 @@ interface CitySelectorProps {
   setCurrentLocation: Dispatch<SetStateAction<boolean>>;
   setPosition: Dispatch<SetStateAction<Position>>;
 }
-export default function CitySelector({
+function CitySelector({
   setPosition,
   setCurrentLocation,
   currentLocation,
@@ -59,3 +59,5 @@ export default function CitySelector({
     </div>
   );
 }
+
+export default memo(CitySelector);

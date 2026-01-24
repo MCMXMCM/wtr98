@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, memo } from "react";
 import { shuffle } from "../helpers/global";
 import { fetchSongList, fetchPlaylists } from "../services/music-service";
 import "./AudioPlayer.css";
@@ -15,15 +15,23 @@ function getSongName(key: string): string {
   return key.replace(/\.mp3$/i, "");
 }
 
-export default function Player() {
+function Player() {
   const [allTracks, setAllTracks] = useState<string[]>([]);
   const [loadedTracks, setLoadedTracks] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>("playlist 1");
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string>("Root");
   const [availablePlaylists, setAvailablePlaylists] = useState<string[]>([]);
+  const [isFocused, setIsFocused] = useState(false);
+  const [shouldMarquee, setShouldMarquee] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const nowPlayingRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // Fetch available playlists on mount
@@ -33,32 +41,31 @@ export default function Player() {
         const playlists = await fetchPlaylists();
         setAvailablePlaylists(playlists);
         
-        // If "playlist 1" is not available, default to first playlist or null (root)
-        if (playlists.length > 0 && !playlists.includes("playlist 1")) {
-          // Check if any playlist exists, otherwise default to root
-          setSelectedPlaylist(playlists[0] || null);
-        } else if (playlists.length === 0) {
-          // No playlists found, default to root
-          setSelectedPlaylist(null);
+        // Simply default to first playlist if available, otherwise stay on Root
+        if (playlists.length > 0) {
+          setSelectedPlaylist(playlists[0]); // Will be "classic" (first alphabetically)
         }
+        // else selectedPlaylist stays as "Root"
       } catch (e) {
         console.error("Failed to fetch playlists:", e);
         // On error, default to root
-        setSelectedPlaylist(null);
+        setSelectedPlaylist("Root");
       }
     };
     
     loadPlaylists();
   }, []);
 
-  const loadPlaylist = useCallback(async (playlist: string | null) => {
+  const loadPlaylist = useCallback(async (playlist: string) => {
     setIsLoading(true);
     setError(null);
     try {
-      let keys = await fetchSongList(playlist);
+      // If playlist is "Root", pass null to fetchSongList
+      const playlistParam = playlist === "Root" ? null : playlist;
+      let keys = await fetchSongList(playlistParam);
       
       // If playlist is empty, fallback to root
-      if (playlist && keys.length === 0) {
+      if (playlist !== "Root" && keys.length === 0) {
         console.log(`Playlist "${playlist}" is empty, falling back to root`);
         keys = await fetchSongList(null);
       }
@@ -85,6 +92,35 @@ export default function Player() {
   useEffect(() => {
     loadPlaylist(selectedPlaylist);
   }, [selectedPlaylist, loadPlaylist]);
+
+  // Check if text overflows and enable marquee
+  useEffect(() => {
+    // Use a small timeout to ensure DOM has updated
+    const timeoutId = setTimeout(() => {
+      if (nowPlayingRef.current && textRef.current) {
+        const container = nowPlayingRef.current;
+        const text = textRef.current;
+        const isOverflowing = text.scrollWidth > container.clientWidth;
+        setShouldMarquee(isOverflowing);
+        
+        if (isOverflowing) {
+          // Calculate the scroll distance: start from right (container width) to left (-overflow amount)
+          const containerWidth = container.clientWidth;
+          const textWidth = text.scrollWidth;
+          const overflowAmount = textWidth - containerWidth;
+          // Start at container width (text off-screen right), end at -overflowAmount (text off-screen left)
+          text.style.setProperty('--scroll-start', `${containerWidth}px`);
+          text.style.setProperty('--scroll-end', `-${overflowAmount}px`);
+        } else {
+          setShouldMarquee(false);
+        }
+      } else {
+        setShouldMarquee(false);
+      }
+    }, 0);
+    
+    return () => clearTimeout(timeoutId);
+  }, [currentIndex, loadedTracks, selectedPlaylist, isLoading, error]);
 
   useEffect(() => {
     if (loadedTracks.length === 0 || !audioRef.current) return;
@@ -229,75 +265,147 @@ export default function Player() {
     handleClickNext();
   };
 
-  const handlePlaylistChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value;
-    setSelectedPlaylist(value === "" ? null : value);
+  const handlePlaylistChange = (value: string) => {
+    setSelectedPlaylist(value);
+    setIsDropdownOpen(false);
   };
 
-  if (isLoading) {
-    return (
-      <div className="minimal-audio-player">
-        <div className="now-playing">Loading playlist…</div>
-      </div>
-    );
-  }
+  // Calculate dropdown position when it opens
+  useEffect(() => {
+    if (isDropdownOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.bottom + 2,
+        left: rect.left
+      });
+    }
+  }, [isDropdownOpen]);
 
-  if (error) {
-    return (
-      <div className="minimal-audio-player">
-        <div className="now-playing">{error}</div>
-        <button
-          type="button"
-          className="audio-btn"
-          onClick={() => loadPlaylist(selectedPlaylist)}
-          style={{ marginTop: 8 }}
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
 
-  if (loadedTracks.length === 0) {
-    return (
-      <div className="minimal-audio-player">
-        <div className="now-playing">No songs available</div>
-      </div>
-    );
-  }
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
+  }, [isDropdownOpen]);
 
-  const currentKey = loadedTracks[currentIndex];
+  // Determine what to display in the marquee (song name or status only)
+  const getNowPlayingContent = () => {
+    if (isLoading) {
+      return "Loading playlist…";
+    }
+    if (error) {
+      return error;
+    }
+    if (loadedTracks.length === 0) {
+      return "No songs available";
+    }
+    const currentKey = loadedTracks[currentIndex];
+    return getSongName(currentKey);
+  };
+
+  const hasTracks = loadedTracks.length > 0 && !isLoading && !error;
 
   return (
     <div className="minimal-audio-player">
       <div className="playlist-selector-row">
-        <select
-          className="playlist-select"
-          value={selectedPlaylist || ""}
-          onChange={handlePlaylistChange}
-          style={{
-            fontSize: "12px",
-            padding: "2px 4px",
-            cursor: "pointer",
-            flex: "0 0 auto",
-            marginRight: "8px",
-          }}
-        >
-          <option value="">Root</option>
-          {availablePlaylists.map((playlist) => (
-            <option key={playlist} value={playlist}>
-              {playlist}
-            </option>
-          ))}
-        </select>
-        <div className="now-playing">
-          Now Playing: {getSongName(currentKey)}
+        <div className="window">
+          <label style={{ fontSize: "16px" }} htmlFor="playlist-select">
+            Select Playlist:
+          </label>
+          <div className="custom-select" ref={dropdownRef}>
+            <button
+              ref={buttonRef}
+              type="button"
+              className="custom-select-button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsDropdownOpen(!isDropdownOpen);
+              }}
+              onMouseDown={(e) => {
+                // Prevent blur from firing when clicking
+                e.preventDefault();
+              }}
+              onFocus={() => setIsFocused(true)}
+              onBlur={(e) => {
+                // Only blur if clicking outside the dropdown
+                if (!dropdownRef.current?.contains(e.relatedTarget as Node)) {
+                  setIsFocused(false);
+                }
+              }}
+              style={{
+                fontSize: "16px",
+                color: isFocused ? "white" : "black",
+              }}
+            >
+              <span className="custom-select-text">{selectedPlaylist}</span>
+              <span className="custom-select-arrow">▼</span>
+            </button>
+            {isDropdownOpen && (
+              <div 
+                className="custom-select-dropdown"
+                style={{
+                  top: `${dropdownPosition.top}px`,
+                  left: `${dropdownPosition.left}px`
+                }}
+              >
+                <button
+                  type="button"
+                  className={`custom-select-option ${selectedPlaylist === "Root" ? "selected" : ""}`}
+                  onClick={() => handlePlaylistChange("Root")}
+                >
+                  Root
+                </button>
+                {availablePlaylists.map((playlist) => (
+                  <button
+                    key={playlist}
+                    type="button"
+                    className={`custom-select-option ${selectedPlaylist === playlist ? "selected" : ""}`}
+                    onClick={() => handlePlaylistChange(playlist)}
+                  >
+                    {playlist}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="window now-playing-window">
+          <label className="now-playing-label">Now Playing:</label>
+          <div className="now-playing" ref={nowPlayingRef}>
+            <span
+              ref={textRef}
+              className={shouldMarquee && hasTracks ? "now-playing-text marquee" : "now-playing-text"}
+            >
+              {getNowPlayingContent()}
+            </span>
+          </div>
         </div>
       </div>
+      {error && (
+        <button
+          type="button"
+          className="audio-btn"
+          onClick={() => loadPlaylist(selectedPlaylist)}
+          style={{ marginTop: 8, width: "100%" }}
+        >
+          Retry
+        </button>
+      )}
       <div className="audio-controls">
         <button
           className="audio-btn audio-btn-prev"
           onClick={handleClickBack}
+          disabled={isLoading || loadedTracks.length === 0}
           aria-label="Previous"
         >
           <span className="icon-prev"></span>
@@ -305,6 +413,7 @@ export default function Player() {
         <button
           className="audio-btn audio-btn-play"
           onClick={handlePlayPause}
+          disabled={isLoading || loadedTracks.length === 0}
           aria-label={isPlaying ? "Pause" : "Play"}
         >
           {isPlaying ? (
@@ -316,6 +425,7 @@ export default function Player() {
         <button
           className="audio-btn audio-btn-next"
           onClick={handleClickNext}
+          disabled={isLoading || loadedTracks.length === 0}
           aria-label="Next"
         >
           <span className="icon-next"></span>
@@ -346,3 +456,5 @@ export default function Player() {
     </div>
   );
 }
+
+export default memo(Player);
