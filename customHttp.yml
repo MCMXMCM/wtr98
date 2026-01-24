@@ -1,0 +1,20 @@
+customHeaders:
+  # Prevent caching of HTML files to ensure users get the latest version
+  - pattern: '**/*.html'
+    headers:
+      - key: 'Cache-Control'
+        value: 'no-cache, no-store, must-revalidate, max-age=0'
+      - key: 'Pragma'
+        value: 'no-cache'
+      - key: 'Expires'
+        value: '0'
+  # Allow long-term caching for hashed assets (JS/CSS) since Vite handles cache busting
+  - pattern: '**/*.{js,css}'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'
+  # Cache static assets (images, fonts, etc.) for a reasonable time
+  - pattern: '**/*.{jpg,jpeg,png,gif,svg,ico,woff,woff2,ttf,eot}'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=86400'

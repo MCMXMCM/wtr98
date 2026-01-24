@@ -179,88 +179,6 @@
   flex-shrink: 0;
 }
 
-.custom-select {
-  position: relative;
-  padding: 4px 0px 0px 0px;
-  width: 100%;
-}
-
-.custom-select-button {
-  width: 100%;
-  background-color: white;
-  border: 1px inset #c0c0c0;
-  font-family: inherit;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 2px 4px;
-  box-sizing: border-box;
-  text-align: left;
-  min-height: 20px;
-  overflow: hidden;
-  min-width: 0;
-}
-
-.custom-select-button:focus {
-  outline: 1px dotted #000;
-  outline-offset: -2px;
-}
-
-.custom-select-text {
-  flex: 1 1 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  min-width: 0;
-  max-width: 100%;
-}
-
-.custom-select-arrow {
-  flex-shrink: 0;
-  margin-left: 4px;
-  font-size: 10px;
-}
-
-.custom-select-dropdown {
-  position: fixed;
-  background-color: #c0c0c0;
-  border: 1px outset #c0c0c0;
-  z-index: 10000;
-  max-height: 200px;
-  max-width: calc(100vw - 16px);
-  overflow-y: auto;
-  overflow-x: auto;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  margin-top: 2px;
-  width: max-content;
-}
-
-.custom-select-option {
-  width: 100%;
-  white-space: nowrap;
-  background-color: transparent;
-  border: none;
-  font-family: inherit;
-  font-size: 16px;
-  cursor: pointer;
-  padding: 4px 8px;
-  text-align: left;
-  box-sizing: border-box;
-  display: block;
-}
-
-.custom-select-option:hover {
-  background-color: #000080;
-  color: white;
-}
-
-.custom-select-option.selected {
-  background-color: #000080;
-  color: white;
-}
-
 .now-playing {
   width: 100%;
   min-width: 0;
@@ -288,7 +206,6 @@
 .now-playing-text.marquee {
   animation: marquee-scroll 20s linear infinite;
   padding-right: 30px;
-  margin-top:8px;
 }
 
 @keyframes marquee-scroll {

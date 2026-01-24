@@ -8,6 +8,28 @@
     <meta name="theme-color" content="#008080" />
     <meta name="description" content="A nostalgic weather app with a Windows 98 aesthetic" />
     <title>Weather 98</title>
+    <script>
+      // Cleanup old PWA service workers and caches - must be inline to run with old cached HTML
+      (function() {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            if (registrations.length > 0) {
+              Promise.all(registrations.map(function(r) { return r.unregister(); }))
+                .then(function() {
+                  if ('caches' in window) {
+                    caches.keys().then(function(names) {
+                      Promise.all(names.map(function(name) { return caches.delete(name); }))
+                        .then(function() { window.location.reload(); });
+                    });
+                  } else {
+                    window.location.reload();
+                  }
+                });
+            }
+          });
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
