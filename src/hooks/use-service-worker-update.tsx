@@ -10,7 +10,7 @@ export function useServiceWorkerUpdate() {
       return;
     }
 
-    let updateInterval: NodeJS.Timeout | null = null;
+    let updateInterval: ReturnType<typeof setInterval> | null = null;
 
     // Check for existing registration
     navigator.serviceWorker.getRegistration().then((reg) => {
