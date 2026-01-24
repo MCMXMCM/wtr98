@@ -305,20 +305,30 @@ function NameIconAndTempWithForecast({
               <div className="temp-value">
                 <h4>
                   {isFetching
-                    ? ""
+                    ? <span style={{ visibility: "hidden" }}>00°</span>
                     : isHourlyAvailable
                     ? `${currentPeriod.temperature}°`
                     : "N/A"}
                 </h4>
-                {!isFetching && todayHigh && todayLow && (
-                  <div className="high-low-temps">
-                    <span className="high-temp">{todayHigh.temperature}°</span>
+                {isFetching ? (
+                  <div className="high-low-temps" style={{ visibility: "hidden" }}>
+                    <span className="high-temp">00°</span>
                     <span className="temp-separator"> / </span>
-                    <span className="low-temp">{todayLow.temperature}°</span>
+                    <span className="low-temp">00°</span>
                   </div>
+                ) : (
+                  todayHigh && todayLow && (
+                    <div className="high-low-temps">
+                      <span className="high-temp">{todayHigh.temperature}°</span>
+                      <span className="temp-separator"> / </span>
+                      <span className="low-temp">{todayLow.temperature}°</span>
+                    </div>
+                  )
                 )}
               </div>
-              {isHourlyAvailable ? (
+              {isFetching ? (
+                <div style={{ height: "100px", width: "150px" }} />
+              ) : isHourlyAvailable ? (
                 <img
                   className="main-weather-icon"
                   src={`/${getIcon(
@@ -333,7 +343,13 @@ function NameIconAndTempWithForecast({
             </div>
             <div className="short-description">
               <h4>
-                {isFetching ? "" : isHourlyAvailable ? currentPeriod.shortForecast : "Hourly forecast not available"}
+                {isFetching ? (
+                  <span style={{ visibility: "hidden" }}>Placeholder text for height</span>
+                ) : isHourlyAvailable ? (
+                  currentPeriod.shortForecast
+                ) : (
+                  "Hourly forecast not available"
+                )}
               </h4>
             </div>
           </div>

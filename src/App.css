@@ -265,8 +265,8 @@
 }
 
 .main-weather-icon {
-  height: 120px;
-  max-width: 200px;
+  height: 100px;
+  max-width: 150px;
 }
 
 .temp-icon-left .short-description {
