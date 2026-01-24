@@ -13,7 +13,7 @@ dist-ssr
 *.local
 
 # TypeScript
-*tsconfig.app.tsbuildinfo
+*.tsbuildinfo
 
 # Editor directories and files
 .vscode/*
