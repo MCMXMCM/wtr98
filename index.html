@@ -10,11 +10,9 @@
     <meta name="app-version" content="2025-01-24-v2" />
     <title>Weather 98</title>
     <script>
-      // Cleanup old PWA service workers and caches - must be inline to run with old cached HTML
+      // Cleanup old PWA service workers using self-destructing service worker
+      // This approach works even when old service workers are controlling the page
       (function() {
-        var needsReload = false;
-        var cleanupComplete = false;
-        
         // Check if this is old HTML without the version meta tag
         var versionMeta = document.querySelector('meta[name="app-version"]');
         if (!versionMeta) {
@@ -33,65 +31,44 @@
           return;
         }
         
-        function doReload() {
-          if (!cleanupComplete) {
-            cleanupComplete = true;
-            // Use replace with cache-busting query to bypass all caches
-            var separator = window.location.href.indexOf('?') > -1 ? '&' : '?';
-            window.location.replace(window.location.href + separator + '_sw_cleanup=' + Date.now());
-          }
-        }
-        
-        // Check if a service worker is currently controlling this page
+        // Register self-destructing service worker to replace any old service workers
+        // This will work even if an old service worker is currently controlling the page
         if ('serviceWorker' in navigator) {
-          if (navigator.serviceWorker.controller) {
-            needsReload = true;
-          }
-          
-          // Unregister all service workers
-          navigator.serviceWorker.getRegistrations().then(function(registrations) {
-            if (registrations.length > 0) {
-              needsReload = true;
-              Promise.all(registrations.map(function(r) { return r.unregister(); }))
-                .catch(function() { /* ignore errors */ });
-            }
-            
-            // Clear all caches
-            if ('caches' in window) {
-              caches.keys().then(function(names) {
-                if (names.length > 0) {
-                  needsReload = true;
-                  Promise.all(names.map(function(name) { return caches.delete(name); }))
+          navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            .then(function(registration) {
+              // The self-destructing SW will handle cleanup and reload
+              console.log('Self-destructing service worker registered');
+            })
+            .catch(function(error) {
+              // If registration fails, try manual cleanup
+              console.warn('Service worker registration failed, attempting manual cleanup:', error);
+              navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                if (registrations.length > 0) {
+                  Promise.all(registrations.map(function(r) { return r.unregister(); }))
+                    .then(function() {
+                      if ('caches' in window) {
+                        return caches.keys();
+                      }
+                      return [];
+                    })
+                    .then(function(cacheNames) {
+                      if (cacheNames.length > 0) {
+                        return Promise.all(cacheNames.map(function(name) { return caches.delete(name); }));
+                      }
+                    })
+                    .then(function() {
+                      window.location.reload();
+                    })
                     .catch(function() { /* ignore errors */ });
                 }
-                
-                if (needsReload) {
-                  // Small delay to ensure cleanup completes
-                  setTimeout(doReload, 100);
-                }
-              }).catch(function() {
-                if (needsReload) {
-                  setTimeout(doReload, 100);
-                }
               });
-            } else if (needsReload) {
-              setTimeout(doReload, 100);
-            }
-          }).catch(function() {
-            // If we can't check registrations, still try to reload if controller exists
-            if (needsReload) {
-              setTimeout(doReload, 100);
-            }
-          });
+            });
         } else if ('caches' in window) {
           // No service worker API, but check caches
           caches.keys().then(function(names) {
             if (names.length > 0) {
               Promise.all(names.map(function(name) { return caches.delete(name); }))
-                .catch(function() { /* ignore errors */ })
-                .then(function() {
-                  setTimeout(doReload, 100);
-                });
+                .catch(function() { /* ignore errors */ });
             }
           }).catch(function() { /* ignore errors */ });
         }
