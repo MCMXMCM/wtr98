@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 
 import "./App.css";
 import "98.css";
@@ -9,6 +9,8 @@ import Wind from "./components/wind/Wind";
 import Additional from "./components/additional/Additional";
 import Banner from "./components/banner/Banner";
 import InfiniteMarquee from "./components/Marquee";
+import UpdateNotification from "./components/UpdateNotification";
+import { useServiceWorkerUpdate } from "./hooks/use-service-worker-update";
 
 function App() {
   const [currentLocation, setCurrentLocation] = useState<boolean>(false);
@@ -31,6 +33,17 @@ function App() {
   if (positionError) {
     console.log(positionError);
   }
+
+  // Service worker update detection (production only)
+  const { updateAvailable, updateServiceWorker } = useServiceWorkerUpdate();
+  const [showUpdateNotification, setShowUpdateNotification] = useState(false);
+
+  // Show notification when update becomes available
+  useEffect(() => {
+    if (updateAvailable && import.meta.env.PROD) {
+      setShowUpdateNotification(true);
+    }
+  }, [updateAvailable]);
 
   function getCurrentPosition() {
     if (navigator.geolocation) {
@@ -61,6 +74,16 @@ function App() {
     }
   }
 
+  // Handle update notification
+  const handleUpdate = () => {
+    updateServiceWorker();
+    setShowUpdateNotification(false);
+  };
+
+  const handleDismissUpdate = () => {
+    setShowUpdateNotification(false);
+  };
+
   return (
     <div
       className="main-app-div"
@@ -68,6 +91,12 @@ function App() {
         overflowX: "hidden",
       }}
     >
+      {showUpdateNotification && (
+        <UpdateNotification
+          onUpdate={handleUpdate}
+          onDismiss={handleDismissUpdate}
+        />
+      )}
       <div className="marquee">
         <InfiniteMarquee />
       </div>

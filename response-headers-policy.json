@@ -1,0 +1,25 @@
+{
+  "Name": "wtr98-music-cors-policy",
+  "Comment": "CORS headers for wtr98 music CDN",
+  "CorsConfig": {
+    "AccessControlAllowOrigins": {
+      "Items": ["*"],
+      "Quantity": 1
+    },
+    "AccessControlAllowHeaders": {
+      "Items": ["*"],
+      "Quantity": 1
+    },
+    "AccessControlAllowMethods": {
+      "Items": ["GET", "HEAD"],
+      "Quantity": 2
+    },
+    "AccessControlExposeHeaders": {
+      "Items": ["Content-Length", "Content-Type"],
+      "Quantity": 2
+    },
+    "AccessControlMaxAgeSec": 3600,
+    "AccessControlAllowCredentials": false,
+    "OriginOverride": false
+  }
+}

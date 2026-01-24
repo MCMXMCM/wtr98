@@ -1,94 +1,250 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { shuffle } from "../helpers/global";
+import { fetchSongList } from "../services/music-service";
 import "./AudioPlayer.css";
 
-const playlist = [
-  { src: "/music/Christopher Mason - Something Beautiful.mp3" },
-  { src: "/music/Jim Horn - Divided Soul.mp3" },
-  { src: "/music/Ben Sidran - Like Sonny.mp3" },
-  { src: "/music/Bob Thompson - I Just Want You To Be Happy.mp3" },
-  { src: "/music/George Benson And Earl Klugh - Mimosa.mp3" },
-  { src: "/music/Dan Siegel - Celestial Body.mp3" },
-  { src: "/music/George Howard - Broad Street.mp3" },
-  { src: "/music/Birds Of A Feather - Down For The Count.mp3" },
-  { src: "/music/Brian Bromberg - Magic Rain.mp3" },
-  { src: "/music/Bill Shields - Sunset Breeze.mp3" },
-  { src: "/music/Dave Grusin - Welcome To The Road.mp3" },
-  { src: "/music/Dan Siegel - Distant Thoughts.mp3" },
-  { src: "/music/Jim Horn - Neon Nights.mp3" },
-  { src: "/music/George Howard - I Like This Groove.mp3" },
-  { src: "/music/David Sanborn - Lets Just Say Goodbye.mp3" },
-  { src: "/music/Dave Grusin And Lee Ritenour - Early A.M. Attitude.mp3" },
-  { src: "/music/Dave Grusin - Punta Del Soul.mp3" },
-];
+const BATCH_SIZE = 5;
 
-shuffle(playlist);
+function getCdnUrl(key: string): string {
+  const base = import.meta.env.VITE_MUSIC_CDN_URL as string | undefined;
+  if (!base) throw new Error("VITE_MUSIC_CDN_URL is not set");
+  return `${base.replace(/\/$/, "")}/${encodeURIComponent(key)}`;
+}
+
+function getSongName(key: string): string {
+  return key.replace(/\.mp3$/i, "");
+}
 
 export default function Player() {
-  const [currentTrack, setTrackIndex] = useState(0);
+  const [allTracks, setAllTracks] = useState<string[]>([]);
+  const [loadedTracks, setLoadedTracks] = useState<string[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  const loadPlaylist = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const keys = await fetchSongList();
+      if (keys.length === 0) {
+        setError("No songs found");
+        setAllTracks([]);
+        setLoadedTracks([]);
+        return;
+      }
+      const shuffled = shuffle(keys);
+      setAllTracks(shuffled);
+      setLoadedTracks(shuffled.slice(0, BATCH_SIZE));
+      setCurrentIndex(0);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to load playlist");
+      setAllTracks([]);
+      setLoadedTracks([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
-    if (audioRef.current) {
-      const wasPlaying = !audioRef.current.paused;
-      audioRef.current.src = playlist[currentTrack].src;
-      audioRef.current.load();
+    loadPlaylist();
+  }, [loadPlaylist]);
+
+  useEffect(() => {
+    if (loadedTracks.length === 0 || !audioRef.current) return;
+    const key = loadedTracks[currentIndex];
+    const url = getCdnUrl(key);
+    console.log("Loading audio:", url);
+    const wasPlaying = !audioRef.current.paused;
+    const audio = audioRef.current;
+    
+    // Reset error state when loading new track
+    setError(null);
+    
+    // Set source and load
+    audio.src = url;
+    audio.load();
+    
+    // Verify the source was set correctly
+    if (!audio.src || audio.src === window.location.href) {
+      console.error("Failed to set audio source, URL:", url);
+      setError("Failed to load audio source");
+      return;
+    }
+    
+    const handleCanPlay = () => {
+      console.log("Audio ready to play, readyState:", audio.readyState);
       if (wasPlaying) {
-        audioRef.current.play().catch((err) => {
-          console.log("Play error:", err);
+        audio.play().catch((err) => {
+          console.error("Auto-play error after track change:", err);
+          setIsPlaying(false);
         });
       }
-    }
-  }, [currentTrack]);
+      audio.removeEventListener("canplay", handleCanPlay);
+    };
+    
+    const handleError = () => {
+      console.error("Audio load error, src:", audio.src);
+      if (audio.error) {
+        console.error("Error code:", audio.error.code, "message:", audio.error.message);
+      }
+      setError("Failed to load audio file");
+      audio.removeEventListener("error", handleError);
+    };
+    
+    audio.addEventListener("canplay", handleCanPlay);
+    audio.addEventListener("error", handleError);
+    
+    return () => {
+      audio.removeEventListener("canplay", handleCanPlay);
+      audio.removeEventListener("error", handleError);
+    };
+  }, [currentIndex, loadedTracks]);
+
+  useEffect(() => {
+    if (allTracks.length === 0 || loadedTracks.length === 0) return;
+    if (currentIndex < loadedTracks.length - 2) return;
+    const nextStart = loadedTracks.length;
+    const nextBatch = allTracks.slice(nextStart, nextStart + BATCH_SIZE);
+    if (nextBatch.length === 0) return;
+    setLoadedTracks((prev) => [...prev, ...nextBatch]);
+  }, [currentIndex, allTracks, loadedTracks.length]);
 
   const handleClickBack = () => {
-    setTrackIndex((currentTrack) => (currentTrack > 0 ? currentTrack - 1 : playlist.length - 1));
+    if (loadedTracks.length === 0) return;
+    setCurrentIndex((i) => (i > 0 ? i - 1 : loadedTracks.length - 1));
   };
 
   const handleClickNext = () => {
-    setTrackIndex((currentTrack) =>
-      currentTrack < playlist.length - 1 ? currentTrack + 1 : 0
+    if (loadedTracks.length === 0) return;
+    setCurrentIndex((i) =>
+      i < loadedTracks.length - 1 ? i + 1 : 0
     );
   };
 
-  const handlePlayPause = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
+  const handlePlayPause = async () => {
+    if (!audioRef.current || loadedTracks.length === 0) return;
+    const audio = audioRef.current;
+    
+    // Check if audio has a valid source
+    if (!audio.src || audio.src === window.location.href) {
+      console.warn("Audio has no source, waiting for source to be set...");
+      // Wait a bit for the source to be set by the useEffect
+      setTimeout(() => {
+        if (audio.src && audio.src !== window.location.href) {
+          handlePlayPause();
+        } else {
+          console.error("Audio source still not set");
+          setError("Audio source not ready. Please try again.");
+        }
+      }, 100);
+      return;
+    }
+    
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      // Check if audio is ready
+      if (audio.readyState >= 2) { // HAVE_CURRENT_DATA or higher
+        try {
+          await audio.play();
+          setIsPlaying(true);
+        } catch (err) {
+          console.error("Failed to play audio:", err);
+          const errorMsg = err instanceof Error ? err.message : String(err);
+          console.error("Error details:", {
+            code: (err as any)?.code,
+            name: (err as any)?.name,
+            message: errorMsg,
+            readyState: audio.readyState,
+            networkState: audio.networkState,
+            src: audio.src
+          });
+          setError(`Playback error: ${errorMsg}`);
+        }
       } else {
-        audioRef.current.play();
+        console.warn("Audio not ready, readyState:", audio.readyState, "src:", audio.src);
+        // Wait for audio to be ready
+        const handleCanPlay = async () => {
+          try {
+            await audio.play();
+            setIsPlaying(true);
+          } catch (err) {
+            console.error("Failed to play after ready:", err);
+            setError(`Playback error: ${err instanceof Error ? err.message : "Unknown error"}`);
+          }
+          audio.removeEventListener("canplay", handleCanPlay);
+        };
+        audio.addEventListener("canplay", handleCanPlay);
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
   const handleEnd = () => {
-    setTrackIndex((currentTrack) =>
-      currentTrack < playlist.length - 1 ? currentTrack + 1 : 0
+    if (loadedTracks.length === 0) return;
+    setCurrentIndex((i) =>
+      i < loadedTracks.length - 1 ? i + 1 : 0
     );
   };
 
-  const getSongName = (src: string) => {
-    return src.replace("/music/", "").replace(".mp3", "");
+  const handleError = () => {
+    console.warn("Audio error, skipping to next");
+    handleClickNext();
   };
+
+  if (isLoading) {
+    return (
+      <div className="minimal-audio-player">
+        <div className="now-playing">Loading playlist…</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="minimal-audio-player">
+        <div className="now-playing">{error}</div>
+        <button
+          type="button"
+          className="audio-btn"
+          onClick={loadPlaylist}
+          style={{ marginTop: 8 }}
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  if (loadedTracks.length === 0) {
+    return (
+      <div className="minimal-audio-player">
+        <div className="now-playing">No songs available</div>
+      </div>
+    );
+  }
+
+  const currentKey = loadedTracks[currentIndex];
 
   return (
     <div className="minimal-audio-player">
       <div className="now-playing">
-        Now Playing: {getSongName(playlist[currentTrack].src)}
+        Now Playing: {getSongName(currentKey)}
       </div>
       <div className="audio-controls">
-        <button 
-          className="audio-btn audio-btn-prev" 
-          onClick={handleClickBack} 
+        <button
+          className="audio-btn audio-btn-prev"
+          onClick={handleClickBack}
           aria-label="Previous"
         >
           <span className="icon-prev"></span>
         </button>
-        <button 
-          className="audio-btn audio-btn-play" 
-          onClick={handlePlayPause} 
+        <button
+          className="audio-btn audio-btn-play"
+          onClick={handlePlayPause}
           aria-label={isPlaying ? "Pause" : "Play"}
         >
           {isPlaying ? (
@@ -97,22 +253,34 @@ export default function Player() {
             <span className="icon-play"></span>
           )}
         </button>
-        <button 
-          className="audio-btn audio-btn-next" 
-          onClick={handleClickNext} 
+        <button
+          className="audio-btn audio-btn-next"
+          onClick={handleClickNext}
           aria-label="Next"
         >
           <span className="icon-next"></span>
         </button>
       </div>
-      
+
       <audio
         ref={audioRef}
+        preload="metadata"
         onEnded={handleEnd}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
-        onError={() => {
-          console.log("play error");
+        onError={(e) => {
+          console.error("Audio element error:", e);
+          const audio = e.currentTarget;
+          if (audio.error) {
+            console.error("Audio error code:", audio.error.code, "message:", audio.error.message);
+          }
+          handleError();
+        }}
+        onLoadedData={() => {
+          console.log("Audio loaded successfully, src:", audioRef.current?.src);
+        }}
+        onCanPlay={() => {
+          console.log("Audio can play, readyState:", audioRef.current?.readyState);
         }}
       />
     </div>

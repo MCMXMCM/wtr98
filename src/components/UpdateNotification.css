@@ -1,0 +1,24 @@
+.update-notification-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.update-notification-window {
+  width: 400px;
+  max-width: 90vw;
+  z-index: 10001;
+}
+
+@media (max-width: 600px) {
+  .update-notification-window {
+    width: 90vw;
+  }
+}
