@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useLayoutEffect, useCallback, memo } from "react";
+import { useState, useRef, useEffect, useCallback, memo } from "react";
 import { shuffle } from "../helpers/global";
 import { fetchSongList, fetchPlaylists } from "../services/music-service";
 import "./CustomSelect.css";
@@ -28,19 +28,6 @@ function Player() {
   const [selectedPlaylist, setSelectedPlaylist] = useState<string>(DEFAULT_PLAYLIST);
   const [availablePlaylists, setAvailablePlaylists] = useState<string[]>([]);
   const [shouldMarquee, setShouldMarquee] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [filter, setFilter] = useState("");
-  const [highlightedIndex, setHighlightedIndex] = useState(0);
-  const [dropdownPosition, setDropdownPosition] = useState<{
-    top?: number;
-    bottom?: number;
-    left: number;
-  }>({ left: 0 });
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const dropdownListRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const highlightedOptionRef = useRef<HTMLButtonElement | null>(null);
   const nowPlayingRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -269,125 +256,7 @@ function Player() {
   const handlePlaylistChange = (value: string) => {
     setSelectedPlaylist(value);
     localStorage.setItem(STORAGE_KEY, value);
-    setFilter("");
-    setIsDropdownOpen(false);
   };
-
-  const filteredPlaylists = availablePlaylists.filter((p) =>
-    p.toLowerCase().includes(filter.toLowerCase())
-  );
-
-  // Position dropdown when it opens; keep within viewport (single useLayoutEffect so clamp isn’t overwritten)
-  useLayoutEffect(() => {
-    if (!isDropdownOpen || !triggerRef.current || !dropdownListRef.current) return;
-    const rect = triggerRef.current.getBoundingClientRect();
-    const el = dropdownListRef.current;
-    const gap = 2;
-    const pad = 8;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const width = Math.min(el.offsetWidth, vw - 2 * pad);
-    const spaceBelow = vh - rect.bottom - gap;
-    const spaceAbove = rect.top - gap;
-    const openAbove = spaceAbove > spaceBelow;
-    let left = Math.max(pad, Math.min(rect.left, vw - width - pad));
-    if (openAbove) {
-      setDropdownPosition({
-        bottom: vh - (rect.top - gap),
-        left,
-      });
-    } else {
-      setDropdownPosition({
-        top: rect.bottom + gap,
-        left,
-      });
-    }
-  }, [isDropdownOpen, availablePlaylists, filter]);
-
-  useEffect(() => {
-    if (isDropdownOpen) {
-      setFilter("");
-      setHighlightedIndex(0);
-      inputRef.current?.focus({ preventScroll: true });
-    }
-  }, [isDropdownOpen]);
-
-  useEffect(() => {
-    setHighlightedIndex(0);
-  }, [filter]);
-
-  useEffect(() => {
-    const list = dropdownListRef.current;
-    const opt = highlightedOptionRef.current;
-    if (!list || !opt) return;
-    const listRect = list.getBoundingClientRect();
-    const optRect = opt.getBoundingClientRect();
-    if (optRect.top < listRect.top) {
-      list.scrollTop += optRect.top - listRect.top;
-    } else if (optRect.bottom > listRect.bottom) {
-      list.scrollTop += optRect.bottom - listRect.bottom;
-    }
-  }, [highlightedIndex, filteredPlaylists]);
-
-  const handlePlaylistKeyDown = (e: React.KeyboardEvent) => {
-    if (!isDropdownOpen) return;
-    const opts = filteredPlaylists;
-    if (opts.length === 0) {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        setIsDropdownOpen(false);
-      }
-      return;
-    }
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setHighlightedIndex((i) => (i + 1) % opts.length);
-      return;
-    }
-    if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setHighlightedIndex((i) => (i - 1 + opts.length) % opts.length);
-      return;
-    }
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handlePlaylistChange(opts[highlightedIndex]);
-      return;
-    }
-    if (e.key === "Escape") {
-      e.preventDefault();
-      setIsDropdownOpen(false);
-    }
-  };
-
-  // Close dropdown when clicking outside; clear filter on close
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setFilter("");
-        setIsDropdownOpen(false);
-      }
-    };
-
-    if (isDropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }
-  }, [isDropdownOpen]);
-
-  // Dismiss dropdown on scroll (e.g. mobile), but not when scrolling inside the dropdown
-  useEffect(() => {
-    if (!isDropdownOpen) return;
-    const handleScroll = (e: Event) => {
-      if (dropdownRef.current?.contains(e.target as Node)) return;
-      setFilter("");
-      setIsDropdownOpen(false);
-    };
-    document.addEventListener("scroll", handleScroll, { passive: true, capture: true });
-    return () => document.removeEventListener("scroll", handleScroll, { capture: true });
-  }, [isDropdownOpen]);
 
   // Determine what to display in the marquee (song name or status only)
   const getNowPlayingContent = () => {
@@ -425,73 +294,18 @@ function Player() {
           <label style={{ fontSize: "16px", textAlign: "start", width: "100%", padding:'0 4px' }} htmlFor="playlist-select">
              Playlist:
           </label>
-          <div className="custom-select" ref={dropdownRef}>
-            <div
-              ref={triggerRef}
-              className="custom-select-trigger custom-select-trigger--has-value"
-              role="combobox"
-              aria-expanded={isDropdownOpen}
-              aria-haspopup="listbox"
-              onClick={() => {
-                if (!isDropdownOpen) {
-                  setIsDropdownOpen(true);
-                  inputRef.current?.focus({ preventScroll: true });
-                }
-              }}
+          <div className="custom-select">
+            <select
+              id="playlist-select"
+              value={selectedPlaylist}
+              onChange={(e) => handlePlaylistChange(e.target.value)}
             >
-              <input
-                ref={inputRef}
-                id="playlist-select"
-                type="text"
-                className="custom-select-input"
-                value={isDropdownOpen ? filter : selectedPlaylist}
-                readOnly={!isDropdownOpen}
-                onChange={(e) => isDropdownOpen && setFilter(e.target.value)}
-                onKeyDown={handlePlaylistKeyDown}
-                onFocus={() => {
-                  if (!isDropdownOpen) setIsDropdownOpen(true);
-                }}
-                style={{ fontSize: "16px" }}
-                placeholder={isDropdownOpen ? "Type to search…" : undefined}
-                autoComplete="off"
-              />
-              <span className="custom-select-arrow">▼</span>
-            </div>
-            {isDropdownOpen && (
-              <div
-                ref={dropdownListRef}
-                className="custom-select-dropdown"
-                role="listbox"
-                style={{
-                  ...(dropdownPosition.top != null && {
-                    top: `${dropdownPosition.top}px`,
-                  }),
-                  ...(dropdownPosition.bottom != null && {
-                    bottom: `${dropdownPosition.bottom}px`,
-                  }),
-                  left: `${dropdownPosition.left}px`,
-                }}
-              >
-                {filteredPlaylists.length === 0 ? (
-                  <div className="custom-select-no-matches">No matches</div>
-                ) : (
-                  filteredPlaylists.map((playlist, i) => (
-                    <button
-                      key={playlist}
-                      ref={i === highlightedIndex ? highlightedOptionRef : undefined}
-                      type="button"
-                      role="option"
-                      aria-selected={selectedPlaylist === playlist || i === highlightedIndex}
-                      className={`custom-select-option ${i === highlightedIndex ? "highlighted" : ""}`}
-                      onMouseEnter={() => setHighlightedIndex(i)}
-                      onClick={() => handlePlaylistChange(playlist)}
-                    >
-                      {playlist}
-                    </button>
-                  ))
-                )}
-              </div>
-            )}
+              {availablePlaylists.map((playlist) => (
+                <option key={playlist} value={playlist}>
+                  {playlist}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>

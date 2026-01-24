@@ -87,12 +87,14 @@ export default function Banner({
 
       <div className="child-div banner-controls-section">
         <div
+          className="banner-controls-inner"
           style={{
             display: "flex",
             alignContent: "space-between",
             justifyContent: "center",
             flexDirection: "column",
             textAlign: "center",
+            width: "100%",
           }}
         >
           <button
@@ -124,6 +126,7 @@ export default function Banner({
               justifyContent: "space-between",
               columnGap: "2%",
               width: "100%",
+              minWidth: 0,
             }}
           >
             <div
@@ -153,7 +156,7 @@ export default function Banner({
                 Automatic
               </button>
               <button
-                disabled={!automaticMode}
+                disabled={currentLocation}
                 style={{
                   width: "100%",
                   height: "100%",
@@ -167,7 +170,7 @@ export default function Banner({
                 {positionError ? positionError : "Current Location"}
               </button>
             </div>
-            <div className="window">
+            <div className="window banner-controls-window">
               <CitySelector
                 currentLocation={currentLocation}
                 setCurrentLocation={setCurrentLocation}

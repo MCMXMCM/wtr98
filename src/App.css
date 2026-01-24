@@ -4,17 +4,6 @@
 }
 
 
-/* Disabled state for custom select when automatic mode is active */
-.custom-select-trigger--disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background-color: #e0e0e0;
-}
-
-.custom-select-trigger--disabled .custom-select-input {
-  cursor: not-allowed;
-}
-
 @media (min-width: 1200px) {
   .weather-panels-wrapper > .window:nth-of-type(2) {
     flex: 0 0 auto;
@@ -143,6 +132,17 @@
 .banner-window {
   margin-top: 25px;
   margin-bottom: 8px;
+}
+
+.banner-controls-inner {
+  min-width: 0;
+}
+
+.banner-controls-section .banner-controls-window {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (min-width: 1200px) {

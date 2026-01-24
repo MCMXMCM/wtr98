@@ -1,119 +1,32 @@
+/* Wrapper: same position, padding, width as before - no layout shift */
 .custom-select {
   position: relative;
   padding: 4px 0 0 0;
   width: 100%;
 }
 
-.custom-select-trigger {
+.custom-select select {
   width: 100%;
+  min-height: 20px;
+  padding: 2px 4px;
+  box-sizing: border-box;
   background-color: #c0c0c0;
   border: 1px inset #c0c0c0;
   color: black;
   font-family: inherit;
   font-size: 16px;
-  cursor: text;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 2px 4px;
-  box-sizing: border-box;
+  cursor: pointer;
   text-align: left;
-  min-height: 20px;
-  overflow: hidden;
   min-width: 0;
 }
 
-.custom-select-trigger--has-value .custom-select-input {
-  background-color: white;
-  color: black;
-}
-
-/* 98.css sets input:read-only to gray (--surface). Override so selected value stays white. */
-.custom-select-trigger--has-value .custom-select-input[readonly] {
-  background-color: white !important;
-  color: black;
-}
-
-.custom-select-trigger:focus-within {
+.custom-select select:focus {
   outline: 1px dotted #000;
   outline-offset: -2px;
 }
 
-.custom-select-input {
-  flex: 1 1 0;
-  min-width: 0;
-  border: none;
-  background: transparent;
-  color: black;
-  font: inherit;
-  padding: 0;
-  outline: none;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.custom-select-input::placeholder {
-  color: #808080;
-}
-
-.custom-select-arrow {
-  flex-shrink: 0;
-  margin-left: 4px;
-  font-size: 10px;
-}
-
-.custom-select-dropdown {
-  position: fixed;
-  background-color: #c0c0c0;
-  border: 1px outset #c0c0c0;
-  z-index: 10000;
-  max-height: 200px;
-  max-width: calc(100vw - 16px);
-  overflow-y: auto;
-  overflow-x: auto;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  margin-top: 2px;
-  width: max-content;
-}
-
-.custom-select-option {
-  width: 100%;
-  white-space: nowrap;
-  background-color: transparent;
-  border: none;
-  font-family: inherit;
-  font-size: 16px;
-  cursor: pointer;
-  padding: 4px 8px;
-  text-align: left;
-  box-sizing: border-box;
-  display: block;
-}
-
-.custom-select-option:hover {
-  background-color: #000080;
-  color: white;
-}
-
-.custom-select-option.selected,
-.custom-select-option.highlighted {
-  background-color: #000080;
-  color: white;
-}
-
-.custom-select-no-matches {
-  padding: 8px;
-  font-size: 16px;
-  color: #808080;
-  font-style: italic;
-}
-
-.custom-select-trigger--disabled {
+.custom-select select:disabled {
   opacity: 0.6;
-  cursor: not-allowed !important;
+  cursor: not-allowed;
   background-color: #e0e0e0;
-}
-
-.custom-select-trigger--disabled .custom-select-input {
-  cursor: not-allowed !important;
 }
