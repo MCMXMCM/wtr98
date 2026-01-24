@@ -16,7 +16,7 @@ export default function Attributions() {
       </div>
       <div style={{ padding: "8px", overflowY: "auto", flex: 1, minHeight: 0 }}>
         <p style={{ fontWeight: "bold" }}>
-          Icons and songs used on this site were made available by{" "}
+          Icons used on this site were made available by{" "}
           <a href="https://twcclassics.com/downloads.html">TWC Classics</a>. The
           original creators of the icons are cited there as Charles A. and Nick
           S.
