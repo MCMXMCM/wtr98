@@ -3,6 +3,18 @@
   max-height: 250px;
 }
 
+
+/* Disabled state for custom select when automatic mode is active */
+.custom-select-trigger--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #e0e0e0;
+}
+
+.custom-select-trigger--disabled .custom-select-input {
+  cursor: not-allowed;
+}
+
 @media (min-width: 1200px) {
   .weather-panels-wrapper > .window:nth-of-type(2) {
     flex: 0 0 auto;

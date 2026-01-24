@@ -11,12 +11,18 @@ interface CitySelectorProps {
   currentLocation: boolean;
   setCurrentLocation: Dispatch<SetStateAction<boolean>>;
   setPosition: Dispatch<SetStateAction<Position>>;
+  automaticMode: boolean;
+  setAutomaticMode: Dispatch<SetStateAction<boolean>>;
 }
+
+const USER_HAS_SELECTED_KEY = "wtr98-user-has-selected";
 
 function CitySelector({
   setPosition,
   setCurrentLocation,
   currentLocation,
+  automaticMode,
+  setAutomaticMode,
 }: CitySelectorProps) {
   const queryClient = useQueryClient();
   const [selected, setSelected] = useState(PLACEHOLDER);
@@ -43,6 +49,10 @@ function CitySelector({
       return;
     }
     setCurrentLocation(false);
+    // Turn off automatic mode when user selects a city
+    setAutomaticMode(false);
+    localStorage.setItem("wtr98-automatic-mode", "false");
+    localStorage.setItem(USER_HAS_SELECTED_KEY, "true");
     const { latitude, longitude } = cityOptions[value];
     localStorage.setItem("latitude", String(latitude));
     localStorage.setItem("longitude", String(longitude));
@@ -172,12 +182,13 @@ function CitySelector({
       <div className="custom-select" ref={dropdownRef}>
         <div
           ref={triggerRef}
-          className={`custom-select-trigger ${displayValue !== PLACEHOLDER ? "custom-select-trigger--has-value" : ""}`}
+          className={`custom-select-trigger ${displayValue !== PLACEHOLDER ? "custom-select-trigger--has-value" : ""} ${automaticMode ? "custom-select-trigger--disabled" : ""}`}
           role="combobox"
           aria-expanded={isDropdownOpen}
           aria-haspopup="listbox"
+          aria-disabled={automaticMode}
           onClick={() => {
-            if (!isDropdownOpen) {
+            if (!isDropdownOpen && !automaticMode) {
               setIsDropdownOpen(true);
               inputRef.current?.focus({ preventScroll: true });
             }
@@ -193,8 +204,9 @@ function CitySelector({
             onChange={(e) => isDropdownOpen && setFilter(e.target.value)}
             onKeyDown={handleKeyDown}
             onFocus={() => {
-              if (!isDropdownOpen) setIsDropdownOpen(true);
+              if (!isDropdownOpen && !automaticMode) setIsDropdownOpen(true);
             }}
+            disabled={automaticMode}
             style={{ fontSize: "16px" }}
             placeholder={isDropdownOpen ? "Type to search…" : undefined}
             autoComplete="off"

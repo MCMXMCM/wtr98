@@ -21,6 +21,8 @@ interface BannerProps {
   setPositionError: Dispatch<SetStateAction<string | null>>;
   refresh: CallableFunction;
   onCurrentLocationSelect: CallableFunction;
+  automaticMode: boolean;
+  setAutomaticMode: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function Banner({
@@ -31,6 +33,8 @@ export default function Banner({
   position,
   setCurrentLocation,
   setPosition,
+  automaticMode,
+  setAutomaticMode,
 }: BannerProps) {
   const queryClient = useQueryClient();
 
@@ -59,6 +63,10 @@ export default function Banner({
             onMapClick={(newPosition) => {
               setPosition(newPosition);
               setCurrentLocation(false);
+              // Turn off automatic mode when user clicks map
+              setAutomaticMode(false);
+              localStorage.setItem("wtr98-automatic-mode", "false");
+              localStorage.setItem("wtr98-user-has-selected", "true");
               localStorage.setItem("latitude", newPosition.latitude.toString());
               localStorage.setItem("longitude", newPosition.longitude.toString());
               queryClient.refetchQueries({
@@ -122,18 +130,37 @@ export default function Banner({
               style={{
                 textAlign: "center",
                 display: "flex",
+                flexDirection: "column",
                 alignContent: "end",
                 justifyContent: "center",
                 alignItems: "center",
+                rowGap: "4px",
+                flex: "1",
               }}
             >
               <button
-                disabled={currentLocation}
+                disabled={automaticMode}
+                style={{
+                  width: "100%",
+                  fontSize: "16px",
+                  marginBottom: "4px",
+                  ...(automaticMode && {
+                    border: "2px inset #c0c0c0",
+                  }),
+                }}
+                onClick={() => setAutomaticMode(!automaticMode)}
+              >
+                Automatic
+              </button>
+              <button
+                disabled={!automaticMode}
                 style={{
                   width: "100%",
                   height: "100%",
                   fontSize: "16px",
-                  cursor: "pointer",
+                  ...(currentLocation && {
+                    border: "2px inset #c0c0c0",
+                  }),
                 }}
                 onClick={() => onCurrentLocationSelect()}
               >
@@ -145,6 +172,8 @@ export default function Banner({
                 currentLocation={currentLocation}
                 setCurrentLocation={setCurrentLocation}
                 setPosition={setPosition}
+                automaticMode={automaticMode}
+                setAutomaticMode={setAutomaticMode}
               />
             </div>
           </div>

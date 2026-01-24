@@ -105,13 +105,13 @@ function Player() {
         setShouldMarquee(isOverflowing);
         
         if (isOverflowing) {
-          // Calculate the scroll distance: start from right (container width) to left (-overflow amount)
+          // Calculate the scroll distance: start from right (container width) to left (-text width)
           const containerWidth = container.clientWidth;
           const textWidth = text.scrollWidth;
-          const overflowAmount = textWidth - containerWidth;
-          // Start at container width (text off-screen right), end at -overflowAmount (text off-screen left)
+          // Start at container width (left edge of text at right edge of container)
+          // End at -textWidth (left edge of text at textWidth pixels left, so right edge is at left edge of container)
           text.style.setProperty('--scroll-start', `${containerWidth}px`);
-          text.style.setProperty('--scroll-end', `-${overflowAmount}px`);
+          text.style.setProperty('--scroll-end', `-${textWidth}px`);
         } else {
           setShouldMarquee(false);
         }

@@ -22,37 +22,17 @@
 .audio-btn {
   flex: 1;
   height: 24px;
-  background-color: #c0c0c0;
-  border: 1px outset #c0c0c0 !important;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  font-size: 10px;
+  padding: 0;
+  margin: 0;
   line-height: 1;
   user-select: none;
-  box-sizing: border-box !important;
+  box-sizing: border-box;
   overflow: hidden;
   min-width: 0;
-}
-
-.audio-btn:active {
-  border: 1px inset #c0c0c0;
-}
-
-.audio-btn:hover {
-  background-color: #d4d4d4;
-}
-
-.audio-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.audio-btn:disabled:hover {
-  background-color: #c0c0c0;
 }
 
 /* Icon styles using CSS - works on all platforms including iOS */
