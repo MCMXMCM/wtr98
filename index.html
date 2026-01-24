@@ -7,26 +7,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#008080" />
     <meta name="description" content="A nostalgic weather app with a Windows 98 aesthetic" />
+    <meta name="app-version" content="2025-01-24-v2" />
     <title>Weather 98</title>
     <script>
       // Cleanup old PWA service workers and caches - must be inline to run with old cached HTML
       (function() {
+        var needsReload = false;
+        var cleanupComplete = false;
+        
+        // Check if this is old HTML without the version meta tag
+        var versionMeta = document.querySelector('meta[name="app-version"]');
+        if (!versionMeta) {
+          // This is old HTML - force immediate reload with cache bypass
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(regs) {
+              regs.forEach(function(r) { r.unregister(); });
+            });
+          }
+          if ('caches' in window) {
+            caches.keys().then(function(names) {
+              names.forEach(function(n) { caches.delete(n); });
+            });
+          }
+          window.location.replace(window.location.href.split('?')[0] + '?_cleanup=' + Date.now());
+          return;
+        }
+        
+        function doReload() {
+          if (!cleanupComplete) {
+            cleanupComplete = true;
+            // Use replace with cache-busting query to bypass all caches
+            var separator = window.location.href.indexOf('?') > -1 ? '&' : '?';
+            window.location.replace(window.location.href + separator + '_sw_cleanup=' + Date.now());
+          }
+        }
+        
+        // Check if a service worker is currently controlling this page
         if ('serviceWorker' in navigator) {
+          if (navigator.serviceWorker.controller) {
+            needsReload = true;
+          }
+          
+          // Unregister all service workers
           navigator.serviceWorker.getRegistrations().then(function(registrations) {
             if (registrations.length > 0) {
+              needsReload = true;
               Promise.all(registrations.map(function(r) { return r.unregister(); }))
-                .then(function() {
-                  if ('caches' in window) {
-                    caches.keys().then(function(names) {
-                      Promise.all(names.map(function(name) { return caches.delete(name); }))
-                        .then(function() { window.location.reload(); });
-                    });
-                  } else {
-                    window.location.reload();
-                  }
-                });
+                .catch(function() { /* ignore errors */ });
+            }
+            
+            // Clear all caches
+            if ('caches' in window) {
+              caches.keys().then(function(names) {
+                if (names.length > 0) {
+                  needsReload = true;
+                  Promise.all(names.map(function(name) { return caches.delete(name); }))
+                    .catch(function() { /* ignore errors */ });
+                }
+                
+                if (needsReload) {
+                  // Small delay to ensure cleanup completes
+                  setTimeout(doReload, 100);
+                }
+              }).catch(function() {
+                if (needsReload) {
+                  setTimeout(doReload, 100);
+                }
+              });
+            } else if (needsReload) {
+              setTimeout(doReload, 100);
+            }
+          }).catch(function() {
+            // If we can't check registrations, still try to reload if controller exists
+            if (needsReload) {
+              setTimeout(doReload, 100);
             }
           });
+        } else if ('caches' in window) {
+          // No service worker API, but check caches
+          caches.keys().then(function(names) {
+            if (names.length > 0) {
+              Promise.all(names.map(function(name) { return caches.delete(name); }))
+                .catch(function() { /* ignore errors */ })
+                .then(function() {
+                  setTimeout(doReload, 100);
+                });
+            }
+          }).catch(function() { /* ignore errors */ });
         }
       })();
     </script>
