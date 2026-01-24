@@ -14,25 +14,23 @@ export default function Attributions() {
       <div className="title-bar">
         <div className="title-bar-text">Weather98 Attributions</div>
       </div>
-      <div style={{ padding: "8px", overflowY: "auto", flex: 1, minHeight: 0 }}>
+      <div style={{ padding: "4px 8px ", overflowY: "auto", flex: 1, minHeight: 0 }}>
         <p style={{ fontWeight: "bold" }}>
           Icons used on this site were made available by{" "}
           <a href="https://twcclassics.com/downloads.html">TWC Classics</a>. The
           original creators of the icons are cited there as Charles A. and Nick
-          S.
+          S.  
         </p>
         <p style={{ fontWeight: "bold" }}>
           Styled with 98.css. Give it a star on github{" "}
-          <a href="https://github.com/jdan/98.css">here</a>.
-        </p>
-        <p style={{ fontWeight: "bold" }}>
-          Weather data is from the National Weather Service api. For more info
+          <a href="https://github.com/jdan/98.css">here</a>.   Weather data is from the National Weather Service api. For more info
           visit{" "}
           <a href="https://www.weather.gov/documentation/services-web-api">
             weather.gov
           </a>
-          .
+          . Music made with <a href="https://suno.com">suno</a>
         </p>
+       
 
         <p style={{ fontWeight: "bold" }}>
           For questions, concerns, issues, requests, et cetera, reach out via

@@ -14,6 +14,8 @@ Uses:
 
 **Icons** used on this site were made available by [TWC Classics](https://twcclassics.com/downloads.html). The original creators of the icons are cited there as Charles A. and Nick S.
 
+**Icons** music was generated with [suno](https://suno.com). 
+
 **Styled** with 98.css. Give it a star on github [here](https://github.com/jdan/98.css).
 
 **Weather data** is from the National Weather Service api. For more info visit [weather.gov](https://www.weather.gov/documentation/services-web-api).
