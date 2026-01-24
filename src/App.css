@@ -30,7 +30,7 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
-    overflow: visible;
+    overflow: hidden;
   }
 
   .one-week-window .window-body {
@@ -38,7 +38,7 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
-    overflow: visible;
+    overflow: hidden;
     padding-right: 2px;
     box-sizing: border-box;
   }
@@ -82,7 +82,8 @@
   .grid-container {
     flex: 1;
     min-height: 0;
-    margin-bottom: 8px;
+    margin-top: 6px;
+    margin-bottom: 6px;
     display: grid;
     grid-template-rows: 1fr;
     align-items: stretch;
@@ -99,11 +100,11 @@
 
   /* One-week forecast window structure */
   .grid-container > .window:first-of-type {
-    height: 100%;
+    height: 98%;
     min-height: 0;
     display: flex;
     flex-direction: column;
-    overflow: visible;
+    overflow: hidden;
   }
 
   .grid-container > .window:first-of-type > .one-week-window {
@@ -121,7 +122,22 @@
     grid-template-columns: 1fr;
     margin-bottom: 5%;
   }
+}
 
+.weather-panels-wrapper {
+  padding-top: 8px;
+}
+
+.banner-window {
+  margin-top: 25px;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 1200px) {
+  .banner-window {
+    margin-top: 0;
+    margin-bottom: 6px;
+  }
 }
 
 .marquee {
@@ -131,6 +147,14 @@
   top: 0;
   left: 0;
   background-color: #c0c0c0;
+}
+
+@media (min-width: 1200px) {
+  .marquee {
+    position: static;
+    flex: 0 0 auto;
+    z-index: auto;
+  }
 }
 
 .name-forecast-container {
@@ -285,12 +309,35 @@
 }
 
 @media (min-width: 1200px) {
+  html {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
+  body {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    display: block;
+  }
+
+  #root {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    display: block;
+  }
+
   .main-app-div {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     height: 100vh;
+    max-height: 100vh;
+    min-height: 0;
     overflow: hidden;
   }
 
@@ -300,6 +347,7 @@
     flex: 1;
     min-height: 0;
     width: 100%;
+    padding-top: 0;
   }
 
   .weather-panels-wrapper > .window:first-of-type {
