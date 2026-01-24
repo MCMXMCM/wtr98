@@ -164,7 +164,7 @@ export default function Banner({
                 }}
                 onClick={() => onCurrentLocationSelect()}
               >
-                {positionError ? positionError : "Use Current Location"}
+                {positionError ? positionError : "Current Location"}
               </button>
             </div>
             <div className="window">
