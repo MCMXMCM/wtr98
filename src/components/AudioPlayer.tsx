@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { shuffle } from "../helpers/global";
-import { fetchSongList } from "../services/music-service";
+import { fetchSongList, fetchPlaylists } from "../services/music-service";
 import "./AudioPlayer.css";
 
 const BATCH_SIZE = 5;
@@ -22,13 +22,47 @@ export default function Player() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>("playlist 1");
+  const [availablePlaylists, setAvailablePlaylists] = useState<string[]>([]);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const loadPlaylist = useCallback(async () => {
+  // Fetch available playlists on mount
+  useEffect(() => {
+    const loadPlaylists = async () => {
+      try {
+        const playlists = await fetchPlaylists();
+        setAvailablePlaylists(playlists);
+        
+        // If "playlist 1" is not available, default to first playlist or null (root)
+        if (playlists.length > 0 && !playlists.includes("playlist 1")) {
+          // Check if any playlist exists, otherwise default to root
+          setSelectedPlaylist(playlists[0] || null);
+        } else if (playlists.length === 0) {
+          // No playlists found, default to root
+          setSelectedPlaylist(null);
+        }
+      } catch (e) {
+        console.error("Failed to fetch playlists:", e);
+        // On error, default to root
+        setSelectedPlaylist(null);
+      }
+    };
+    
+    loadPlaylists();
+  }, []);
+
+  const loadPlaylist = useCallback(async (playlist: string | null) => {
     setIsLoading(true);
     setError(null);
     try {
-      const keys = await fetchSongList();
+      let keys = await fetchSongList(playlist);
+      
+      // If playlist is empty, fallback to root
+      if (playlist && keys.length === 0) {
+        console.log(`Playlist "${playlist}" is empty, falling back to root`);
+        keys = await fetchSongList(null);
+      }
+      
       if (keys.length === 0) {
         setError("No songs found");
         setAllTracks([]);
@@ -49,8 +83,8 @@ export default function Player() {
   }, []);
 
   useEffect(() => {
-    loadPlaylist();
-  }, [loadPlaylist]);
+    loadPlaylist(selectedPlaylist);
+  }, [selectedPlaylist, loadPlaylist]);
 
   useEffect(() => {
     if (loadedTracks.length === 0 || !audioRef.current) return;
@@ -195,6 +229,11 @@ export default function Player() {
     handleClickNext();
   };
 
+  const handlePlaylistChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    setSelectedPlaylist(value === "" ? null : value);
+  };
+
   if (isLoading) {
     return (
       <div className="minimal-audio-player">
@@ -210,7 +249,7 @@ export default function Player() {
         <button
           type="button"
           className="audio-btn"
-          onClick={loadPlaylist}
+          onClick={() => loadPlaylist(selectedPlaylist)}
           style={{ marginTop: 8 }}
         >
           Retry
@@ -231,8 +270,29 @@ export default function Player() {
 
   return (
     <div className="minimal-audio-player">
-      <div className="now-playing">
-        Now Playing: {getSongName(currentKey)}
+      <div className="playlist-selector-row">
+        <select
+          className="playlist-select"
+          value={selectedPlaylist || ""}
+          onChange={handlePlaylistChange}
+          style={{
+            fontSize: "12px",
+            padding: "2px 4px",
+            cursor: "pointer",
+            flex: "0 0 auto",
+            marginRight: "8px",
+          }}
+        >
+          <option value="">Root</option>
+          {availablePlaylists.map((playlist) => (
+            <option key={playlist} value={playlist}>
+              {playlist}
+            </option>
+          ))}
+        </select>
+        <div className="now-playing">
+          Now Playing: {getSongName(currentKey)}
+        </div>
       </div>
       <div className="audio-controls">
         <button
