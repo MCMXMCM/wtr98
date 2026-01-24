@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback, memo } from "react";
+import { useState, useRef, useEffect, useLayoutEffect, useCallback, memo } from "react";
 import { shuffle } from "../helpers/global";
 import { fetchSongList, fetchPlaylists } from "../services/music-service";
 import "./AudioPlayer.css";
@@ -29,8 +29,13 @@ function Player() {
   const [isFocused, setIsFocused] = useState(false);
   const [shouldMarquee, setShouldMarquee] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [dropdownPosition, setDropdownPosition] = useState<{
+    top?: number;
+    bottom?: number;
+    left: number;
+  }>({ left: 0 });
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownListRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const nowPlayingRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
@@ -263,16 +268,32 @@ function Player() {
     setIsDropdownOpen(false);
   };
 
-  // Calculate dropdown position when it opens
-  useEffect(() => {
-    if (isDropdownOpen && buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
+  // Position dropdown when it opens; keep within viewport (single useLayoutEffect so clamp isn’t overwritten)
+  useLayoutEffect(() => {
+    if (!isDropdownOpen || !buttonRef.current || !dropdownListRef.current) return;
+    const rect = buttonRef.current.getBoundingClientRect();
+    const el = dropdownListRef.current;
+    const gap = 2;
+    const pad = 8;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const width = Math.min(el.offsetWidth, vw - 2 * pad);
+    const spaceBelow = vh - rect.bottom - gap;
+    const spaceAbove = rect.top - gap;
+    const openAbove = spaceAbove > spaceBelow;
+    let left = Math.max(pad, Math.min(rect.left, vw - width - pad));
+    if (openAbove) {
       setDropdownPosition({
-        top: rect.bottom + 2,
-        left: rect.left
+        bottom: vh - (rect.top - gap),
+        left,
+      });
+    } else {
+      setDropdownPosition({
+        top: rect.bottom + gap,
+        left,
       });
     }
-  }, [isDropdownOpen]);
+  }, [isDropdownOpen, availablePlaylists]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -288,6 +309,14 @@ function Player() {
         document.removeEventListener("mousedown", handleClickOutside);
       };
     }
+  }, [isDropdownOpen]);
+
+  // Dismiss dropdown on scroll (e.g. mobile)
+  useEffect(() => {
+    if (!isDropdownOpen) return;
+    const handleScroll = () => setIsDropdownOpen(false);
+    document.addEventListener("scroll", handleScroll, { passive: true, capture: true });
+    return () => document.removeEventListener("scroll", handleScroll, { capture: true });
   }, [isDropdownOpen]);
 
   // Determine what to display in the marquee (song name or status only)
@@ -310,6 +339,18 @@ function Player() {
   return (
     <div className="minimal-audio-player">
       <div className="playlist-selector-row">
+     
+        <div className="window now-playing-window">
+          <label className="now-playing-label" style={{ textAlign: "start", width: "100%", padding:'0 4px' }}>Now Playing:</label>
+          <div className="now-playing" ref={nowPlayingRef}>
+            <span
+              ref={textRef}
+              className={shouldMarquee && hasTracks ? "now-playing-text marquee" : "now-playing-text"}
+            >
+              {getNowPlayingContent()}
+            </span>
+          </div>
+        </div>
         <div className="window">
           <label style={{ fontSize: "16px", textAlign: "start", width: "100%", padding:'0 4px' }} htmlFor="playlist-select">
              Playlist:
@@ -345,9 +386,15 @@ function Player() {
             </button>
             {isDropdownOpen && (
               <div
+                ref={dropdownListRef}
                 className="custom-select-dropdown"
                 style={{
-                  top: `${dropdownPosition.top}px`,
+                  ...(dropdownPosition.top != null && {
+                    top: `${dropdownPosition.top}px`,
+                  }),
+                  ...(dropdownPosition.bottom != null && {
+                    bottom: `${dropdownPosition.bottom}px`,
+                  }),
                   left: `${dropdownPosition.left}px`,
                 }}
               >
@@ -363,17 +410,6 @@ function Player() {
                 ))}
               </div>
             )}
-          </div>
-        </div>
-        <div className="window now-playing-window">
-          <label className="now-playing-label" style={{ textAlign: "start", width: "100%", padding:'0 4px' }}>Now Playing:</label>
-          <div className="now-playing" ref={nowPlayingRef}>
-            <span
-              ref={textRef}
-              className={shouldMarquee && hasTracks ? "now-playing-text marquee" : "now-playing-text"}
-            >
-              {getNowPlayingContent()}
-            </span>
           </div>
         </div>
       </div>
