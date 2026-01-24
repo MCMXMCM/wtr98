@@ -4,6 +4,8 @@ import { fetchSongList, fetchPlaylists } from "../services/music-service";
 import "./AudioPlayer.css";
 
 const BATCH_SIZE = 5;
+const STORAGE_KEY = "wtr98-audio-playlist";
+const DEFAULT_PLAYLIST = "classic";
 
 function getCdnUrl(key: string): string {
   const base = import.meta.env.VITE_MUSIC_CDN_URL as string | undefined;
@@ -22,7 +24,7 @@ function Player() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedPlaylist, setSelectedPlaylist] = useState<string>("Root");
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string>(DEFAULT_PLAYLIST);
   const [availablePlaylists, setAvailablePlaylists] = useState<string[]>([]);
   const [isFocused, setIsFocused] = useState(false);
   const [shouldMarquee, setShouldMarquee] = useState(false);
@@ -34,25 +36,24 @@ function Player() {
   const textRef = useRef<HTMLSpanElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Fetch available playlists on mount
+  // Fetch available playlists on mount; init selection from localStorage or default to classic
   useEffect(() => {
     const loadPlaylists = async () => {
       try {
         const playlists = await fetchPlaylists();
         setAvailablePlaylists(playlists);
-        
-        // Simply default to first playlist if available, otherwise stay on Root
-        if (playlists.length > 0) {
-          setSelectedPlaylist(playlists[0]); // Will be "classic" (first alphabetically)
+        const stored = localStorage.getItem(STORAGE_KEY);
+        let preferred =
+          stored && playlists.includes(stored) ? stored : DEFAULT_PLAYLIST;
+        if (!playlists.includes(preferred)) {
+          preferred = playlists[0] ?? DEFAULT_PLAYLIST;
         }
-        // else selectedPlaylist stays as "Root"
+        setSelectedPlaylist(preferred);
       } catch (e) {
         console.error("Failed to fetch playlists:", e);
-        // On error, default to root
-        setSelectedPlaylist("Root");
+        setSelectedPlaylist(DEFAULT_PLAYLIST);
       }
     };
-    
     loadPlaylists();
   }, []);
 
@@ -60,16 +61,7 @@ function Player() {
     setIsLoading(true);
     setError(null);
     try {
-      // If playlist is "Root", pass null to fetchSongList
-      const playlistParam = playlist === "Root" ? null : playlist;
-      let keys = await fetchSongList(playlistParam);
-      
-      // If playlist is empty, fallback to root
-      if (playlist !== "Root" && keys.length === 0) {
-        console.log(`Playlist "${playlist}" is empty, falling back to root`);
-        keys = await fetchSongList(null);
-      }
-      
+      const keys = await fetchSongList(playlist);
       if (keys.length === 0) {
         setError("No songs found");
         setAllTracks([]);
@@ -267,6 +259,7 @@ function Player() {
 
   const handlePlaylistChange = (value: string) => {
     setSelectedPlaylist(value);
+    localStorage.setItem(STORAGE_KEY, value);
     setIsDropdownOpen(false);
   };
 
@@ -318,8 +311,8 @@ function Player() {
     <div className="minimal-audio-player">
       <div className="playlist-selector-row">
         <div className="window">
-          <label style={{ fontSize: "16px" }} htmlFor="playlist-select">
-            Select Playlist:
+          <label style={{ fontSize: "16px", textAlign: "start", width: "100%", padding:'0 4px' }} htmlFor="playlist-select">
+             Playlist:
           </label>
           <div className="custom-select" ref={dropdownRef}>
             <button
@@ -351,20 +344,13 @@ function Player() {
               <span className="custom-select-arrow">▼</span>
             </button>
             {isDropdownOpen && (
-              <div 
+              <div
                 className="custom-select-dropdown"
                 style={{
                   top: `${dropdownPosition.top}px`,
-                  left: `${dropdownPosition.left}px`
+                  left: `${dropdownPosition.left}px`,
                 }}
               >
-                <button
-                  type="button"
-                  className={`custom-select-option ${selectedPlaylist === "Root" ? "selected" : ""}`}
-                  onClick={() => handlePlaylistChange("Root")}
-                >
-                  Root
-                </button>
                 {availablePlaylists.map((playlist) => (
                   <button
                     key={playlist}
@@ -380,7 +366,7 @@ function Player() {
           </div>
         </div>
         <div className="window now-playing-window">
-          <label className="now-playing-label">Now Playing:</label>
+          <label className="now-playing-label" style={{ textAlign: "start", width: "100%", padding:'0 4px' }}>Now Playing:</label>
           <div className="now-playing" ref={nowPlayingRef}>
             <span
               ref={textRef}
