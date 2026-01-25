@@ -8,9 +8,10 @@ import dayjs from "dayjs";
 import { Hourly } from "../../types/hourly";
 import { Points, Position } from "../../types/global";
 import { Hourglass } from "react95";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import AudioPlayer from "../AudioPlayer";
 import ForecastPreview from "../ForecastPreview";
+import Modal from "../Modal";
 
 interface BannerProps {
   currentLocation: boolean;
@@ -284,6 +285,10 @@ function NameIconAndTempWithForecast({
   const { weekly } = useWeather();
   const currentPeriod = hourly?.properties?.periods?.[0];
   const isHourlyAvailable = !!currentPeriod;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // Get the first period from weekly forecast (same as marquee uses)
+  const weeklyFirstPeriod = weekly?.properties?.periods?.[0];
 
   // Find today's high (first daytime period) and low (first nighttime period)
   const todayHigh = weekly?.properties?.periods?.find(p => p.isDaytime);
@@ -293,7 +298,14 @@ function NameIconAndTempWithForecast({
     <div className="name-temp-with-forecast">
       <div className="name-temp-content">
         <div className="temp-icon-row ">
-          <div className="temp-icon-left">
+          <div 
+            className="temp-icon-left"
+            onClick={() => {
+              if (weeklyFirstPeriod) {
+                setIsModalOpen(true);
+              }
+            }}
+          >
             <h4 className="city-name">
               {isFetching ? (
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -360,6 +372,13 @@ function NameIconAndTempWithForecast({
           </div>
         </div>
       </div>
+      {weeklyFirstPeriod && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          forecast={weeklyFirstPeriod}
+        />
+      )}
     </div>
   );
 }

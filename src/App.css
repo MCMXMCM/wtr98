@@ -227,6 +227,7 @@
   justify-content: space-evenly;
   gap: 8px;
   min-width: 0;
+  cursor: pointer;
 }
 
 .temp-icon-top-row {
@@ -517,7 +518,7 @@
   .temp-icon-left .short-description {
     margin-top: 4px;
     min-height: 2.2em;
-    text-align: start;
+    text-align: center;
     width: 100%;
   }
 
