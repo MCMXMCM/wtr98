@@ -386,11 +386,36 @@ function NameIconAndTempWithForecast({
                     cursor: "pointer",
 
                   }}>{`⚠ ${firstActiveAlert.properties.event}`}</h4>
+               
+           
+                </div>
+              ) : isHourlyAvailable ? (
+                <h4>{currentPeriod.shortForecast}</h4>
+              ) : (
+                <h4>Hourly forecast not available</h4>
+              )}
+            </div>
+          </div>
+          <div className="forecast-preview-column">
+            <ForecastPreview />
+          </div>
+          
+        </div>
+        {firstActiveAlert ? (
+                <div 
+                  style={{ display: "flex", flexDirection: "column", alignItems: "start", width: "100%" }}
+                  onClick={() => {
+                    setSelectedAlert(firstActiveAlert);
+                    setIsAlertModalOpen(true);
+                  }}
+                >
+                 
                   <p
                     style={{
                       fontSize: "1rem",
                       cursor: "pointer",
                       margin: 0,
+                      textAlign: "start",
                     }}
                   
                   >
@@ -405,7 +430,7 @@ function NameIconAndTempWithForecast({
                           : "";
                         
                         if (isValidEnds) {
-                          return `Expected to last until ${endsDate.format("h:mm, dddd, MMMM D")}.${additionalAlertsText}`;
+                          return `Expected to last until ${endsDate.format("h:mm a, dddd, MMMM D")}.${additionalAlertsText}`;
                         } else {
                           return additionalAlertsText ? additionalAlertsText.substring(1) : "";
                         }
@@ -413,18 +438,8 @@ function NameIconAndTempWithForecast({
                     </>
                   </p>
            
-                </div>
-              ) : isHourlyAvailable ? (
-                <h4>{currentPeriod.shortForecast}</h4>
-              ) : (
-                <h4>Hourly forecast not available</h4>
-              )}
-            </div>
-          </div>
-          <div className="forecast-preview-column">
-            <ForecastPreview />
-          </div>
-        </div>
+                </div>): null}
+                
       </div>
       {weeklyFirstPeriod && (
         <Modal
