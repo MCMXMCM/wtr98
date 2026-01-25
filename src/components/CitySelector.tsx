@@ -21,7 +21,6 @@ function CitySelector({
   setPosition,
   setCurrentLocation,
   currentLocation,
-  automaticMode,
   setAutomaticMode,
 }: CitySelectorProps) {
   const queryClient = useQueryClient();
