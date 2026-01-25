@@ -207,7 +207,7 @@
 }
 
 .city-name {
-  margin-top: 15px;
+  margin-top: 0;
   margin-bottom: 0;
   font-size: 3rem;
 }
@@ -235,6 +235,7 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
+  width: 100%;
 }
 
 .temp-value h4 {
@@ -489,9 +490,11 @@
 
   /* Compact name-temp-content vertically on mobile */
   .city-name {
-    margin-top: 6px;
+    margin-top: 0;
     margin-bottom: 0;
-    font-size: 2rem;
+    font-size: 1.5rem;
+    text-align: start;
+    width: 100%;
   }
 
   .temp-icon-left {
@@ -514,6 +517,8 @@
   .temp-icon-left .short-description {
     margin-top: 4px;
     min-height: 2.2em;
+    text-align: start;
+    width: 100%;
   }
 
   .temp-icon-left .short-description h4 {

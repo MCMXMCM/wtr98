@@ -292,18 +292,17 @@ function NameIconAndTempWithForecast({
   return (
     <div className="name-temp-with-forecast">
       <div className="name-temp-content">
-        <h4 className="city-name">
-          {isFetching ? (
-            <div style={{ display: "flex", alignItems: "center" }}>
-              loading <Hourglass />
-            </div>
-          ) : (
-            points?.city
-          )}
-        </h4>
-
         <div className="temp-icon-row ">
           <div className="temp-icon-left">
+            <h4 className="city-name">
+              {isFetching ? (
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  loading <Hourglass />
+                </div>
+              ) : (
+                points?.city
+              )}
+            </h4>
             <div className="temp-icon-top-row">
               <div className="temp-value">
                 <h4>
