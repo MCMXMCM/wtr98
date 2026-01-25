@@ -29,6 +29,12 @@
   max-width: 48px;
 }
 
+.forecast-preview-icon-placeholder {
+  height: 36px;
+  width: 48px;
+  flex-shrink: 0;
+}
+
 .forecast-preview-name {
   font-size: 14px;
   text-align: center;

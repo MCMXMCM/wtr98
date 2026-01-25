@@ -15,7 +15,9 @@ function getCdnUrl(key: string): string {
 }
 
 function getSongName(key: string): string {
-  return key.replace(/\.mp3$/i, "");
+  // Extract just the filename from the path (e.g., "playlistname/songname.mp3" -> "songname")
+  const filename = key.split("/").pop() || key;
+  return filename.replace(/\.mp3$/i, "");
 }
 
 function Player() {

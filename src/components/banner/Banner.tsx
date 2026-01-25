@@ -330,7 +330,7 @@ function NameIconAndTempWithForecast({
                 )}
               </div>
               {isFetching ? (
-                <div style={{ height: "100px", width: "150px" }} />
+                <div className="weather-icon-placeholder" />
               ) : isHourlyAvailable ? (
                 <img
                   className="main-weather-icon"

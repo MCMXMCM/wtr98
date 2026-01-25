@@ -267,6 +267,14 @@
 .main-weather-icon {
   height: 100px;
   max-width: 150px;
+  display: block;
+}
+
+.weather-icon-placeholder {
+  height: 100px;
+  width: 150px;
+  flex-shrink: 0;
+  display: block;
 }
 
 .temp-icon-left .short-description {
@@ -477,6 +485,49 @@
   /* Reorder sections on mobile: Name/Forecast, Map, Controls */
   .name-forecast-container {
     order: 1;
+  }
+
+  /* Compact name-temp-content vertically on mobile */
+  .city-name {
+    margin-top: 6px;
+    margin-bottom: 0;
+    font-size: 2rem;
+  }
+
+  .temp-icon-left {
+    gap: 4px;
+  }
+
+  .temp-icon-top-row {
+    gap: 2px;
+  }
+
+  .temp-value h4 {
+    font-size: 36px;
+  }
+
+  .high-low-temps {
+    margin-top: 2px;
+    font-size: 15px;
+  }
+
+  .temp-icon-left .short-description {
+    margin-top: 4px;
+    min-height: 2.2em;
+  }
+
+  .temp-icon-left .short-description h4 {
+    font-size: 1.1rem;
+  }
+
+  .main-weather-icon {
+    height: 72px;
+    max-width: 110px;
+  }
+
+  .weather-icon-placeholder {
+    height: 88px;
+    width: 110px;
   }
 
   .banner-map-section {
