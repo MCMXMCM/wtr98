@@ -29,10 +29,14 @@ function Player() {
   const [error, setError] = useState<string | null>(null);
   const [selectedPlaylist, setSelectedPlaylist] = useState<string>(DEFAULT_PLAYLIST);
   const [availablePlaylists, setAvailablePlaylists] = useState<string[]>([]);
+  const [playlistsInitialized, setPlaylistsInitialized] = useState(false);
   const [shouldMarquee, setShouldMarquee] = useState(false);
   const nowPlayingRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const shouldAutoPlayNextRef = useRef(false);
+  const selectedPlaylistRef = useRef(selectedPlaylist);
+  selectedPlaylistRef.current = selectedPlaylist;
 
   // Fetch available playlists on mount; init selection from localStorage or default to classic
   useEffect(() => {
@@ -50,6 +54,8 @@ function Player() {
       } catch (e) {
         console.error("Failed to fetch playlists:", e);
         setSelectedPlaylist(DEFAULT_PLAYLIST);
+      } finally {
+        setPlaylistsInitialized(true);
       }
     };
     loadPlaylists();
@@ -60,6 +66,7 @@ function Player() {
     setError(null);
     try {
       const keys = await fetchSongList(playlist);
+      if (selectedPlaylistRef.current !== playlist) return;
       if (keys.length === 0) {
         setError("No songs found");
         setAllTracks([]);
@@ -71,17 +78,21 @@ function Player() {
       setLoadedTracks(shuffled.slice(0, BATCH_SIZE));
       setCurrentIndex(0);
     } catch (e) {
+      if (selectedPlaylistRef.current !== playlist) return;
       setError(e instanceof Error ? e.message : "Failed to load playlist");
       setAllTracks([]);
       setLoadedTracks([]);
     } finally {
-      setIsLoading(false);
+      if (selectedPlaylistRef.current === playlist) {
+        setIsLoading(false);
+      }
     }
   }, []);
 
   useEffect(() => {
+    if (!playlistsInitialized) return;
     loadPlaylist(selectedPlaylist);
-  }, [selectedPlaylist, loadPlaylist]);
+  }, [selectedPlaylist, loadPlaylist, playlistsInitialized]);
 
   // Check if text overflows and enable marquee
   useEffect(() => {
@@ -136,11 +147,15 @@ function Player() {
     
     const handleCanPlay = () => {
       console.log("Audio ready to play, readyState:", audio.readyState);
-      if (wasPlaying) {
+      const shouldPlay = wasPlaying || shouldAutoPlayNextRef.current;
+      if (shouldPlay) {
+        shouldAutoPlayNextRef.current = false;
         audio.play().catch((err) => {
           console.error("Auto-play error after track change:", err);
           setIsPlaying(false);
         });
+      } else {
+        shouldAutoPlayNextRef.current = false;
       }
       audio.removeEventListener("canplay", handleCanPlay);
     };
@@ -245,6 +260,7 @@ function Player() {
 
   const handleEnd = () => {
     if (loadedTracks.length === 0) return;
+    shouldAutoPlayNextRef.current = true;
     setCurrentIndex((i) =>
       i < loadedTracks.length - 1 ? i + 1 : 0
     );
