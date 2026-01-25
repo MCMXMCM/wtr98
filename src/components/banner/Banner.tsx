@@ -12,6 +12,8 @@ import { Dispatch, SetStateAction, useState } from "react";
 import AudioPlayer from "../AudioPlayer";
 import ForecastPreview from "../ForecastPreview";
 import Modal from "../Modal";
+import type { WeatherAlertFeature } from "../../types/alerts";
+import AlertModal from "../AlertModal";
 
 interface BannerProps {
   currentLocation: boolean;
@@ -41,7 +43,7 @@ export default function Banner({
 
   const { status, points, hourly, dataUpdatedAt } = useWeather();
   const isFetching = status !== "success";
-  
+
   // Update favicon based on current weather and city name
   useFavicon(hourly, points);
 
@@ -56,9 +58,9 @@ export default function Banner({
             currentIconName={
               hourly?.properties?.periods[0]
                 ? getIcon(
-                    hourly?.properties?.periods[0]?.isDaytime,
-                    hourly?.properties?.periods[0]?.shortForecast
-                  )
+                  hourly?.properties?.periods[0]?.isDaytime,
+                  hourly?.properties?.periods[0]?.shortForecast
+                )
                 : "???"
             }
             onMapClick={(newPosition) => {
@@ -116,8 +118,8 @@ export default function Banner({
             Refresh (
             {status === "success"
               ? `Refreshed at: ${dayjs(new Date(dataUpdatedAt)).format(
-                  "hh:mm a"
-                )}`
+                "hh:mm a"
+              )}`
               : "loading"}
             )
           </button>
@@ -244,8 +246,8 @@ export function NameIconAndTemp({
               {isFetching
                 ? ""
                 : isHourlyAvailable
-                ? `${currentPeriod.temperature}°`
-                : "N/A"}
+                  ? `${currentPeriod.temperature}°`
+                  : "N/A"}
             </h4>
           </div>
           <div className="grandchild-div">
@@ -282,13 +284,21 @@ function NameIconAndTempWithForecast({
   hourly: Hourly | null | undefined;
   points: Points | undefined;
 }) {
-  const { weekly } = useWeather();
+  const { weekly, alerts } = useWeather();
   const currentPeriod = hourly?.properties?.periods?.[0];
   const isHourlyAvailable = !!currentPeriod;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+  const [selectedAlert, setSelectedAlert] = useState<WeatherAlertFeature | null>(null);
+
   // Get the first period from weekly forecast (same as marquee uses)
   const weeklyFirstPeriod = weekly?.properties?.periods?.[0];
+
+  // Get active alerts (status === "Actual")
+  const activeAlerts = (alerts?.features ?? []).filter(
+    (f) => f.properties.status === "Actual"
+  );
+  const firstActiveAlert = activeAlerts.length > 0 ? activeAlerts[0] : null;
 
   // Find today's high (first daytime period) and low (first nighttime period)
   const todayHigh = weekly?.properties?.periods?.find(p => p.isDaytime);
@@ -298,13 +308,9 @@ function NameIconAndTempWithForecast({
     <div className="name-temp-with-forecast">
       <div className="name-temp-content">
         <div className="temp-icon-row ">
-          <div 
+          <div
             className="temp-icon-left"
-            onClick={() => {
-              if (weeklyFirstPeriod) {
-                setIsModalOpen(true);
-              }
-            }}
+           
           >
             <h4 className="city-name">
               {isFetching ? (
@@ -315,14 +321,20 @@ function NameIconAndTempWithForecast({
                 points?.city
               )}
             </h4>
-            <div className="temp-icon-top-row">
+            <div 
+             onClick={() => {
+              if (weeklyFirstPeriod) {
+                setIsModalOpen(true);
+              }
+            }}
+            className="temp-icon-top-row">
               <div className="temp-value">
                 <h4>
                   {isFetching
                     ? <span style={{ visibility: "hidden" }}>00°</span>
                     : isHourlyAvailable
-                    ? `${currentPeriod.temperature}°`
-                    : "N/A"}
+                      ? `${currentPeriod.temperature}°`
+                      : "N/A"}
                 </h4>
                 {isFetching ? (
                   <div className="high-low-temps" style={{ visibility: "hidden" }}>
@@ -355,16 +367,58 @@ function NameIconAndTempWithForecast({
                 <div style={{ height: "70px", width: "50px" }} />
               )}
             </div>
-            <div className="short-description">
-              <h4>
-                {isFetching ? (
+            <div className={`short-description ${firstActiveAlert ? "short-description--alert" : ""}`}>
+              {isFetching ? (
+                <h4>
                   <span style={{ visibility: "hidden" }}>Placeholder text for height</span>
-                ) : isHourlyAvailable ? (
-                  currentPeriod.shortForecast
-                ) : (
-                  "Hourly forecast not available"
-                )}
-              </h4>
+                </h4>
+              ) : firstActiveAlert ? (
+                <div 
+                  style={{ display: "flex", flexDirection: "column", alignItems: "start" }}
+                  onClick={() => {
+                    setSelectedAlert(firstActiveAlert);
+                    setIsAlertModalOpen(true);
+                  }}
+                >
+                  <h4 style={{
+                    margin: 0,
+                    fontSize: "0.9rem",
+                    cursor: "pointer",
+
+                  }}>{`⚠ ${firstActiveAlert.properties.event}`}</h4>
+                  <p
+                    style={{
+                      fontSize: "1rem",
+                      cursor: "pointer",
+                      margin: 0,
+                    }}
+                  
+                  >
+                    <>
+                      {(() => {
+                        const endsDate = firstActiveAlert.properties.ends 
+                          ? dayjs(firstActiveAlert.properties.ends) 
+                          : null;
+                        const isValidEnds = endsDate && endsDate.isValid();
+                        const additionalAlertsText = activeAlerts.length > 1 
+                          ? ` Additional Alerts: ${activeAlerts.slice(1).map((a) => a.properties.event).join(", ")}`
+                          : "";
+                        
+                        if (isValidEnds) {
+                          return `Expected to last until ${endsDate.format("h:mm, dddd, MMMM D")}.${additionalAlertsText}`;
+                        } else {
+                          return additionalAlertsText ? additionalAlertsText.substring(1) : "";
+                        }
+                      })()}
+                    </>
+                  </p>
+           
+                </div>
+              ) : isHourlyAvailable ? (
+                <h4>{currentPeriod.shortForecast}</h4>
+              ) : (
+                <h4>Hourly forecast not available</h4>
+              )}
             </div>
           </div>
           <div className="forecast-preview-column">
@@ -377,6 +431,17 @@ function NameIconAndTempWithForecast({
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           forecast={weeklyFirstPeriod}
+        />
+      )}
+      {selectedAlert && (
+        <AlertModal
+          isOpen={isAlertModalOpen}
+          onClose={() => {
+            setIsAlertModalOpen(false);
+            setSelectedAlert(null);
+          }}
+          alert={selectedAlert}
+          additionalAlerts={activeAlerts.filter(a => a.id !== selectedAlert.id)}
         />
       )}
     </div>

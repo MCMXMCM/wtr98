@@ -1,0 +1,97 @@
+{
+  "@context": [
+    "https://geojson.org/geojson-ld/geojson-context.jsonld",
+    {
+      "@version": "1.1",
+      "wx": "https://api.weather.gov/ontology#",
+      "@vocab": "https://api.weather.gov/ontology#"
+    }
+  ],
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.ac01b1cdc4c518434b256905d465b15778729cb6.002.1",
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.ac01b1cdc4c518434b256905d465b15778729cb6.002.1",
+        "@type": "wx:Alert",
+        "id": "urn:oid:2.49.0.1.840.0.ac01b1cdc4c518434b256905d465b15778729cb6.002.1",
+        "areaDesc": "St. Louis; St. Louis City; Jefferson; St. Charles; Franklin; Warren; and others",
+        "geocode": {
+          "SAME": ["029510", "029099", "029071", "029183", "029071"],
+          "UGC": ["MOZ063", "MOZ064", "MOZ065", "MOZ072", "MOZ073"]
+        },
+        "affectedZones": [
+          "https://api.weather.gov/zones/forecast/MOZ063",
+          "https://api.weather.gov/zones/forecast/MOZ064",
+          "https://api.weather.gov/zones/forecast/MOZ065"
+        ],
+        "sent": "2026-01-24T13:41:00-06:00",
+        "effective": "2026-01-24T13:41:00-06:00",
+        "onset": "2026-01-24T13:41:00-06:00",
+        "expires": "2026-01-25T04:45:00-06:00",
+        "ends": "2026-01-25T18:00:00-06:00",
+        "status": "Actual",
+        "messageType": "Update",
+        "category": "Met",
+        "severity": "Severe",
+        "certainty": "Likely",
+        "urgency": "Expected",
+        "event": "Winter Storm Warning",
+        "sender": "w-nws.webmaster@noaa.gov",
+        "senderName": "NWS St Louis MO",
+        "headline": "Winter Storm Warning issued January 24 at 1:41PM CST until January 25 at 6:00PM CST by NWS St Louis MO",
+        "description": "* WHAT...Heavy snow. Additional snow accumulations between 7 and 10 inches.\n\n* WHERE...Portions of south central and southwest Illinois and central, east central, and southeast Missouri.\n\n* WHEN...Until 6 PM CST Sunday.\n\n* IMPACTS...Travel could be very difficult to impossible.",
+        "instruction": "The rapid accumulation of snow will make travel extremely difficult, if not impossible. If travel is necessary, be sure to exercise extreme caution. If you must travel, keep an extra flashlight, food and water in your vehicle in case of an emergency.",
+        "response": "Prepare",
+        "parameters": {
+          "NWSheadline": ["WINTER STORM WARNING REMAINS IN EFFECT UNTIL 6 PM CST SUNDAY"]
+        }
+      }
+    },
+    {
+      "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.a70f77676ca1491d3777e55b65f75ac4d2d1ed0c.001.1",
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.a70f77676ca1491d3777e55b65f75ac4d2d1ed0c.001.1",
+        "@type": "wx:Alert",
+        "id": "urn:oid:2.49.0.1.840.0.a70f77676ca1491d3777e55b65f75ac4d2d1ed0c.001.1",
+        "areaDesc": "St. Louis; St. Louis City; Jefferson; St. Charles; Franklin; and others",
+        "geocode": {
+          "SAME": ["029510", "029099", "029071", "029183"],
+          "UGC": ["MOZ063", "MOZ064", "MOZ065"]
+        },
+        "affectedZones": [
+          "https://api.weather.gov/zones/forecast/MOZ063",
+          "https://api.weather.gov/zones/forecast/MOZ064",
+          "https://api.weather.gov/zones/forecast/MOZ065"
+        ],
+        "sent": "2026-01-24T13:38:00-06:00",
+        "effective": "2026-01-24T13:38:00-06:00",
+        "onset": "2026-01-26T00:00:00-06:00",
+        "expires": "2026-01-25T04:45:00-06:00",
+        "ends": "2026-01-26T12:00:00-06:00",
+        "status": "Actual",
+        "messageType": "Alert",
+        "category": "Met",
+        "severity": "Moderate",
+        "certainty": "Likely",
+        "urgency": "Expected",
+        "event": "Cold Weather Advisory",
+        "sender": "w-nws.webmaster@noaa.gov",
+        "senderName": "NWS St Louis MO",
+        "headline": "Cold Weather Advisory issued January 24 at 1:38PM CST until January 26 at 12:00PM CST by NWS St Louis MO",
+        "description": "* WHAT...Very cold wind chills as low as 10 to 20 below expected.\n\n* WHERE...Portions of south central, southwest, and west central Illinois and central, east central, northeast, and southeast Missouri.\n\n* WHEN...From midnight Sunday Night to noon CST Monday.\n\n* IMPACTS...The dangerously cold wind chills could cause frostbite on exposed skin in as little as 30 minutes.",
+        "instruction": "Use caution while traveling outside. Wear appropriate clothing, a hat, and gloves.",
+        "response": "Prepare",
+        "parameters": {
+          "NWSheadline": ["COLD WEATHER ADVISORY IN EFFECT FROM MIDNIGHT SUNDAY NIGHT TO NOON CST MONDAY"]
+        }
+      }
+    }
+  ],
+  "title": "Current watches, warnings, and advisories for St. Louis City County (MOC510) MO",
+  "updated": "2026-01-24T19:41:44+00:00"
+}

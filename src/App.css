@@ -221,7 +221,7 @@
 }
 
 .temp-icon-left {
-  flex: 0 0 70%;
+  flex: 0 0 60%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -283,6 +283,10 @@
   text-align: center;
   width: 100%;
   margin-top: 10px;
+}
+
+.temp-icon-left .short-description.short-description--alert {
+  text-align: left;
 }
 
 .temp-icon-left .short-description h4 {
@@ -520,6 +524,10 @@
     min-height: 2.2em;
     text-align: center;
     width: 100%;
+  }
+
+  .temp-icon-left .short-description.short-description--alert {
+    text-align: left;
   }
 
   .temp-icon-left .short-description h4 {

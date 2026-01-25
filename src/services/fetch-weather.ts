@@ -1,13 +1,20 @@
 import axios from "axios";
+import { WeatherAlerts } from "../types/alerts";
 import { WeeklyForecast } from "../types/forecast";
 import { Points, WeatherForecastHourly } from "../types/global";
 import { Hourly } from "../types/hourly";
 import { WeatherGovPoint } from "../types/points";
 
+function zoneIdFromZoneUrl(url: string): string {
+  const segment = url.split("/").filter(Boolean).pop();
+  return segment ?? "";
+}
+
 export async function fetchWeather(): Promise<{
   points: Points;
   hourly: Hourly;
   weekly: WeeklyForecast;
+  alerts: WeatherAlerts | null;
 }> {
   const latitude = localStorage.getItem("latitude");
   const longitude = localStorage.getItem("longitude");
@@ -35,12 +42,21 @@ export async function fetchWeather(): Promise<{
     localStorage.setItem("latitude", latitude);
     localStorage.setItem("longitude", longitude);
 
+    const countyUrl = pointData?.properties?.county;
+    const forecastZoneUrl = pointData?.properties?.forecastZone;
+    const zoneId = countyUrl
+      ? zoneIdFromZoneUrl(countyUrl)
+      : forecastZoneUrl
+        ? zoneIdFromZoneUrl(forecastZoneUrl)
+        : undefined;
+
     const points: Points = {
       forecastUrl: pointData?.properties?.forecast,
       forecastHourlyUrl: pointData?.properties?.forecastHourly,
       forecastGridDataUrl: pointData?.properties?.forecastGridData,
       city: pointData?.properties?.relativeLocation?.properties?.city,
       state: pointData?.properties?.relativeLocation?.properties?.state,
+      zoneId,
     };
 
     // Get the weekly forecast first
@@ -57,7 +73,20 @@ export async function fetchWeather(): Promise<{
     const hr = await axios.get(points.forecastHourlyUrl);
     const hourly: Hourly = hr.data;
 
-    return { points, hourly, weekly };
+    let alerts: WeatherAlerts | null = null;
+    if (points.zoneId) {
+      try {
+        const al = await axios.get<WeatherAlerts>(
+          `https://api.weather.gov/alerts/active/zone/${points.zoneId}`,
+          { headers: { Accept: "application/geo+json" } }
+        );
+        alerts = al.data;
+      } catch (e) {
+        console.warn("Failed to fetch alerts:", e);
+      }
+    }
+
+    return { points, hourly, weekly, alerts };
   } catch (error) {
     console.error("Error fetching weather data:", error);
     if (axios.isAxiosError(error)) {

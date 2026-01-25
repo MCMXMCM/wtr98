@@ -9,4 +9,19 @@
     flex-direction: column;
     align-items: center;
   }
+}
+
+.alert-modal-window {
+  width: 500px;
+  max-width: 90vw;
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 } 

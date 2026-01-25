@@ -9,6 +9,8 @@ export interface Points {
   forecastGridDataUrl: string;
   city: string;
   state: string;
+  /** Zone ID for alerts API (e.g. MOC510, MOZ064). From county or forecastZone URL. */
+  zoneId?: string;
 }
 
 export interface WeatherForecastHourly {
